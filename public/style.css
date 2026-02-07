@@ -235,6 +235,7 @@ body.obi-on .obi.right{ transform: translateX(0); }
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  gap: 8px;
   padding: 8px 12px;
   border: var(--line) solid transparent;
   border-radius: 999px;
@@ -360,11 +361,7 @@ body.obi-on .obi.right{ transform: translateX(0); }
 .btn:hover{ transform: translate(-2px,-2px); box-shadow: 10px 10px 0 rgba(17,17,17,.12); filter: saturate(1.05); }
 .btn.primary:hover{ filter: brightness(1.05) saturate(1.10); }
 .btn:active{ transform: translate(0,0); box-shadow: 4px 4px 0 rgba(17,17,17,.10); }
-.btn .icon{
-  width: 1.2em;
-  text-align:center;
-}
-
+.btn 
 .grid{
   margin-top: 18px;
   display:grid;
@@ -395,6 +392,9 @@ body.obi-on .obi.right{ transform: translateX(0); }
   margin:0 0 10px;
   font-size: 16px;
   letter-spacing: .06em;
+  display:flex;
+  align-items:center;
+  gap: 10px;
 }
 .meta{ font-size: 14px; }
 .small{ font-size: 12px; opacity: .86; }
@@ -433,3 +433,41 @@ body.obi-on .obi.right{ transform: translateX(0); }
   font-size: 12px;
   opacity: .88;
 }
+.nav-ico{
+  width: 18px;
+  height: 18px;
+  display:block;
+  object-fit: contain;
+}
+
+.nav-ico.img{
+  border-radius: 4px;
+}
+
+.ico{
+  width: 22px;
+  height: 22px;
+  display:block;
+  object-fit: contain;
+}
+
+.icon{
+  width: 18px;
+  height: 18px;
+  display:block;
+  object-fit: contain;
+}
+
+
+
+
+.menu-preview img{
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  border: var(--line) solid var(--stroke);
+  box-shadow: 10px 10px 0 rgba(17,17,17,.08);
+}
+
+.menu-preview-link{ display:block; }
+.menu-preview-link:hover img{ transform: translate(-2px,-2px); box-shadow: 14px 14px 0 rgba(17,17,17,.12); }

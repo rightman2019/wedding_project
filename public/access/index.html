@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#124C3E" />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="/style.css" />
   <script src="/config.js"></script>
   <script src="/script.js" defer></script>
@@ -21,11 +22,12 @@
         <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
       </a>
       <nav class="nav" aria-label="Site">
-        <a href="/">トップ</a>
-        <a href="/schedule/">当日スケジュール</a>
-        <a href="/access/">アクセス</a>
-        <a href="/faq/">FAQ</a>
-        <a href="/rsvp/">招待状</a>
+        <a href="/"><img class="nav-ico" src="/assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
+        <a href="/schedule/"><img class="nav-ico" src="/assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
+        <a href="/access/"><img class="nav-ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
+        <a href="/faq/"><img class="nav-ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>FAQ</span></a>
+        <a href="/menu/"><img class="nav-ico img" src="/assets/icons/isle-of-islay-distillery-map.webp" alt="" aria-hidden="true"><span>メニュー</span></a>
+        <a href="/rsvp/"><img class="nav-ico" src="/assets/icons/invite.svg" alt="" aria-hidden="true"><span>招待状</span></a>
       </nav>
     </div>
   </div>
@@ -39,14 +41,14 @@
 
     <section class="grid">
       <div class="card">
-        <h2>会場</h2>
+        <h2><img class="ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>会場</span></h2>
         <div class="meta">
           <div><b data-wedding-text="venue.name"></b></div>
           <div data-wedding-text="venue.address"></div>
           <div class="small" data-wedding-text="venue.access"></div>
           <div class="actions" style="margin-top:12px">
-            <a class="btn" data-wedding-href="venue.websiteUrl" href="#"><span class="icon">⤴</span> 公式サイト</a>
-            <a class="btn primary" data-wedding-href="venue.mapUrl" href="#"><span class="icon">⌁</span> Google Maps</a>
+            <a class="btn" data-wedding-href="venue.websiteUrl" href="#"><img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> 公式サイト</a>
+            <a class="btn primary" data-wedding-href="venue.mapUrl" href="#"><img class="icon" src="/assets/icons/pin.svg" alt="" aria-hidden="true"> Google Maps</a>
           </div>
         </div>
       </div>

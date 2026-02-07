@@ -70,7 +70,7 @@
         const q = escapeHtml(item.q || "");
         const a = escapeHtml(item.a || "");
         return `<div class="sep"></div><div><b>Q.</b> ${q}</div><div class="small" style="margin-top:6px"><b>A.</b> ${a}</div>`;
-      }).join("") || `<div class="small">FAQは config.js で編集できます。</div>`;
+      }).join("");
     }
 
     const titleEl = document.querySelector("title[data-wedding-title]");

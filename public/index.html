@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#124C3E" />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="/style.css" />
   <script src="/config.js"></script>
   <script src="/script.js" defer></script>
@@ -22,11 +23,12 @@
         <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
       </a>
       <nav class="nav" aria-label="Site">
-        <a href="/">トップ</a>
-        <a href="/schedule/">当日スケジュール</a>
-        <a href="/access/">アクセス</a>
-        <a href="/faq/">FAQ</a>
-        <a href="/rsvp/">招待状</a>
+        <a href="/"><img class="nav-ico" src="/assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
+        <a href="/schedule/"><img class="nav-ico" src="/assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
+        <a href="/access/"><img class="nav-ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
+        <a href="/faq/"><img class="nav-ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>FAQ</span></a>
+        <a href="/menu/"><img class="nav-ico img" src="/assets/icons/isle-of-islay-distillery-map.webp" alt="" aria-hidden="true"><span>メニュー</span></a>
+        <a href="/rsvp/"><img class="nav-ico" src="/assets/icons/invite.svg" alt="" aria-hidden="true"><span>招待状</span></a>
       </nav>
     </div>
   </div>
@@ -48,7 +50,7 @@
 
     <section class="grid" aria-label="Summary">
       <div class="card half">
-        <h2>日時</h2>
+        <h2><img class="ico" src="/assets/icons/calendar.svg" alt="" aria-hidden="true"><span>日時</span></h2>
         <div class="meta">
           <div><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
           <div>受付：<b data-wedding-text="event.open"></b>〜</div>
@@ -57,20 +59,20 @@
       </div>
 
       <div class="card half">
-        <h2>会場</h2>
+        <h2><img class="ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>会場</span></h2>
         <div class="meta">
           <div><b data-wedding-text="venue.name"></b></div>
           <div data-wedding-text="venue.address"></div>
           <div class="small" data-wedding-text="venue.access"></div>
           <div class="actions" style="margin-top:10px">
-            <a class="btn" data-wedding-href="venue.websiteUrl" href="#"><span class="icon">⤴</span> 公式サイト</a>
-            <a class="btn" data-wedding-href="venue.mapUrl" href="#"><span class="icon">⌁</span> 地図</a>
+            <a class="btn" data-wedding-href="venue.websiteUrl" href="#"><img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> 公式サイト</a>
+            <a class="btn" data-wedding-href="venue.mapUrl" href="#"><img class="icon" src="/assets/icons/pin.svg" alt="" aria-hidden="true"> 地図</a>
           </div>
         </div>
       </div>
 
       <div class="card third">
-        <h2>服装</h2>
+        <h2><img class="ico" src="/assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
         <div class="meta">
           <div><b data-wedding-text="dressCode"></b></div>
           <div class="small">迷ったら「落ち着いた装い」で問題ありません。</div>
@@ -78,24 +80,35 @@
       </div>
 
       <div class="card third">
-        <h2>招待状</h2>
+        <h2><img class="ico" src="/assets/icons/invite.svg" alt="" aria-hidden="true"><span>招待状</span></h2>
         <div class="meta">
           <div data-wedding-text="invitation.note"></div>
           <div class="actions" style="margin-top:10px">
-            <a class="btn primary" data-wedding-href="invitation.url" href="#"><span class="icon">✉</span> 招待状サイトへ</a>
+            <a class="btn primary" data-wedding-href="invitation.url" href="#"><img class="icon" src="/assets/icons/invite.svg" alt="" aria-hidden="true"> 招待状サイトへ</a>
+          </div>
+        </div>
+
+
+      <div class="card third">
+        <h2><img class="ico img" src="/assets/icons/isle-of-islay-distillery-map.webp" alt="" aria-hidden="true"><span>メニュー</span></h2>
+        <div class="meta">
+          <div class="small">当日のスペシャルメニュー（ウイスキー／シェリー）</div>
+          <div class="actions" style="margin-top:10px">
+            <a class="btn primary" href="/menu/"><img class="icon" src="/assets/icons/menu.svg" alt="" aria-hidden="true"> メニュー表を見る</a>
           </div>
         </div>
       </div>
+      </div>
 
       <div class="card third" data-hide-if-empty="gifts">
-        <h2>お祝いについて</h2>
+        <h2><img class="ico" src="/assets/icons/gift.svg" alt="" aria-hidden="true"><span>お祝いについて</span></h2>
         <div class="meta">
           <div data-wedding-text="gifts"></div>
         </div>
       </div>
 
       <div class="card">
-        <h2>お願い</h2>
+        <h2><img class="ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>お願い</span></h2>
         <div class="note">
           本サイトは <b>検索エンジンに出ない設定（noindex）</b> になっています。<br/>
           URLは招待された方のみに共有してください。

@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#124C3E" />
-  <link rel="icon" href="/favicon-32.png" type="image/png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/style.css" />
-  <script src="/config.js"></script>
-  <script src="/script.js" defer></script>
-
-  <title data-wedding-title>{couple} | Invitation</title>
+  <title data-wedding-title>{couple} | メニュー</title>
+  <script defer src="/config.js"></script>
+  <script defer src="/script.js"></script>
 </head>
 <body>
+  <div class="obi left" data-obi aria-hidden="true"></div>
+  <div class="obi right" data-obi aria-hidden="true"></div>
+
   <div class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="/">
@@ -32,30 +32,36 @@
     </div>
   </div>
 
-  <main class="container">
+  <main class="wrap">
     <section class="hero">
-      <div class="kicker"><span class="dot"></span> Invitation</div>
-      <h1 class="h1">招待状</h1>
-      <p class="lede">当日の詳細は、招待状サイトをご確認ください。</p>
-      <div class="actions">
-        <a class="btn primary" data-wedding-href="invitation.url" href="#"><img class="icon" src="/assets/icons/invite.svg" alt="" aria-hidden="true"> 招待状サイトへ</a>
+      <div class="hero-inner">
+        <div class="hero-badge">SPECIAL MENU</div>
+        <h1 class="h1">メニュー</h1>
+        <p class="lead">当日のスペシャルメニューです。<br/>PDFを開くか、プレビュー画像からご覧ください。</p>
       </div>
     </section>
 
     <section class="grid">
       <div class="card">
-        <h2>招待状サイト</h2>
-        <div class="meta">
-          <div><b data-wedding-text="invitation.url"></b></div>
-          <div class="small" data-wedding-text="invitation.note"></div>
-        </div>
-      </div>
+        <h2><img class="ico img" src="/assets/icons/isle-of-islay-distillery-map.webp" alt="" aria-hidden="true"><span>SPECIAL MENU</span></h2>
 
-      <div class="card">
-        <h2>連絡先</h2>
-        <div class="meta">
-          <div data-wedding-text="contact.name"></div>
-          <div class="small"><span data-wedding-text="contact.email"></span></div>
+        <div class="actions" style="margin-top:12px">
+          <a class="btn primary" href="/assets/menu/SPECIAL_MENU.pdf" target="_blank" rel="noopener">
+            <img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> PDFを開く
+          </a>
+          <a class="btn" href="/assets/menu/SPECIAL_MENU.pdf" download>
+            <img class="icon" src="/assets/icons/menu.svg" alt="" aria-hidden="true"> ダウンロード
+          </a>
+        </div>
+
+        <div class="menu-preview" style="margin-top:16px">
+          <a href="/assets/menu/SPECIAL_MENU.pdf" target="_blank" rel="noopener" class="menu-preview-link" aria-label="SPECIAL MENU (PDF) を開く">
+            <img src="/assets/menu/SPECIAL_MENU.png" alt="SPECIAL MENU プレビュー" loading="lazy" />
+          </a>
+        </div>
+
+        <div class="small" style="margin-top:12px">
+          ※ブラウザによってはPDFの埋め込み表示ができない場合があります。上のボタンから開いてください。
         </div>
       </div>
     </section>
