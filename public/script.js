@@ -93,6 +93,47 @@
     });
   }
 
+  function setupNavToggle(){
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('site-nav') || document.querySelector('.nav');
+    if (!toggle || !nav) return;
+
+    const close = () => {
+      document.body.classList.remove('nav-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+    const open = () => {
+      document.body.classList.add('nav-open');
+      toggle.setAttribute('aria-expanded', 'true');
+    };
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (document.body.classList.contains('nav-open')) close(); else open();
+    });
+
+    // Close when selecting a link
+    nav.addEventListener('click', (e) => {
+      const a = e.target.closest('a');
+      if (a) close();
+    });
+
+    // Close on outside click / escape
+    document.addEventListener('click', (e) => {
+      if (!document.body.classList.contains('nav-open')) return;
+      if (e.target.closest('.topbar')) return;
+      close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+
+    // If back to desktop width, ensure closed
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1100) close();
+    });
+  }
+
   function setupBackdrop(){
     if (document.querySelector(".backdrop")) return;
     const backdrop = document.createElement("div");
@@ -272,6 +313,7 @@
     if (useBackdrop) setupBackdrop();
     applyBindings();
     markCurrentNav();
+    setupNavToggle();
     setupSplash();
     setupMenuImageViewer();
     if (useBackdrop) setupShapes();

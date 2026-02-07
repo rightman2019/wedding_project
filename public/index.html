@@ -31,7 +31,10 @@
         <div class="title" data-wedding-couple></div>
         <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
       </a>
-      <nav class="nav" aria-label="Site">
+      <button class="nav-toggle" type="button" aria-label="メニュー" aria-controls="site-nav" aria-expanded="false">
+        <span class="nav-toggle-icon" aria-hidden="true"></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="Site">
         <a href="/"><img class="nav-ico" src="/assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
         <a href="/schedule/"><img class="nav-ico" src="/assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
         <a href="/access/"><img class="nav-ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
@@ -58,7 +61,7 @@
     </section>
 
     <section class="grid" aria-label="Summary">
-      <div class="card half lg-third">
+      <div class="card half">
         <div class="h2row"><span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span><h2>メニュー</h2></div>
         <div class="meta">新郎が特別にご用意したお酒です（ウイスキー／シェリー）</div>
         <div class="actions" style="margin-top:12px">
@@ -66,16 +69,17 @@
         </div>
       </div>
 
-      <div class="card half lg-third">
+      <div class="card half date-card">
         <h2><img class="ico" src="/assets/icons/calendar.svg" alt="" aria-hidden="true"><span>日時</span></h2>
         <div class="meta">
           <div><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
-          <div>受付：<b data-wedding-text="event.open"></b>〜</div>
-          <div>開宴：<b data-wedding-text="event.start"></b>〜</div>
+          <div>受付：<b data-wedding-text="event.open"></b></div>
+          <div>開宴：<b data-wedding-text="event.start"></b></div>
+          <div>終了予定：<b data-wedding-text="event.end"></b></div>
         </div>
       </div>
 
-      <div class="card half lg-third">
+      <div class="card half">
         <h2><img class="ico" src="/assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
         <div class="meta">
           <div><b data-wedding-text="dressCode"></b></div>

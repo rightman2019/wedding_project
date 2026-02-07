@@ -2,7 +2,8 @@
   --cream:#F3E9D6;
   --green:#124C3E;
   --orange:#FE7010;
-  --menu-bg:#F0A828;
+  /* SPECIAL_MENU.pdf の背景色に合わせる */
+  --menu-bg:#F0AE2E;
   --ink:#111111;
   --stroke: rgba(17,17,17,.85);
   --paper:#FAF4E6;
@@ -211,28 +212,37 @@ code.inline{
   align-items:center;
   justify-content:space-between;
   gap: 14px;
+  position: relative;
 }
 .brand{
   display:flex;
   flex-direction:column;
   gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 .brand .title{
   font-weight: 850;
   letter-spacing: .06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(13px, 1.9vw, 18px);
 }
 .brand .sub{
   font-size: 12px;
   opacity:.8;
   letter-spacing: .08em;
+  white-space: nowrap;
 }
 
 .nav{
   display:flex;
   gap: 14px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   font-size: 13px;
 }
+.nav a span{ white-space: nowrap; }
 .nav a{
   display:inline-flex;
   align-items:center;
@@ -253,6 +263,78 @@ code.inline{
 }
 .nav a:hover{ opacity: 1; background: rgba(250,244,230,.75); box-shadow: 6px 6px 0 rgba(17,17,17,.08); transform: translate(-1px,-1px); }
 .nav a:active{ transform: translate(0,0); box-shadow: 3px 3px 0 rgba(17,17,17,.08); }
+
+/* ハンバーガーメニュー */
+.nav-toggle{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width: 46px;
+  height: 40px;
+  border-radius: 999px;
+  border: var(--line) solid var(--stroke);
+  background: rgba(243,233,214,.8);
+  color: var(--ink);
+  box-shadow: 6px 6px 0 rgba(17,17,17,.08);
+  cursor: pointer;
+  user-select: none;
+}
+.nav-toggle:active{ transform: translate(1px,1px); box-shadow: 5px 5px 0 rgba(17,17,17,.08); }
+.nav-toggle-icon{
+  display:block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 999px;
+  position: relative;
+  transition: transform 160ms ease;
+}
+.nav-toggle-icon::before,
+.nav-toggle-icon::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 999px;
+  transition: transform 180ms ease, top 180ms ease, opacity 180ms ease;
+}
+.nav-toggle-icon::before{ top: -6px; }
+.nav-toggle-icon::after{ top: 6px; }
+body.nav-open .nav-toggle-icon{ background: transparent; }
+body.nav-open .nav-toggle-icon::before{ top: 0; transform: rotate(45deg); }
+body.nav-open .nav-toggle-icon::after{ top: 0; transform: rotate(-45deg); }
+
+@media (max-width: 1120px){
+  .nav{ gap: 10px; font-size: 12px; }
+  .nav a{ padding: 8px 10px; }
+}
+
+@media (max-width: 1100px){
+  .nav-toggle{ display:inline-flex; }
+  .nav{ display:none; }
+  body.nav-open .nav{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 14px;
+    right: 14px;
+    padding: 12px;
+    background: rgba(243,233,214,.96);
+    border: var(--line) solid var(--stroke);
+    border-radius: 18px;
+    box-shadow: 10px 10px 0 rgba(17,17,17,.08);
+    z-index: 50;
+  }
+  body.nav-open .nav a{ width: 100%; justify-content:flex-start; }
+}
+
+@media (max-width: 520px){
+  body.nav-open .nav{ grid-template-columns: 1fr; }
+}
 
 
 .nav a:hover .nav-ico{ transform: translateY(-1px) rotate(-2deg); }
@@ -397,6 +479,11 @@ code.inline{
 .card h2 .ico{ width:18px; height:18px; }
 .meta{ font-size: 14px; }
 .small{ font-size: 12px; opacity: .86; }
+
+/* 日時カードは情報量が少なめなので、少し大きめに */
+.date-card .meta{ font-size: 16px; }
+.date-card .meta b{ font-size: 18px; letter-spacing: .02em; }
+.date-card .meta div{ margin-top: 2px; }
 
 b[data-wedding-text="dressCode"]{
   white-space: pre-line;
@@ -552,11 +639,26 @@ body.menu-page .topbar{ background: var(--menu-bg); backdrop-filter: none; }
 body.menu-page .topbar-inner{ max-width: 1191px; }
 body.menu-page .topbar,
 body.menu-page .topbar a{ color: var(--paper); }
+body.menu-page .nav-toggle{
+  border-color: rgba(250,244,230,.75);
+  background: rgba(0,0,0,.14);
+  color: var(--paper);
+  box-shadow: 6px 6px 0 rgba(0,0,0,.20);
+}
 body.menu-page .nav a{ border-color: rgba(250,244,230,.55); }
 body.menu-page .nav a:hover{ background: rgba(250,244,230,.18); border-color: rgba(250,244,230,.75); box-shadow: 6px 6px 0 rgba(0,0,0,.20); }
-body.menu-page .nav a.current{ background: rgba(0,0,0,.18); border-color: rgba(250,244,230,.75); box-shadow: 8px 8px 0 rgba(0,0,0,.22); }
+body.menu-page .nav a[aria-current="page"]{ background: rgba(0,0,0,.18); border-color: rgba(250,244,230,.75); box-shadow: 8px 8px 0 rgba(0,0,0,.22); opacity: 1; }
 body.menu-page .nav-ico{ filter: brightness(0) invert(1); }
 body.menu-page .container{ max-width:none; padding: 0; }
+
+@media (max-width: 1100px){
+  body.menu-page.nav-open .nav{
+    background: rgba(0,0,0,.22);
+    border-color: rgba(250,244,230,.55);
+    box-shadow: 10px 10px 0 rgba(0,0,0,.22);
+  }
+  body.menu-page.nav-open .nav a{ color: var(--paper); }
+}
 .menu-note{ text-align:center; padding: 10px 18px 0; font-size: 14px; opacity: .92; }
 .menu-actions{ display:flex; gap: 12px; flex-wrap:wrap; padding: 14px 18px 12px; justify-content:center; }
 .menu-wrap{ display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 8px 0 44px; gap: 10px; }
