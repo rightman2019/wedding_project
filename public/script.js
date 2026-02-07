@@ -111,23 +111,18 @@
     const root = document.querySelector("[data-shapes]");
     if (!root) return;
 
-    // 三角・丸・四角のみ（バウハウス寄り）
-    const fills = ["var(--orange)", "var(--green)", "var(--paper)"];
-
     const specs = [
-      {x: 82, y: 12, s: 56, kind:"circle", fill:fills[0], dur: 6.8, delay: 0.2},
-      {x: 14, y: 18, s: 52, kind:"kaku",   fill:fills[1], dur: 6.2, delay: 0.4},
-      {x: 22, y: 40, s: 42, kind:"tri",    fill:fills[0], dur: 7.9, delay: 1.1},
-      {x: 10, y: 70, s: 64, kind:"circle", fill:fills[2], dur: 8.6, delay: 0.3},
-      {x: 76, y: 62, s: 70, kind:"kaku",   fill:fills[2], dur: 9.1, delay: 1.7},
-      {x: 90, y: 78, s: 44, kind:"tri",    fill:fills[1], dur: 7.1, delay: 0.6},
-      {x: 58, y: 86, s: 58, kind:"kaku",   fill:fills[0], dur: 8.2, delay: 1.3},
-      {x: 66, y: 28, s: 40, kind:"circle", fill:fills[1], dur: 7.4, delay: 0.9},
+      {x: 10, y: 18, s: 110, kind:"square", fill:"var(--green)", dur: 7.2, delay: 0.2},
+      {x: 84, y: 14, s: 104, kind:"circle", fill:"var(--orange)", dur: 8.6, delay: 0.9},
+      {x: 22, y: 62, s: 124, kind:"circle", fill:"var(--paper)", dur: 9.4, delay: 0.4},
+      {x: 78, y: 68, s: 116, kind:"tri", fill:"var(--green)", dur: 8.9, delay: 1.2},
+      {x: 54, y: 82, s: 106, kind:"square", fill:"var(--orange)", dur: 10.2, delay: 0.7},
+      {x: 56, y: 24, s: 92, kind:"tri", fill:"var(--paper)", dur: 7.8, delay: 1.6},
     ];
 
     for (const sp of specs){
       const d = document.createElement("div");
-      d.className = `shape ${sp.kind}`;
+      d.className = "shape " + (sp.kind === "square" ? "kaku" : sp.kind);
       d.style.setProperty("--x", String(sp.x));
       d.style.setProperty("--y", String(sp.y));
       d.style.setProperty("--size", sp.s + "px");
@@ -138,7 +133,7 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function(){
+  document.addEventListener("DOMContentLoaded", function(){("DOMContentLoaded", function(){
     const useBackdrop = !document.body.classList.contains('no-backdrop');
     if (useBackdrop) setupBackdrop();
     applyBindings();

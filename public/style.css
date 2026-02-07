@@ -417,3 +417,41 @@ body.page-menu .pdf-frame{
     height: calc(100vh - 140px);
   }
 }
+
+
+/* --- Patch v4: layout, menu embed, icons --- */
+
+/* Remove decorative corner frames */
+.card::before, .card::after{ content:none !important; }
+
+/* More spacing between frames */
+.grid{ gap: 20px; margin-top: 24px; }
+.card{ padding: 22px 20px; }
+
+/* Heading row with icon */
+.h2row{ display:flex; align-items:center; gap: 12px; }
+.h2icon{ width: 34px; height: 34px; display:inline-flex; align-items:center; justify-content:center; flex: 0 0 auto; }
+.h2icon svg, .h2icon img{ width: 100%; height: 100%; display:block; }
+.card h2{ margin:0 0 12px; font-size: 17px; letter-spacing:.04em; }
+
+/* Buttons hover */
+.btn{ transition: transform .14s ease, box-shadow .14s ease, filter .14s ease; }
+.btn:hover{ transform: translateY(-2px); box-shadow: 10px 10px 0 rgba(17,17,17,.12); filter: saturate(1.02); }
+.btn:active{ transform: translateY(0); }
+
+/* Nav hover action */
+.nav a{ transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease, border-color .12s ease; }
+.nav a:hover{ transform: translateY(-1px); border-color: rgba(17,17,17,.65); background: rgba(250,244,230,.92); box-shadow: 6px 6px 0 rgba(17,17,17,.08); }
+
+/* Larger floating shapes */
+.shape{ box-shadow: 12px 12px 0 rgba(17,17,17,.12); }
+
+/* Keep obi disabled */
+.obi, .obi-left, .obi-right{ display:none !important; }
+
+/* Menu page: blend background with PDF */
+body.menu-page{ background: #F0AE2E; }
+body.menu-page .container{ max-width:none; padding: 0; }
+.menu-actions{ display:flex; gap: 12px; flex-wrap:wrap; padding: 14px 18px 12px; justify-content:center; }
+.menu-wrap{ display:flex; justify-content:center; padding: 8px 0 44px; }
+.menu-img{ width: min(1200px, 100vw); height:auto; display:block; }

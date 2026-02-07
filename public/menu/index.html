@@ -7,12 +7,11 @@
   <meta name="theme-color" content="#124C3E" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/style.css" />
-  <title data-wedding-title>{couple} | メニュー</title>
-  <script defer src="/config.js"></script>
-  <script defer src="/script.js"></script>
+  <script src="/config.js"></script>
+  <script src="/script.js" defer></script>
+  <title>SPECIAL MENU</title>
 </head>
-<body class="page-menu no-backdrop">
-
+<body class="menu-page">
   <div class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="/">
@@ -20,32 +19,28 @@
         <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
       </a>
       <nav class="nav" aria-label="Site">
-        <a href="/"><img class="nav-ico" src="/assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
-        <a href="/schedule/"><img class="nav-ico" src="/assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
-        <a href="/access/"><img class="nav-ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
-        <a href="/faq/"><img class="nav-ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>FAQ</span></a>
-        <a href="/menu/"><img class="nav-ico img" src="/assets/icons/isle-of-islay-distillery-map.webp" alt="" aria-hidden="true"><span>メニュー</span></a>
-        <a href="/rsvp/"><img class="nav-ico" src="/assets/icons/invite.svg" alt="" aria-hidden="true"><span>招待状</span></a>
+        <a href="/">トップ</a>
+        <a href="/schedule/">当日スケジュール</a>
+        <a href="/access/">アクセス</a>
+        <a href="/faq/">FAQ</a>
+        <a href="/menu/" aria-current="page">メニュー</a>
+        <a href="/rsvp/">招待状</a>
       </nav>
     </div>
   </div>
 
-  <main class="wrap">
-    <div class="pdf-toolbar">
-      <div class="actions">
-        <a class="btn primary" href="/assets/menu/SPECIAL_MENU.pdf" target="_blank" rel="noopener">
-          <img class="ico" src="/assets/icons/external.svg" alt="" aria-hidden="true"> PDFを別タブで開く
-        </a>
-        <a class="btn" href="/assets/menu/SPECIAL_MENU.pdf" download>
-          <img class="ico" src="/assets/icons/menu.svg" alt="" aria-hidden="true"> ダウンロード
-        </a>
-      </div>
-      <div class="small" style="margin-top:8px">
-        ※表示倍率はブラウザのPDFビューア側で調整できます（初期表示は100%を指定しています）。
-      </div>
+  <main>
+    <div class="menu-actions">
+      <a class="btn" href="/assets/menu/SPECIAL_MENU.pdf" target="_blank" rel="noopener">
+        <span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span>
+        PDFを開く
+      </a>
+      <a class="btn primary" href="/assets/menu/SPECIAL_MENU.pdf" download>ダウンロード</a>
     </div>
 
-    <iframe class="pdf-frame" src="/assets/menu/SPECIAL_MENU.pdf#zoom=100" title="SPECIAL MENU"></iframe>
+    <div class="menu-wrap">
+      <img class="menu-img" src="/assets/menu/special_menu_page_1.png" alt="SPECIAL MENU" />
+    </div>
   </main>
 </body>
 </html>
