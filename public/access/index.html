@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#124C3E" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/config.js"></script>
+  <script src="/script.js" defer></script>
+
+  <title data-wedding-title>{couple} | Access</title>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">
+        <div class="title" data-wedding-couple></div>
+        <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
+      </a>
+      <nav class="nav" aria-label="Site">
+        <a href="/">トップ</a>
+        <a href="/schedule/">当日スケジュール</a>
+        <a href="/access/">アクセス</a>
+        <a href="/faq/">FAQ</a>
+        <a href="/rsvp/">招待状</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="hero">
+      <div class="kicker"><span class="dot"></span> Access</div>
+      <h1 class="h1">アクセス</h1>
+      <p class="lede">当日のご来場は、公式サイトの案内と地図をご参照ください。</p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>会場</h2>
+        <div class="meta">
+          <div><b data-wedding-text="venue.name"></b></div>
+          <div data-wedding-text="venue.address"></div>
+          <div class="small" data-wedding-text="venue.access"></div>
+          <div class="actions" style="margin-top:12px">
+            <a class="btn" data-wedding-href="venue.websiteUrl" href="#"><span class="icon">⤴</span> 公式サイト</a>
+            <a class="btn primary" data-wedding-href="venue.mapUrl" href="#"><span class="icon">⌁</span> Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>© <span data-wedding-text="copyright"></span></div>
+      <div><a class="btn" href="/">トップへ</a></div>
+    </footer>
+  </main>
+</body>
+</html>
