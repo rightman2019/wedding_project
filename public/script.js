@@ -102,15 +102,16 @@
       <div class="block orange"></div>
       <div class="block green"></div>
       <div class="block frame"></div>
-      <div class="obi" data-obi></div>
+      <div class="obi left" data-obi></div>
+      <div class="obi right" data-obi></div>
       <div class="shapes" data-shapes></div>
     `;
     document.body.prepend(backdrop);
   }
 
   function setupObi(){
-    const obi = document.querySelector("[data-obi]");
-    if (!obi) return;
+    const obis = document.querySelectorAll("[data-obi]");
+    if (!obis || obis.length === 0) return;
 
     const onScroll = () => {
       const y = window.scrollY || 0;
@@ -125,19 +126,18 @@
     const root = document.querySelector("[data-shapes]");
     if (!root) return;
 
-    // 配色は固定3色 + paper
-    const fills = ["var(--orange)", "var(--green)", "var(--paper)", "transparent"];
-    const kinds = ["circle", "round", "ring", "tri", "half"];
+    // 三角・丸・四角のみ（バウハウス寄り）
+    const fills = ["var(--orange)", "var(--green)", "var(--paper)"];
 
     const specs = [
-      {x: 72, y: 10, s: 56, kind:"circle", fill:fills[0], dur: 6.8, delay: 0.2},
-      {x: 84, y: 24, s: 44, kind:"ring",   fill:"transparent", dur: 7.4, delay: 0.9},
-      {x: 12, y: 22, s: 52, kind:"round",  fill:fills[1], dur: 6.2, delay: 0.4},
-      {x: 20, y: 40, s: 40, kind:"tri",    fill:fills[0], dur: 7.9, delay: 1.1},
-      {x: 8,  y: 66, s: 64, kind:"circle", fill:fills[2], dur: 8.6, delay: 0.3},
-      {x: 78, y: 62, s: 70, kind:"half",   fill:fills[1], dur: 9.1, delay: 1.7},
-      {x: 90, y: 76, s: 42, kind:"round",  fill:fills[0], dur: 7.1, delay: 0.6},
-      {x: 55, y: 86, s: 58, kind:"ring",   fill:"transparent", dur: 8.2, delay: 1.3},
+      {x: 82, y: 12, s: 56, kind:"circle", fill:fills[0], dur: 6.8, delay: 0.2},
+      {x: 14, y: 18, s: 52, kind:"kaku",   fill:fills[1], dur: 6.2, delay: 0.4},
+      {x: 22, y: 40, s: 42, kind:"tri",    fill:fills[0], dur: 7.9, delay: 1.1},
+      {x: 10, y: 70, s: 64, kind:"circle", fill:fills[2], dur: 8.6, delay: 0.3},
+      {x: 76, y: 62, s: 70, kind:"kaku",   fill:fills[2], dur: 9.1, delay: 1.7},
+      {x: 90, y: 78, s: 44, kind:"tri",    fill:fills[1], dur: 7.1, delay: 0.6},
+      {x: 58, y: 86, s: 58, kind:"kaku",   fill:fills[0], dur: 8.2, delay: 1.3},
+      {x: 66, y: 28, s: 40, kind:"circle", fill:fills[1], dur: 7.4, delay: 0.9},
     ];
 
     for (const sp of specs){
