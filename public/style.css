@@ -1,0 +1,235 @@
+/* Wedding site template (static) */
+:root{
+  --bg: #0b0f14;
+  --panel: rgba(255,255,255,.06);
+  --panel-2: rgba(255,255,255,.10);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.72);
+  --muted2: rgba(255,255,255,.58);
+  --line: rgba(255,255,255,.14);
+  --accent: #6ee7ff;
+  --accent2: #a78bfa;
+  --ok: #34d399;
+  --warn: #fbbf24;
+  --danger: #fb7185;
+  --shadow: 0 18px 60px rgba(0,0,0,.45);
+  --radius: 18px;
+  --radius2: 26px;
+  --max: 980px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  background:
+    radial-gradient(900px 600px at 20% 10%, rgba(110,231,255,.16), transparent 60%),
+    radial-gradient(700px 520px at 80% 20%, rgba(167,139,250,.14), transparent 55%),
+    radial-gradient(900px 700px at 50% 100%, rgba(52,211,153,.10), transparent 58%),
+    var(--bg);
+  color: var(--text);
+  line-height:1.65;
+}
+
+a{color:inherit}
+a:hover{opacity:.92}
+
+.container{max-width: var(--max); margin:0 auto; padding: 22px 18px 70px}
+
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap: 12px;
+  position:sticky; top:0; z-index:10;
+  padding: 16px 18px;
+  backdrop-filter: blur(14px);
+  background: linear-gradient(to bottom, rgba(11,15,20,.82), rgba(11,15,20,.40));
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.brand{
+  display:flex; flex-direction:column; gap:2px;
+  text-decoration:none;
+}
+.brand .title{
+  font-weight: 700;
+  letter-spacing: .02em;
+  font-size: 14px;
+  color: var(--text);
+}
+.brand .sub{
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+.nav{
+  display:flex; gap: 10px; align-items:center;
+  flex-wrap: wrap;
+}
+.nav a{
+  text-decoration:none;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+}
+.nav a[aria-current="page"]{
+  color: var(--text);
+  border-color: rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+}
+
+.hero{
+  margin-top: 26px;
+  padding: 26px 22px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius2);
+  background: linear-gradient(120deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute; inset:-1px;
+  background: radial-gradient(600px 260px at 10% 10%, rgba(110,231,255,.14), transparent 55%),
+              radial-gradient(520px 240px at 90% 20%, rgba(167,139,250,.12), transparent 58%);
+  pointer-events:none;
+}
+.hero > *{position:relative}
+.kicker{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size: 12px; color: var(--muted);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+}
+.dot{
+  width:8px; height:8px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+.h1{
+  margin: 14px 0 8px;
+  font-size: 30px;
+  letter-spacing: .01em;
+  line-height: 1.2;
+}
+.lede{
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 58ch;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+.card{
+  grid-column: span 12;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.05);
+  padding: 16px 16px;
+}
+@media (min-width: 760px){
+  .card.half{grid-column: span 6}
+  .card.third{grid-column: span 4}
+}
+.card h2{
+  margin: 0 0 10px;
+  font-size: 14px;
+  letter-spacing: .02em;
+}
+.meta{
+  display:flex; flex-direction:column; gap:6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.meta b{color: var(--text); font-weight: 650}
+.badge{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size: 12px; color: var(--muted);
+  border: 1px solid rgba(255,255,255,.14);
+  padding: 6px 10px; border-radius: 999px;
+  background: rgba(255,255,255,.04);
+}
+.badge .pill{
+  font-weight: 650; color: var(--text);
+  padding: 3px 8px; border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+.actions{
+  display:flex; gap: 10px; flex-wrap: wrap;
+  margin-top: 12px;
+}
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  text-decoration:none;
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  font-size: 13px;
+}
+.btn.primary{
+  border-color: rgba(110,231,255,.22);
+  background: linear-gradient(90deg, rgba(110,231,255,.18), rgba(167,139,250,.16));
+}
+.btn .icon{
+  width:18px; height:18px; display:inline-block;
+  opacity: .9;
+}
+.small{font-size: 12px; color: var(--muted2)}
+.sep{height:1px; background: rgba(255,255,255,.12); margin: 12px 0}
+
+.table{
+  width:100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: var(--muted);
+}
+.table th, .table td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  vertical-align: top;
+}
+.table th{
+  color: var(--muted2);
+  text-align:left;
+  font-weight: 650;
+}
+.table td b{color: var(--text); font-weight: 650}
+
+.note{
+  border-left: 3px solid rgba(110,231,255,.38);
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.04);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.footer{
+  margin-top: 26px;
+  color: var(--muted2);
+  font-size: 12px;
+  display:flex; justify-content:space-between; gap: 10px; flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.10);
+}
+code.inline{
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.hidden{display:none !important}

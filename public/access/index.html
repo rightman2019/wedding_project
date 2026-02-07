@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#0b0f14" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/config.js"></script>
+  <script src="/script.js" defer></script>
+
+  <title data-wedding-title>{couple} | アクセス</title>
+  <meta name="description" content="会場アクセス（住所・地図リンク・最寄り駅）" />
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="/">
+      <div class="title" data-wedding-couple></div>
+      <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
+    </a>
+    <div class="nav">
+      <a href="/" >トップ</a>
+      <a href="/schedule/" >当日スケジュール</a>
+      <a href="/access/" aria-current="page">アクセス</a>
+      <a href="/faq/" >FAQ</a>
+      <a href="/rsvp/" >出欠回答</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <section class="hero">
+      <div class="kicker"><span class="dot"></span> Access</div>
+      <h1 class="h1">アクセス</h1>
+      <p class="lede">迷ったら地図リンクからご確認ください。</p>
+      <div class="actions">
+        <a class="btn primary" data-wedding-href="venue.mapUrl" href="#"><span class="icon">⌁</span> Googleマップ</a>
+        <a class="btn" data-wedding-href="venue.websiteUrl" href="#"><span class="icon">⤴</span> 公式サイト</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card half">
+        <h2>会場</h2>
+        <div class="meta">
+          <div><b data-wedding-text="venue.name"></b></div>
+          <div data-wedding-text="venue.address"></div>
+          <div class="small">TEL：<span data-wedding-text="venue.phone"></span></div>
+        </div>
+      </div>
+
+      <div class="card half">
+        <h2>最寄り・道順</h2>
+        <div class="meta">
+          <div data-wedding-text="venue.access"></div>
+          <div class="small">具体的なルート案内は会場公式ページのアクセス情報もご参照ください。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>補足</h2>
+        <div class="note">
+          当日、到着が難しい場合は無理せずご連絡ください。<br/>
+          天候や交通事情によっては、余裕をもった移動をおすすめします。
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>© <span data-wedding-couple></span></div>
+      <div><a href="/rsvp/">出欠回答へ</a></div>
+    </footer>
+  </div>
+</body>
+</html>

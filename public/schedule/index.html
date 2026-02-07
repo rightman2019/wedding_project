@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#0b0f14" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/config.js"></script>
+  <script src="/script.js" defer></script>
+
+  <title data-wedding-title>{couple} | 当日スケジュール</title>
+  <meta name="description" content="結婚式当日のタイムラインです。" />
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="/">
+      <div class="title" data-wedding-couple></div>
+      <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
+    </a>
+    <div class="nav">
+      <a href="/" >トップ</a>
+      <a href="/schedule/" aria-current="page">当日スケジュール</a>
+      <a href="/access/" >アクセス</a>
+      <a href="/faq/" >FAQ</a>
+      <a href="/rsvp/" >出欠回答</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <section class="hero">
+      <div class="kicker"><span class="dot"></span> Schedule</div>
+      <h1 class="h1">当日スケジュール</h1>
+      <p class="lede">大まかな流れです。当日の状況により多少前後する場合があります。</p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>タイムライン</h2>
+        <table class="table" aria-label="Schedule table">
+          <thead>
+            <tr><th style="width:120px">時間</th><th>内容</th></tr>
+          </thead>
+          <tbody data-wedding-schedule-body>
+            <!-- config.js の schedule から自動生成 -->
+          </tbody>
+        </table>
+        <div class="small" style="margin-top:10px">編集：<code class="inline">config.js</code> の <code class="inline">schedule</code></div>
+      </div>
+
+      <div class="card half">
+        <h2>受付について</h2>
+        <div class="meta">
+          <div>受付開始：<b data-wedding-text="ceremony.open"></b></div>
+          <div class="small">開始直前は混みやすいので、少し余裕をもってお越しください。</div>
+        </div>
+      </div>
+
+      <div class="card half">
+        <h2>お問い合わせ</h2>
+        <div class="meta">
+          <div>E-mail：<b data-wedding-text="contact.email"></b></div>
+          <div class="small">当日連絡が必要な場合は、事前に共有した連絡手段をご利用ください。</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>© <span data-wedding-couple></span></div>
+      <div><a href="/">トップへ</a></div>
+    </footer>
+  </div>
+</body>
+</html>
