@@ -4,15 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="theme-color" content="#124C3E" />
+  <meta name="theme-color" content="#0b0f14" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="/style.css" />
   <script src="/config.js"></script>
   <script src="/script.js" defer></script>
 
-  <title data-wedding-title>{couple} | 招待状</title>
-  <meta name="description" content="招待状サイトへのリンク" />
+  <title data-wedding-title>{couple} | 出欠回答</title>
+  <meta name="description" content="出欠回答フォーム" />
 </head>
 <body>
   <div class="topbar">
@@ -25,17 +24,17 @@
       <a href="/schedule/" >当日スケジュール</a>
       <a href="/access/" >アクセス</a>
       <a href="/faq/" >FAQ</a>
-      <a href="/rsvp/" aria-current="page">招待状</a>
+      <a href="/rsvp/" aria-current="page">出欠回答</a>
     </div>
   </div>
 
   <div class="container">
     <section class="hero">
-      <div class="kicker"><span class="dot"></span> Invitation</div>
-      <h1 class="h1">招待状</h1>
-      <p class="lede">招待状サイトをご確認ください。<b data-wedding-text="rsvp.deadlineLabel"></b></p>
+      <div class="kicker"><span class="dot"></span> RSVP</div>
+      <h1 class="h1">出欠回答</h1>
+      <p class="lede">下記フォームよりご回答ください。締切：<b data-wedding-text="rsvp.deadlineLabel"></b></p>
       <div class="actions">
-        <a class="btn primary" data-wedding-href="rsvp.url" href="#"><span class="icon">⤴</span> 招待状サイトを開く</a>
+        <a class="btn primary" data-wedding-href="rsvp.url" href="#"><span class="icon">✉</span> 回答フォームを開く</a>
       </div>
       <div class="small" style="margin-top:10px" data-wedding-text="rsvp.note"></div>
     </section>
@@ -50,16 +49,16 @@
       </div>
 
       <div class="card">
-        <h2>開けない場合</h2>
+        <h2>回答できない場合</h2>
         <div class="meta">
-          <div>フォームが開けない場合は、E-mail でもご連絡ください。</div>
+          <div>フォームが開けない場合は、E-mail でも承ります。</div>
           <div>E-mail：<b data-wedding-text="contact.email"></b></div>
         </div>
       </div>
     </section>
 
     <footer class="footer">
-      <div>© <span data-wedding-text="copyright"></span></div>
+      <div>© <span data-wedding-couple></span></div>
       <div><a href="/access/">アクセスへ</a></div>
     </footer>
   </div>

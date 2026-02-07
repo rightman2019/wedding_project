@@ -1,25 +1,18 @@
 /* Wedding site template (static) */
 :root{
-  --cream: #F3E9D6;
-  --green: #124C3E;
-  --orange: #FE7010;
-
-  --bg: var(--cream);
-  --panel: rgba(255,255,255,.72);
-  --panel-2: rgba(255,255,255,.86);
-  --text: rgba(18,76,62,.96);
-  --muted: rgba(18,76,62,.78);
-  --muted2: rgba(18,76,62,.62);
-  --line: rgba(18,76,62,.14);
-
-  --accent: var(--orange);
-  --accent2: var(--green);
-
-  --ok: #0f9d79;
-  --warn: #b45309;
-  --danger: #be123c;
-
-  --shadow: 0 18px 60px rgba(0,0,0,.16);
+  --bg: #0b0f14;
+  --panel: rgba(255,255,255,.06);
+  --panel-2: rgba(255,255,255,.10);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.72);
+  --muted2: rgba(255,255,255,.58);
+  --line: rgba(255,255,255,.14);
+  --accent: #6ee7ff;
+  --accent2: #a78bfa;
+  --ok: #34d399;
+  --warn: #fbbf24;
+  --danger: #fb7185;
+  --shadow: 0 18px 60px rgba(0,0,0,.45);
   --radius: 18px;
   --radius2: 26px;
   --max: 980px;
@@ -31,11 +24,11 @@ body{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
   background:
-    radial-gradient(900px 600px at 18% 12%, rgba(18,76,62,.16), transparent 60%),
-    radial-gradient(900px 620px at 84% 20%, rgba(254,112,16,.16), transparent 62%),
-    radial-gradient(1100px 700px at 50% 110%, rgba(18,76,62,.08), transparent 58%),
+    radial-gradient(900px 600px at 20% 10%, rgba(110,231,255,.16), transparent 60%),
+    radial-gradient(700px 520px at 80% 20%, rgba(167,139,250,.14), transparent 55%),
+    radial-gradient(900px 700px at 50% 100%, rgba(52,211,153,.10), transparent 58%),
     var(--bg);
-color: var(--text);
+  color: var(--text);
   line-height:1.65;
 }
 
@@ -50,8 +43,8 @@ a:hover{opacity:.92}
   position:sticky; top:0; z-index:10;
   padding: 16px 18px;
   backdrop-filter: blur(14px);
-  background: linear-gradient(to bottom, rgba(243,233,214,.90), rgba(243,233,214,.55));
-  border-bottom: 1px solid var(--line);
+  background: linear-gradient(to bottom, rgba(11,15,20,.82), rgba(11,15,20,.40));
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 .brand{
   display:flex; flex-direction:column; gap:2px;
@@ -99,8 +92,8 @@ a:hover{opacity:.92}
 .hero::after{
   content:"";
   position:absolute; inset:-1px;
-  background: radial-gradient(620px 260px at 10% 10%, rgba(18,76,62,.12), transparent 55%),
-              radial-gradient(560px 240px at 90% 20%, rgba(254,112,16,.12), transparent 58%);
+  background: radial-gradient(600px 260px at 10% 10%, rgba(110,231,255,.14), transparent 55%),
+              radial-gradient(520px 240px at 90% 20%, rgba(167,139,250,.12), transparent 58%);
   pointer-events:none;
 }
 .hero > *{position:relative}
@@ -195,7 +188,7 @@ a:hover{opacity:.92}
   opacity: .9;
 }
 .small{font-size: 12px; color: var(--muted2)}
-.sep{height:1px; background: var(--line); margin: 12px 0}
+.sep{height:1px; background: rgba(255,255,255,.12); margin: 12px 0}
 
 .table{
   width:100%;
@@ -240,37 +233,3 @@ code.inline{
 }
 
 .hidden{display:none !important}
-
-
-/* Ribbon (decorative, appears on scroll) */
-.ribbon-wrap{
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 0;
-}
-.ribbon{
-  position: absolute;
-  left: -20vw;
-  top: -180px;
-  width: 140vw;
-  height: 140px;
-
-  background: repeating-linear-gradient(
-    135deg,
-    rgba(18, 76, 62, .92) 0 18px,
-    rgba(243, 233, 214, .92) 18px 34px,
-    rgba(254, 112, 16, .92) 34px 52px
-  );
-
-  transform: translateY(-160px) rotate(-8deg);
-  opacity: 0;
-  transition: opacity 500ms ease;
-  mix-blend-mode: multiply;
-  filter: saturate(1.05);
-}
-body.ribbon-on .ribbon{ opacity: .22; }
-
-/* Ensure content is above ribbon */
-.topbar, .container, main, footer{ position: relative; z-index: 1; }
