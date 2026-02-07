@@ -60,82 +60,6 @@ code.inline{
   opacity:.55;
 }
 
-/* “帯（obi）” ：スクロールで左右から出す */
-.obi{
-  position: fixed;
-  width: 112vw;
-  height: 72px;
-  border-top: calc(var(--line) + 1px) solid var(--stroke);
-  border-bottom: calc(var(--line) + 1px) solid var(--stroke);
-  z-index: 1;
-  pointer-events:none;
-  mix-blend-mode: multiply;
-  opacity: .30;
-  transition: transform 760ms cubic-bezier(.18,.92,.18,1.05);
-  will-change: transform;
-}
-
-.obi.left{
-  left: 0;
-  top: 78px;
-  background: var(--green);
-  transform: translateX(-112%);
-}
-.obi.right{
-  right: 0;
-  top: 168px;
-  background: var(--orange);
-  transform: translateX(112%);
-}
-
-body.obi-on .obi.left{ transform: translateX(0); }
-body.obi-on .obi.right{ transform: translateX(0); }
-
-/* 色の切り替え帯（バウハウス的な面） */
-.obi.left::before, .obi.right::before{
-  content:"";
-  position:absolute;
-  top:0;
-  width: 38%;
-  height: 100%;
-  border-right: calc(var(--line) + 1px) solid var(--stroke);
-}
-.obi.left::before{ left:0; background: var(--orange); }
-.obi.right::before{ right:0; background: var(--green); border-right:none; border-left: calc(var(--line) + 1px) solid var(--stroke); }
-
-/* 和っぽい織り柄（控えめ） */
-.obi.left::after, .obi.right::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    repeating-linear-gradient(90deg, rgba(243,233,214,.22) 0 2px, transparent 2px 10px),
-    repeating-linear-gradient(0deg, rgba(243,233,214,.14) 0 1px, transparent 1px 10px);
-  opacity: .55;
-  mix-blend-mode: overlay;
-}
-
-.obi::before{
-  content:"";
-  position:absolute;
-  left:0; top:0;
-  width: 36%;
-  height:100%;
-  background: var(--orange);
-  border-right: calc(var(--line) + 1px) solid var(--stroke);
-}
-/* 和っぽい細かな織り柄（控えめ） */
-.obi::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    repeating-linear-gradient(90deg, rgba(243,233,214,.22) 0 2px, transparent 2px 10px),
-    repeating-linear-gradient(0deg, rgba(243,233,214,.14) 0 1px, transparent 1px 10px);
-  opacity: .65;
-  mix-blend-mode: overlay;
-}
-
 /* 跳ねる図形 */
 .shapes{ position:absolute; inset:0; }
 .shape{
@@ -179,9 +103,7 @@ body.obi-on .obi.right{ transform: translateX(0); }
   100% { transform: translateY(0) rotate(0deg); }
 }
 
-@media (prefers-reduced-motion: reduce){
-  .obi{ transition:none; }
-  .shape{ animation:none; }
+@media (prefers-reduced-motion: reduce){  .shape{ animation:none; }
 }
 
 .container{
@@ -252,6 +174,9 @@ body.obi-on .obi.right{ transform: translateX(0); }
 .nav a:hover{ opacity: 1; background: rgba(250,244,230,.75); box-shadow: 6px 6px 0 rgba(17,17,17,.08); transform: translate(-1px,-1px); }
 .nav a:active{ transform: translate(0,0); box-shadow: 3px 3px 0 rgba(17,17,17,.08); }
 
+
+.nav a:hover .nav-ico{ transform: translateY(-1px) rotate(-2deg); }
+.nav a[aria-current="page"] .nav-ico{ transform: none; }
 /* Poster-like hero */
 .hero{
   margin-top: 18px;
@@ -378,17 +303,8 @@ body.obi-on .obi.right{ transform: translateX(0); }
   position: relative;
   overflow:hidden;
 }
-.card::before{
-  content:"";
-  position:absolute;
-  left:14px; top:14px;
-  width: 42px; height: 10px;
-  border: var(--line) solid var(--stroke);
-  border-radius: 999px;
-  background: rgba(18,76,62,.12);
-  opacity: .85;
-}
 .card h2{
+
   margin:0 0 10px;
   font-size: 16px;
   letter-spacing: .06em;
@@ -396,6 +312,7 @@ body.obi-on .obi.right{ transform: translateX(0); }
   align-items:center;
   gap: 10px;
 }
+.card h2 .ico{ width:18px; height:18px; }
 .meta{ font-size: 14px; }
 .small{ font-size: 12px; opacity: .86; }
 
@@ -434,6 +351,8 @@ body.obi-on .obi.right{ transform: translateX(0); }
   opacity: .88;
 }
 .nav-ico{
+  transition: transform 160ms ease;
+
   width: 18px;
   height: 18px;
   display:block;
@@ -471,3 +390,30 @@ body.obi-on .obi.right{ transform: translateX(0); }
 
 .menu-preview-link{ display:block; }
 .menu-preview-link:hover img{ transform: translate(-2px,-2px); box-shadow: 14px 14px 0 rgba(17,17,17,.12); }
+
+
+/* Menu page: full PDF view */
+body.page-menu{
+  background: #F0AE2E;
+}
+body.page-menu main{
+  padding: 0;
+}
+body.page-menu .wrap{
+  max-width: none;
+  padding: 0;
+}
+body.page-menu .pdf-toolbar{
+  padding: 14px 14px 10px;
+}
+body.page-menu .pdf-frame{
+  width: 100vw;
+  height: calc(100vh - 160px);
+  border: none;
+  display:block;
+}
+@media (min-width: 860px){
+  body.page-menu .pdf-frame{
+    height: calc(100vh - 140px);
+  }
+}

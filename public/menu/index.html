@@ -11,9 +11,7 @@
   <script defer src="/config.js"></script>
   <script defer src="/script.js"></script>
 </head>
-<body>
-  <div class="obi left" data-obi aria-hidden="true"></div>
-  <div class="obi right" data-obi aria-hidden="true"></div>
+<body class="page-menu no-backdrop">
 
   <div class="topbar">
     <div class="topbar-inner">
@@ -33,43 +31,21 @@
   </div>
 
   <main class="wrap">
-    <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-badge">SPECIAL MENU</div>
-        <h1 class="h1">メニュー</h1>
-        <p class="lead">当日のスペシャルメニューです。<br/>PDFを開くか、プレビュー画像からご覧ください。</p>
+    <div class="pdf-toolbar">
+      <div class="actions">
+        <a class="btn primary" href="/assets/menu/SPECIAL_MENU.pdf" target="_blank" rel="noopener">
+          <img class="ico" src="/assets/icons/external.svg" alt="" aria-hidden="true"> PDFを別タブで開く
+        </a>
+        <a class="btn" href="/assets/menu/SPECIAL_MENU.pdf" download>
+          <img class="ico" src="/assets/icons/menu.svg" alt="" aria-hidden="true"> ダウンロード
+        </a>
       </div>
-    </section>
-
-    <section class="grid">
-      <div class="card">
-        <h2><img class="ico img" src="/assets/icons/isle-of-islay-distillery-map.webp" alt="" aria-hidden="true"><span>SPECIAL MENU</span></h2>
-
-        <div class="actions" style="margin-top:12px">
-          <a class="btn primary" href="/assets/menu/SPECIAL_MENU.pdf" target="_blank" rel="noopener">
-            <img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> PDFを開く
-          </a>
-          <a class="btn" href="/assets/menu/SPECIAL_MENU.pdf" download>
-            <img class="icon" src="/assets/icons/menu.svg" alt="" aria-hidden="true"> ダウンロード
-          </a>
-        </div>
-
-        <div class="menu-preview" style="margin-top:16px">
-          <a href="/assets/menu/SPECIAL_MENU.pdf" target="_blank" rel="noopener" class="menu-preview-link" aria-label="SPECIAL MENU (PDF) を開く">
-            <img src="/assets/menu/SPECIAL_MENU.png" alt="SPECIAL MENU プレビュー" loading="lazy" />
-          </a>
-        </div>
-
-        <div class="small" style="margin-top:12px">
-          ※ブラウザによってはPDFの埋め込み表示ができない場合があります。上のボタンから開いてください。
-        </div>
+      <div class="small" style="margin-top:8px">
+        ※表示倍率はブラウザのPDFビューア側で調整できます（初期表示は100%を指定しています）。
       </div>
-    </section>
+    </div>
 
-    <footer class="footer">
-      <div>© <span data-wedding-text="copyright"></span></div>
-      <div><a class="btn" href="/">トップへ</a></div>
-    </footer>
+    <iframe class="pdf-frame" src="/assets/menu/SPECIAL_MENU.pdf#zoom=100" title="SPECIAL MENU"></iframe>
   </main>
 </body>
 </html>

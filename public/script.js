@@ -102,24 +102,9 @@
       <div class="block orange"></div>
       <div class="block green"></div>
       <div class="block frame"></div>
-      <div class="obi left" data-obi></div>
-      <div class="obi right" data-obi></div>
       <div class="shapes" data-shapes></div>
     `;
     document.body.prepend(backdrop);
-  }
-
-  function setupObi(){
-    const obis = document.querySelectorAll("[data-obi]");
-    if (!obis || obis.length === 0) return;
-
-    const onScroll = () => {
-      const y = window.scrollY || 0;
-      if (y > 12) document.body.classList.add("obi-on");
-      else document.body.classList.remove("obi-on");
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
   }
 
   function setupShapes(){
@@ -154,10 +139,10 @@
   }
 
   document.addEventListener("DOMContentLoaded", function(){
-    setupBackdrop();
+    const useBackdrop = !document.body.classList.contains('no-backdrop');
+    if (useBackdrop) setupBackdrop();
     applyBindings();
     markCurrentNav();
-    setupObi();
-    setupShapes();
+    if (useBackdrop) setupShapes();
   });
 })();
