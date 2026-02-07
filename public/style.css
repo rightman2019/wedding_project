@@ -282,7 +282,10 @@ code.inline{
 }
 .btn.primary{
   background: var(--orange);
+  color: var(--paper);
 }
+.btn.primary .icon{ filter: invert(1); }
+
 .btn:hover{ transform: translate(-2px,-2px); box-shadow: 10px 10px 0 rgba(17,17,17,.12); filter: saturate(1.05); }
 .btn.primary:hover{ filter: brightness(1.05) saturate(1.10); }
 .btn:active{ transform: translate(0,0); box-shadow: 4px 4px 0 rgba(17,17,17,.10); }
@@ -314,6 +317,11 @@ code.inline{
 .card h2 .ico{ width:18px; height:18px; }
 .meta{ font-size: 14px; }
 .small{ font-size: 12px; opacity: .86; }
+
+b[data-wedding-text="dressCode"]{
+  white-space: pre-line;
+  display: inline-block;
+}
 
 @media (min-width: 860px){
   .card.half{ grid-column: span 6; }
@@ -349,6 +357,7 @@ code.inline{
   font-size: 12px;
   opacity: .88;
 }
+.footer [data-wedding-text="copyright"]{ color: var(--orange); font-weight: 800; }
 .nav-ico{
   transition: transform 160ms ease;
 
@@ -393,7 +402,7 @@ code.inline{
 
 /* Menu page: full PDF view */
 body.page-menu{
-  background: #F0AE2E;
+  background: var(--orange);
 }
 body.page-menu main{
   padding: 0;
@@ -449,8 +458,9 @@ body.page-menu .pdf-frame{
 .obi, .obi-left, .obi-right{ display:none !important; }
 
 /* Menu page: blend background with PDF */
-body.menu-page{ background: #F0AE2E; }
+body.menu-page{ background: var(--orange); }
 body.menu-page .container{ max-width:none; padding: 0; }
+.menu-note{ text-align:center; padding: 10px 18px 0; font-size: 14px; opacity: .92; }
 .menu-actions{ display:flex; gap: 12px; flex-wrap:wrap; padding: 14px 18px 12px; justify-content:center; }
 .menu-wrap{ display:flex; justify-content:center; padding: 8px 0 44px; }
 .menu-img{ width: min(1200px, 100vw); height:auto; display:block; }
