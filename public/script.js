@@ -133,33 +133,147 @@
     }
   }
 
+  function setupSplash(){
+    const splash = document.querySelector("[data-splash]");
+    if (!splash) return;
 
-function setupMenuIntro(){
-  const intro = document.querySelector("[data-menu-intro]");
-  if (!intro) return;
+    // Show once per tab session
+    const KEY = "weddingSplashDismissed";
+    try{
+      if (sessionStorage.getItem(KEY) === "1"){
+        splash.remove();
+        return;
+      }
+    }catch(e){}
 
-  const hide = () => {
-    if (intro.classList.contains("is-hidden")) return;
-    intro.classList.add("is-hidden");
-    window.setTimeout(() => { try{ intro.remove(); }catch(e){} }, 260);
-  };
+    const hide = () => {
+      if (splash.classList.contains("is-hidden")) return;
+      splash.classList.add("is-hidden");
+      try{ sessionStorage.setItem(KEY, "1"); }catch(e){}
+      window.setTimeout(() => { try{ splash.remove(); }catch(e){} }, 260);
+    };
 
-  intro.addEventListener("click", hide);
-  intro.addEventListener("touchstart", hide, {passive:true});
-  intro.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " " || e.key === "Escape"){
-      e.preventDefault();
-      hide();
-    }
-  });
-}
+    splash.addEventListener("click", hide);
+    splash.addEventListener("touchstart", hide, {passive:true});
+    splash.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "Escape"){
+        e.preventDefault();
+        hide();
+      }
+    });
+  }
+
+  function setupMenuImageViewer(){
+    const img = document.querySelector("[data-menu-image]");
+    if (!img) return;
+
+    const open = () => {
+      const viewer = document.createElement("div");
+      viewer.className = "viewer";
+      viewer.innerHTML = `
+        <div class="viewer-toolbar">
+          <div class="viewer-title">SPECIAL MENU</div>
+          <button type="button" class="btn viewer-close">閉じる</button>
+        </div>
+        <div class="viewer-stage" aria-label="画像ビューア">
+          <img src="${img.getAttribute("src")}" alt="SPECIAL MENU" />
+        </div>
+        <div class="viewer-hint">ホイールで拡大/縮小、ドラッグで移動（Escで閉じる）</div>
+      `;
+
+      const stage = viewer.querySelector(".viewer-stage");
+      const vimg = viewer.querySelector("img");
+      const closeBtn = viewer.querySelector(".viewer-close");
+
+      let scale = 1;
+      let tx = 0;
+      let ty = 0;
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+
+      const apply = () => {
+        vimg.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+      };
+
+      const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+      const onWheel = (e) => {
+        e.preventDefault();
+        const dir = e.deltaY < 0 ? 1 : -1;
+        const next = clamp(scale * (dir > 0 ? 1.12 : 0.89), 1, 4);
+        scale = next;
+        apply();
+      };
+
+      const onDown = (e) => {
+        dragging = true;
+        stage.setPointerCapture?.(e.pointerId);
+        startX = e.clientX - tx;
+        startY = e.clientY - ty;
+      };
+      const onMove = (e) => {
+        if (!dragging) return;
+        tx = e.clientX - startX;
+        ty = e.clientY - startY;
+        apply();
+      };
+      const onUp = () => { dragging = false; };
+
+      const close = () => {
+        try{ document.body.style.overflow = ""; }catch(e){}
+        try{ viewer.remove(); }catch(e){}
+      };
+
+      closeBtn.addEventListener("click", close);
+      viewer.addEventListener("click", (e) => {
+        if (e.target === viewer) close();
+      });
+      stage.addEventListener("wheel", onWheel, {passive:false});
+      stage.addEventListener("pointerdown", onDown);
+      stage.addEventListener("pointermove", onMove);
+      stage.addEventListener("pointerup", onUp);
+      stage.addEventListener("pointercancel", onUp);
+      viewer.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") close();
+      });
+
+      // double click toggles zoom
+      stage.addEventListener("dblclick", () => {
+        if (scale === 1){
+          scale = 2;
+        } else {
+          scale = 1;
+          tx = 0;
+          ty = 0;
+        }
+        apply();
+      });
+
+      try{ document.body.style.overflow = "hidden"; }catch(e){}
+      document.body.appendChild(viewer);
+      viewer.tabIndex = -1;
+      viewer.focus();
+      apply();
+    };
+
+    img.style.cursor = "zoom-in";
+    img.addEventListener("click", open);
+    img.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        open();
+      }
+    });
+  }
 
   document.addEventListener("DOMContentLoaded", function(){
     const useBackdrop = !document.body.classList.contains('no-backdrop');
     if (useBackdrop) setupBackdrop();
     applyBindings();
     markCurrentNav();
-    setupMenuIntro();
+    setupSplash();
+    setupMenuImageViewer();
     if (useBackdrop) setupShapes();
   });
 })();

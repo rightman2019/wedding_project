@@ -7,7 +7,6 @@
   <meta name="theme-color" content="#124C3E" />
   <link rel="icon" href="/favicon-32.png" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="/style.css" />
   <script src="/config.js"></script>
   <script src="/script.js" defer></script>
@@ -16,6 +15,16 @@
   <meta name="description" content="結婚式のご案内ページです（日時・会場・アクセス・招待状）。" />
 </head>
 <body>
+  <!-- Splash (tap/click to skip) -->
+  <div class="splash" data-splash role="button" tabindex="0" aria-label="タップして開始">
+    <img class="splash-bg" src="/assets/splash.svg" alt="" aria-hidden="true" />
+    <div class="splash-inner">
+      <div class="splash-title">Ukyo &amp; Seina</div>
+      <div class="splash-sub">Official Site</div>
+      <div class="splash-hint">Tap / Click to enter</div>
+    </div>
+  </div>
+
   <div class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="/">
@@ -49,7 +58,7 @@
     </section>
 
     <section class="grid" aria-label="Summary">
-      <div class="card half">
+      <div class="card half lg-third">
         <div class="h2row"><span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span><h2>メニュー</h2></div>
         <div class="meta">新郎が特別にご用意したお酒です（ウイスキー／シェリー）</div>
         <div class="actions" style="margin-top:12px">
@@ -57,7 +66,7 @@
         </div>
       </div>
 
-      <div class="card half">
+      <div class="card half lg-third">
         <h2><img class="ico" src="/assets/icons/calendar.svg" alt="" aria-hidden="true"><span>日時</span></h2>
         <div class="meta">
           <div><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
@@ -66,7 +75,7 @@
         </div>
       </div>
 
-            <div class="card half">
+      <div class="card half lg-third">
         <h2><img class="ico" src="/assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
         <div class="meta">
           <div><b data-wedding-text="dressCode"></b></div>
@@ -74,7 +83,7 @@
         </div>
       </div> 
 
-            <div class="card half">
+      <div class="card half">
         <h2><img class="ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>会場</span></h2>
         <div class="meta">
           <div><b data-wedding-text="venue.name"></b></div>
@@ -85,21 +94,12 @@
             <a class="btn" data-wedding-href="venue.mapUrl" href="#"><img class="icon" src="/assets/icons/pin.svg" alt="" aria-hidden="true"> 地図</a>
           </div>
         </div>
+      </div>
 
-      
-
-      <div class="card third" data-hide-if-empty="gifts">
+      <div class="card half" data-hide-if-empty="gifts">
         <h2><img class="ico" src="/assets/icons/gift.svg" alt="" aria-hidden="true"><span>お祝いについて</span></h2>
         <div class="meta">
           <div data-wedding-text="gifts"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2><img class="ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>お願い</span></h2>
-        <div class="note">
-          本サイトは <b>検索エンジンに出ない設定（noindex）</b> になっています。<br/>
-          URLは招待された方のみに共有してください。
         </div>
       </div>
     </section>
