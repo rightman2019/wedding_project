@@ -133,7 +133,7 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function(){("DOMContentLoaded", function(){
+  document.addEventListener("DOMContentLoaded", function(){
     const useBackdrop = !document.body.classList.contains('no-backdrop');
     if (useBackdrop) setupBackdrop();
     applyBindings();

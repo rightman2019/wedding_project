@@ -286,7 +286,6 @@ code.inline{
 .btn:hover{ transform: translate(-2px,-2px); box-shadow: 10px 10px 0 rgba(17,17,17,.12); filter: saturate(1.05); }
 .btn.primary:hover{ filter: brightness(1.05) saturate(1.10); }
 .btn:active{ transform: translate(0,0); box-shadow: 4px 4px 0 rgba(17,17,17,.10); }
-.btn 
 .grid{
   margin-top: 18px;
   display:grid;
