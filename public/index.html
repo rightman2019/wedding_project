@@ -4,14 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="theme-color" content="#0b0f14" />
+  <meta name="theme-color" content="#124C3E" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="/style.css" />
   <script src="/config.js"></script>
   <script src="/script.js" defer></script>
 
   <title data-wedding-title>{couple} | Wedding</title>
-  <meta name="description" content="結婚式のご案内ページです（日時・会場・アクセス・出欠回答）。" />
+  <meta name="description" content="結婚式のご案内ページです（日時・会場・アクセス・招待状）。" />
 </head>
 <body>
   <div class="topbar">
@@ -24,7 +25,7 @@
       <a href="/schedule/" >当日スケジュール</a>
       <a href="/access/" >アクセス</a>
       <a href="/faq/" >FAQ</a>
-      <a href="/rsvp/" >出欠回答</a>
+      <a href="/rsvp/" >招待状</a>
     </div>
   </div>
 
@@ -38,7 +39,7 @@
       <p class="lede" data-wedding-text="message"></p>
       <div class="actions">
         <a class="btn primary" data-wedding-href="rsvp.url" href="#">
-          <span class="icon">✉</span> 出欠回答
+          <span class="icon">✉</span> 招待状
         </a>
         <a class="btn" data-wedding-href="venue.mapUrl" href="#">
           <span class="icon">⌁</span> 地図を見る
@@ -52,8 +53,9 @@
         <h2>日時</h2>
         <div class="meta">
           <div><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
-          <div>挙式：受付 <b data-wedding-text="ceremony.open"></b> / 開始 <b data-wedding-text="ceremony.start"></b></div>
-          <div>披露宴：開始 <b data-wedding-text="reception.start"></b> / 終了 <b data-wedding-text="reception.end"></b></div>
+          <div>受付：<b data-wedding-text="event.open"></b>〜</div>
+          <div>開宴：<b data-wedding-text="event.start"></b>〜</div>
+          <div class="small" style="margin-top:6px" data-wedding-text="event.note"></div>
         </div>
       </div>
 
@@ -79,7 +81,7 @@
       </div>
 
       <div class="card third">
-        <h2>出欠回答</h2>
+        <h2>招待状</h2>
         <div class="meta">
           <div>締切：<b data-wedding-text="rsvp.deadlineLabel"></b></div>
           <div class="small" data-wedding-text="rsvp.note"></div>
@@ -107,7 +109,7 @@
     </section>
 
     <footer class="footer">
-      <div>© <span data-wedding-couple>Rightman</span></div>
+      <div>© <span data-wedding-text="copyright"></span></div>
       <div>Built for Cloudflare Pages</div>
     </footer>
   </div>

@@ -73,5 +73,34 @@
     }[c]));
   }
 
-  document.addEventListener("DOMContentLoaded", applyBindings);
+  function setupRibbon(){
+    const wrap = document.createElement("div");
+    wrap.className = "ribbon-wrap";
+    wrap.innerHTML = '<div class="ribbon" data-ribbon></div>';
+    document.body.prepend(wrap);
+
+    const ribbon = wrap.querySelector("[data-ribbon]");
+    const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+
+    function onScroll(){
+      const y = window.scrollY || 0;
+
+      if (y > 8) document.body.classList.add("ribbon-on");
+      else document.body.classList.remove("ribbon-on");
+
+      const t = clamp(y / 240, 0, 1);
+      const enter = -160 + 160 * t;      // -160 → 0
+      const drift = y > 240 ? (y - 240) * 0.06 : 0;
+      ribbon.style.transform = `translateY(${enter + drift}px) rotate(-8deg)`;
+    }
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    applyBindings();
+    setupRibbon();
+  });
 })();
