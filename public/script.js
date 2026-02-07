@@ -1,3 +1,70 @@
+
+
+function setupNavAutoCollapse(){
+  const inner = document.querySelector('.topbar-inner');
+  const brand = document.querySelector('.topbar .brand');
+  const nav = document.getElementById('site-nav');
+  if(!inner || !brand || !nav) return;
+
+  const measureNavWidth = () => {
+    // Ensure we can measure even if the nav is currently hidden (collapsed mode).
+    const prev = {
+      display: nav.style.display,
+      visibility: nav.style.visibility,
+      position: nav.style.position,
+      left: nav.style.left,
+      top: nav.style.top
+    };
+    nav.style.display = 'flex';
+    nav.style.visibility = 'hidden';
+    nav.style.position = 'absolute';
+    nav.style.left = '-9999px';
+    nav.style.top = '-9999px';
+    const w = Math.ceil(nav.scrollWidth);
+    nav.style.display = prev.display;
+    nav.style.visibility = prev.visibility;
+    nav.style.position = prev.position;
+    nav.style.left = prev.left;
+    nav.style.top = prev.top;
+    return w;
+  };
+
+  const apply = () => {
+    const alwaysCollapse = window.innerWidth <= 760;
+    const brandW = Math.ceil(brand.scrollWidth);
+    const navW = measureNavWidth();
+    // +16: safe gap allowance between brand and nav
+    const needed = brandW + navW + 16;
+    const available = Math.ceil(inner.clientWidth);
+
+    const shouldCollapse = alwaysCollapse || (needed > available);
+    const wasCollapsed = document.body.classList.contains('nav-collapsed');
+
+    if(shouldCollapse){
+      document.body.classList.add('nav-collapsed');
+    }else{
+      document.body.classList.remove('nav-collapsed');
+      // If we just expanded, close the drawer
+      if(wasCollapsed) document.body.classList.remove('nav-open');
+    }
+  };
+
+  const rafApply = () => requestAnimationFrame(() => requestAnimationFrame(apply));
+  window.addEventListener('resize', rafApply, { passive: true });
+
+  if('ResizeObserver' in window){
+    const ro = new ResizeObserver(rafApply);
+    ro.observe(inner);
+  }
+
+  // Also re-run after fonts are ready (icon fonts / Japanese text width can change).
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(rafApply).catch(() => {});
+  }
+
+  rafApply();
+}
+
 (function(){
   function get(obj, path){
     if (!obj) return "";
@@ -314,6 +381,7 @@
     applyBindings();
     markCurrentNav();
     setupNavToggle();
+  setupNavAutoCollapse();
     setupSplash();
     setupMenuImageViewer();
     if (useBackdrop) setupShapes();
