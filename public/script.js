@@ -133,11 +133,33 @@
     }
   }
 
+
+function setupMenuIntro(){
+  const intro = document.querySelector("[data-menu-intro]");
+  if (!intro) return;
+
+  const hide = () => {
+    if (intro.classList.contains("is-hidden")) return;
+    intro.classList.add("is-hidden");
+    window.setTimeout(() => { try{ intro.remove(); }catch(e){} }, 260);
+  };
+
+  intro.addEventListener("click", hide);
+  intro.addEventListener("touchstart", hide, {passive:true});
+  intro.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " " || e.key === "Escape"){
+      e.preventDefault();
+      hide();
+    }
+  });
+}
+
   document.addEventListener("DOMContentLoaded", function(){
     const useBackdrop = !document.body.classList.contains('no-backdrop');
     if (useBackdrop) setupBackdrop();
     applyBindings();
     markCurrentNav();
+    setupMenuIntro();
     if (useBackdrop) setupShapes();
   });
 })();

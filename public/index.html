@@ -49,7 +49,7 @@
     </section>
 
     <section class="grid" aria-label="Summary">
-      <div class="card">
+      <div class="card half">
         <div class="h2row"><span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span><h2>メニュー</h2></div>
         <div class="meta">新郎が特別にご用意したお酒です（ウイスキー／シェリー）</div>
         <div class="actions" style="margin-top:12px">
@@ -66,7 +66,15 @@
         </div>
       </div>
 
-      <div class="card half">
+            <div class="card half">
+        <h2><img class="ico" src="/assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
+        <div class="meta">
+          <div><b data-wedding-text="dressCode"></b></div>
+          <div class="small">迷ったら「落ち着いた装い」で問題ありません。</div>
+        </div>
+      </div> 
+
+            <div class="card half">
         <h2><img class="ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>会場</span></h2>
         <div class="meta">
           <div><b data-wedding-text="venue.name"></b></div>
@@ -77,15 +85,6 @@
             <a class="btn" data-wedding-href="venue.mapUrl" href="#"><img class="icon" src="/assets/icons/pin.svg" alt="" aria-hidden="true"> 地図</a>
           </div>
         </div>
-      </div>
-
-      <div class="card third">
-        <h2><img class="ico" src="/assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
-        <div class="meta">
-          <div><b data-wedding-text="dressCode"></b></div>
-          <div class="small">迷ったら「落ち着いた装い」で問題ありません。</div>
-        </div>
-      </div>
 
       
 
@@ -106,7 +105,7 @@
     </section>
 
     <footer class="footer">
-      <div>© <span data-wedding-text="copyright"></span></div>
+      <div><span class="copy-mark">©</span> <span data-wedding-text="copyright"></span></div>
       <div>Built for Cloudflare Pages</div>
     </footer>
   </main>
