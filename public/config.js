@@ -39,6 +39,12 @@ window.WEDDING_SITE = {
     url: "https://forms.gle/pNEyc2uor9dgVPmQ8"
   },
 
+
+  // こっそり置いてある暇つぶし
+  links: {
+    tetris: "https://tetris-6r8.pages.dev/"
+  },
+
   // 表示される場合があります（不要なら空文字でOK）
   dressCode: "インフォーマル〜セミフォーマル\n（ダークスーツ／ワンピース等）",
   gifts: "",
@@ -46,7 +52,7 @@ window.WEDDING_SITE = {
   // 連絡先（必要に応じて変更してください）
   contact: {
     name: "髙橋",
-    email: "ukyotakahashi2019@gmail.com"
+    email: "ukyotakahashi2020@gmail.com"
   },
 
   // フッターのコピーライト表記

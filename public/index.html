@@ -63,7 +63,7 @@
     </section>
 
     <section class="grid" aria-label="Summary">
-      <div class="card half">
+      <div class="card third">
         <div class="h2row"><span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span><h2>メニュー</h2></div>
         <div class="meta">新郎が特別にご用意したお酒です（ウイスキー／シェリー）</div>
         <div class="actions" style="margin-top:12px">
@@ -71,15 +71,30 @@
         </div>
       </div>
 
-      <div class="card half date-card">
+      <div class="card third date-card">
         <h2><img class="ico" src="/assets/icons/calendar.svg" alt="" aria-hidden="true"><span>日時</span></h2>
         <div class="meta">
-          <div><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
-          <div>受付：<b data-wedding-text="event.open"></b></div>
-          <div>開宴：<b data-wedding-text="event.start"></b></div>
-          <div>終了予定：<b data-wedding-text="event.end"></b></div>
+          <div class="date-line"><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
+          <div class="kv"><span>受付</span><b data-wedding-text="event.open"></b></div>
+          <div class="kv"><span>開宴</span><b data-wedding-text="event.start"></b></div>
+          <div class="kv"><span>終了予定</span><b data-wedding-text="event.end"></b></div>
+        
         </div>
       </div>
+
+      <div class="card third upload-card">
+        <h2><img class="ico" src="/assets/icons/external.svg" alt="" aria-hidden="true"><span>写真アップロード</span></h2>
+        <div class="meta">
+          <div>当日の写真・動画の共有はこちらから。</div>
+          <div class="small">Googleフォーム（別タブで開きます）</div>
+          <div class="actions" style="margin-top:12px">
+            <a class="btn primary" data-wedding-href="upload.url" href="https://forms.gle/pNEyc2uor9dgVPmQ8" target="_blank" rel="noopener">
+              <img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> アップロード
+            </a>
+          </div>
+        </div>
+      </div>
+
 
       <div class="card half">
         <h2><img class="ico" src="/assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
@@ -111,7 +126,7 @@
     </section>
 
     <footer class="footer">
-      <div><span class="copy-mark">©</span> <span data-wedding-text="copyright"></span></div>
+      <div><span class="copy-mark">©</span> <span data-wedding-text="copyright"></span> <a class="easter-egg" data-wedding-href="links.tetris" href="https://tetris-6r8.pages.dev/" target="_blank" rel="noopener">暇つぶし: テトリス</a></div>
       <div>Built for Cloudflare Pages</div>
     </footer>
   </main>

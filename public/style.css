@@ -523,6 +523,13 @@ body.nav-collapsed.nav-open .nav a.nav-upload{ grid-column: 1 / -1; }
 .date-card .meta b{ font-size: 18px; letter-spacing: .02em; }
 .date-card .meta div{ margin-top: 2px; }
 
+
+
+/* 日時カード：左右揃え＋右余白を少し詰める */
+.date-card{ padding: 22px 14px 22px 20px; }
+.date-card .kv{ display:flex; justify-content:space-between; align-items:baseline; gap: 12px; }
+.date-card .kv span{ opacity: .90; }
+.date-card .kv b{ font-variant-numeric: tabular-nums; }
 b[data-wedding-text="dressCode"]{
   white-space: pre-line;
   display: inline-block;
@@ -572,6 +579,13 @@ b[data-wedding-text="dressCode"]{
 }
 .copy-mark{ color: var(--orange); font-weight: 900; }
 .footer [data-wedding-text="copyright"]{ color: var(--orange); font-weight: 800; }
+
+
+/* こっそりリンク（暇つぶし） */
+.easter-egg{ font-size: 11px; opacity: .55; text-decoration: none; border-bottom: 1px dashed rgba(17,17,17,.35); padding-bottom: 1px; }
+.easter-egg:hover{ opacity: .90; }
+.footer .easter-egg{ margin-left: 10px; }
+.menu-page .easter-egg{ color: rgba(250,244,230,.78); border-bottom-color: rgba(250,244,230,.35); }
 .nav-ico{
   transition: transform 160ms ease;
 
