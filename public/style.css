@@ -674,7 +674,7 @@ body.menu-page .topbar a{ color: var(--paper); }
 body.menu-page .nav-toggle{
   border-color: rgba(250,244,230,.75);
   /* 深緑（サイト内の --green）を“透明度低め”で使って視認性UP */
-  background: rgba(18,76,62,.72);
+  background: rgba(18,76,62,.92);
   color: var(--paper);
   box-shadow: 6px 6px 0 rgba(0,0,0,.20);
 }
@@ -685,7 +685,7 @@ body.menu-page .nav-ico{ filter: brightness(0) invert(1); }
 body.menu-page .container{ max-width:none; padding: 0; }
 
 body.menu-page.nav-collapsed.nav-open .nav{
-  background: rgba(18,76,62,.86);
+  background: rgba(18,76,62,.96);
   border-color: rgba(250,244,230,.55);
   box-shadow: 10px 10px 0 rgba(0,0,0,.22);
 }
@@ -693,7 +693,7 @@ body.menu-page.nav-collapsed.nav-open .nav a{ color: var(--paper); }
 
 @media (max-width: 760px){
   body.menu-page.nav-open .nav{
-    background: rgba(18,76,62,.86);
+    background: rgba(18,76,62,.96);
     border-color: rgba(250,244,230,.55);
     box-shadow: 10px 10px 0 rgba(0,0,0,.22);
   }
