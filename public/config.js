@@ -34,6 +34,11 @@ window.WEDDING_SITE = {
     note: "※詳細・出欠回答は招待状サイトをご確認ください。"
   },
 
+  // 写真/動画アップロード（Googleフォーム）
+  upload: {
+    url: "https://forms.gle/pNEyc2uor9dgVPmQ8"
+  },
+
   // 表示される場合があります（不要なら空文字でOK）
   dressCode: "インフォーマル〜セミフォーマル\n（ダークスーツ／ワンピース等）",
   gifts: "",

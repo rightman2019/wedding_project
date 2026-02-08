@@ -330,6 +330,9 @@ body.nav-open .nav-toggle-icon::after{ top: 0; transform: rotate(-45deg); }
     z-index: 50;
   }
   body.nav-open .nav a{ width: 100%; justify-content:flex-start; }
+
+  /* 「アップロード」は“トップ”の直下に置きたいので、2カラム表示時は全幅で次の行へ */
+  body.nav-open .nav a.nav-upload{ grid-column: 1 / -1; }
 }
 
 /* Auto-collapse nav when it does not fit */
@@ -351,6 +354,9 @@ body.nav-collapsed.nav-open .nav{
   z-index: 50;
 }
 body.nav-collapsed.nav-open .nav a{ width: 100%; justify-content:flex-start; }
+
+/* Auto-collapse（nav-collapsed）時も同様に全幅で配置 */
+body.nav-collapsed.nav-open .nav a.nav-upload{ grid-column: 1 / -1; }
 
 @media (max-width: 520px){
   body.nav-collapsed.nav-open .nav{ grid-template-columns: 1fr; }
