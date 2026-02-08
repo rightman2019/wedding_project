@@ -31,12 +31,12 @@ window.WEDDING_SITE = {
   rsvp: {
     url: "https://ukyo-seina.weddingday.jp",
     deadlineLabel: "招待状サイトをご確認ください",
-    note: "※詳細・出欠回答は招待状サイトをご確認ください。"
+    note: "※詳細は招待状サイトをご確認ください。"
   },
 
-  // 写真/動画アップロード（Googleフォーム）
+  // 写真/動画アップロード（WeddingShare）
   upload: {
-    url: "https://forms.gle/pNEyc2uor9dgVPmQ8"
+    url: "https://www.weddingshare.me/weddings/ahsutpqgvd3fulnh/1wd8mMzBJr93XFJfj4xj8lsqlYczSoa0?openExternalBrowser=1&type=link"
   },
 
 

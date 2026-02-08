@@ -331,7 +331,7 @@ body.nav-open .nav-toggle-icon::after{ top: 0; transform: rotate(-45deg); }
   }
   body.nav-open .nav a{ width: 100%; justify-content:flex-start; }
 
-  /* 「アップロード」は“トップ”の直下に置きたいので、2カラム表示時は全幅で次の行へ */
+  /* 「写真アップロード」は“トップ”の直下に置きたいので、2カラム表示時は全幅で次の行へ */
   body.nav-open .nav a.nav-upload{ grid-column: 1 / -1; }
 }
 
@@ -518,18 +518,24 @@ body.nav-collapsed.nav-open .nav a.nav-upload{ grid-column: 1 / -1; }
 .meta{ font-size: 14px; }
 .small{ font-size: 12px; opacity: .86; }
 
+/* 2行目注釈（括弧など） */
+.meta-sub{ display:block; opacity:.86; margin-top:2px; }
+
 /* 日時カードは情報量が少なめなので、少し大きめに */
 .date-card .meta{ font-size: 16px; }
+.date-card .meta{ line-height: 1.22; }
 .date-card .meta b{ font-size: 18px; letter-spacing: .02em; }
-.date-card .meta div{ margin-top: 2px; }
+.date-card .meta div{ margin-top: 0; }
+.date-card .date-line{ margin-top: 0; margin-bottom: 6px; }
+.date-card .kv{ padding: 2px 0; }
 
 
 
 /* 日時カード：左右揃え＋右余白を少し詰める */
-.date-card{ padding: 22px 14px 22px 20px; }
+.date-card{ padding: 22px 10px 22px 20px; }
 .date-card .kv{ display:flex; justify-content:space-between; align-items:baseline; gap: 12px; }
-.date-card .kv span{ opacity: .90; }
-.date-card .kv b{ font-variant-numeric: tabular-nums; }
+.date-card .kv span{ opacity: .95; font-weight: 600; }
+.date-card .kv b{ font-variant-numeric: tabular-nums; font-weight: 800; }
 b[data-wedding-text="dressCode"]{
   white-space: pre-line;
   display: inline-block;
