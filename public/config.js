@@ -15,7 +15,7 @@ window.WEDDING_SITE = {
   event: {
     open: "16:15",
     start: "16:45",
-    end: "17:00",
+    end: "19:00",
     note: "※挙式は親族のみで執り行います。予めご了承ください。"
   },
 
