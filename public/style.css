@@ -35,7 +35,16 @@ body{
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  /* short fade-in on first paint */
+  opacity: 0;
   transition: opacity .22s ease;
+  animation: splashIn .22s ease forwards;
+  will-change: opacity;
+}
+
+@keyframes splashIn{
+  from{ opacity: 0; }
+  to{ opacity: 1; }
 }
 .splash-bg{
   position: absolute;
@@ -98,9 +107,15 @@ body{
   border-radius: 999px;
   box-shadow: 0 0 0 2px rgba(250,244,230,.20);
 }
+.splash.is-hiding{
+  opacity: 0;
+  animation: none;
+}
+
+/* backward-compatible alias (older JS used is-hidden) */
 .splash.is-hidden{
   opacity: 0;
-  pointer-events: none;
+  animation: none;
 }
 
 a{ color: inherit; text-decoration: none; }
@@ -330,9 +345,6 @@ body.nav-open .nav-toggle-icon::after{ top: 0; transform: rotate(-45deg); }
     z-index: 50;
   }
   body.nav-open .nav a{ width: 100%; justify-content:flex-start; }
-
-  /* 「写真アップロード」は“トップ”の直下に置きたいので、2カラム表示時は全幅で次の行へ */
-  body.nav-open .nav a.nav-upload{ grid-column: 1 / -1; }
 }
 
 /* Auto-collapse nav when it does not fit */
@@ -354,9 +366,6 @@ body.nav-collapsed.nav-open .nav{
   z-index: 50;
 }
 body.nav-collapsed.nav-open .nav a{ width: 100%; justify-content:flex-start; }
-
-/* Auto-collapse（nav-collapsed）時も同様に全幅で配置 */
-body.nav-collapsed.nav-open .nav a.nav-upload{ grid-column: 1 / -1; }
 
 @media (max-width: 520px){
   body.nav-collapsed.nav-open .nav{ grid-template-columns: 1fr; }
@@ -518,24 +527,11 @@ body.nav-collapsed.nav-open .nav a.nav-upload{ grid-column: 1 / -1; }
 .meta{ font-size: 14px; }
 .small{ font-size: 12px; opacity: .86; }
 
-/* 2行目注釈（括弧など） */
-.meta-sub{ display:block; opacity:.86; margin-top:2px; }
-
 /* 日時カードは情報量が少なめなので、少し大きめに */
 .date-card .meta{ font-size: 16px; }
-.date-card .meta{ line-height: 1.22; }
 .date-card .meta b{ font-size: 18px; letter-spacing: .02em; }
-.date-card .meta div{ margin-top: 0; }
-.date-card .date-line{ margin-top: 0; margin-bottom: 6px; }
-.date-card .kv{ padding: 2px 0; }
+.date-card .meta div{ margin-top: 2px; }
 
-
-
-/* 日時カード：左右揃え＋右余白を少し詰める */
-.date-card{ padding: 22px 10px 22px 20px; }
-.date-card .kv{ display:flex; justify-content:space-between; align-items:baseline; gap: 12px; }
-.date-card .kv span{ opacity: .95; font-weight: 600; }
-.date-card .kv b{ font-variant-numeric: tabular-nums; font-weight: 800; }
 b[data-wedding-text="dressCode"]{
   white-space: pre-line;
   display: inline-block;
@@ -585,13 +581,6 @@ b[data-wedding-text="dressCode"]{
 }
 .copy-mark{ color: var(--orange); font-weight: 900; }
 .footer [data-wedding-text="copyright"]{ color: var(--orange); font-weight: 800; }
-
-
-/* こっそりリンク（暇つぶし） */
-.easter-egg{ font-size: 11px; opacity: .55; text-decoration: none; border-bottom: 1px dashed rgba(17,17,17,.35); padding-bottom: 1px; }
-.easter-egg:hover{ opacity: .90; }
-.footer .easter-egg{ margin-left: 10px; }
-.menu-page .easter-egg{ color: rgba(250,244,230,.78); border-bottom-color: rgba(250,244,230,.35); }
 .nav-ico{
   transition: transform 160ms ease;
 
@@ -699,8 +688,7 @@ body.menu-page .topbar,
 body.menu-page .topbar a{ color: var(--paper); }
 body.menu-page .nav-toggle{
   border-color: rgba(250,244,230,.75);
-  /* 深緑（サイト内の --green）を“透明度低め”で使って視認性UP */
-  background: rgba(18,76,62,.92);
+  background: rgba(0,0,0,.14);
   color: var(--paper);
   box-shadow: 6px 6px 0 rgba(0,0,0,.20);
 }
@@ -711,7 +699,7 @@ body.menu-page .nav-ico{ filter: brightness(0) invert(1); }
 body.menu-page .container{ max-width:none; padding: 0; }
 
 body.menu-page.nav-collapsed.nav-open .nav{
-  background: rgba(18,76,62,.96);
+  background: rgba(0,0,0,.22);
   border-color: rgba(250,244,230,.55);
   box-shadow: 10px 10px 0 rgba(0,0,0,.22);
 }
@@ -719,7 +707,7 @@ body.menu-page.nav-collapsed.nav-open .nav a{ color: var(--paper); }
 
 @media (max-width: 760px){
   body.menu-page.nav-open .nav{
-    background: rgba(18,76,62,.96);
+    background: rgba(0,0,0,.22);
     border-color: rgba(250,244,230,.55);
     box-shadow: 10px 10px 0 rgba(0,0,0,.22);
   }

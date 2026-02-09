@@ -254,19 +254,57 @@ function setupNavAutoCollapse(){
       }
     }catch(e){}
 
-    const hide = () => {
-      if (splash.classList.contains("is-hidden")) return;
-      splash.classList.add("is-hidden");
+    let hiding = false;
+
+    const hide = (e) => {
+      if (hiding) return;
+      hiding = true;
+
+      // Prevent "tap-through" (a late click hitting links behind the splash).
+      // Keep the (now transparent) splash on top slightly longer than the fade.
+      try{
+        if (e){
+          e.preventDefault?.();
+          e.stopPropagation?.();
+        }
+      }catch(_e){}
+
+      const HOLD_MS = 110; // ~0.1s pause after tap
+      const FADE_MS = 220; // should match CSS transition
+      const REMOVE_MS = HOLD_MS + FADE_MS + 40;
+
+      // Block any stray clicks globally during the dismissal window.
+      const blockUntil = performance.now() + REMOVE_MS;
+      const blocker = (ev) => {
+        if (performance.now() < blockUntil){
+          try{ ev.preventDefault?.(); }catch(_e){}
+          try{ ev.stopPropagation?.(); }catch(_e){}
+        }
+      };
+      document.addEventListener('click', blocker, true);
+      document.addEventListener('pointerup', blocker, true);
+
       try{ sessionStorage.setItem(KEY, "1"); }catch(e){}
-      window.setTimeout(() => { try{ splash.remove(); }catch(e){} }, 260);
+
+      window.setTimeout(() => {
+        splash.classList.add("is-hiding");
+      }, HOLD_MS);
+
+      window.setTimeout(() => {
+        document.removeEventListener('click', blocker, true);
+        document.removeEventListener('pointerup', blocker, true);
+        try{ splash.remove(); }catch(e){}
+      }, REMOVE_MS);
     };
 
-    splash.addEventListener("click", hide);
-    splash.addEventListener("touchstart", hide, {passive:true});
+    // pointerdown catches both mouse and touch reliably.
+    splash.addEventListener("pointerdown", hide, {passive:false});
+    // capture click as a safety net (some browsers still fire a delayed click)
+    splash.addEventListener("click", hide, true);
     splash.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " " || e.key === "Escape"){
         e.preventDefault();
-        hide();
+        hide(e);
       }
     });
   }

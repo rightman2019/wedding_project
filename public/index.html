@@ -36,7 +36,6 @@
       </button>
       <nav class="nav" id="site-nav" aria-label="Site">
         <a href="/"><img class="nav-ico" src="/assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
-        <a class="nav-upload" data-wedding-href="upload.url" href="https://www.weddingshare.me/weddings/ahsutpqgvd3fulnh/1wd8mMzBJr93XFJfj4xj8lsqlYczSoa0?openExternalBrowser=1&type=link" target="_blank" rel="noopener"><img class="nav-ico" src="/assets/icons/external.svg" alt="" aria-hidden="true"><span>写真アップロード</span></a>
         <a href="/schedule/"><img class="nav-ico" src="/assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
         <a href="/access/"><img class="nav-ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
         <a href="/faq/"><img class="nav-ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>FAQ</span></a>
@@ -57,44 +56,28 @@
       <div class="actions">
         <a class="btn primary" data-wedding-href="rsvp.url" href="#"><span class="h2icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span> 招待状</a>
         <a class="btn" data-wedding-href="venue.mapUrl" href="#"><span class="h2icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-4.7 7-11a7 7 0 0 0-14 0c0 6.3 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span> 地図を見る</a>
-        <a class="btn" data-wedding-href="upload.url" href="https://www.weddingshare.me/weddings/ahsutpqgvd3fulnh/1wd8mMzBJr93XFJfj4xj8lsqlYczSoa0?openExternalBrowser=1&type=link" target="_blank" rel="noopener" title="写真アップロード（WeddingShare）"><span class="h2icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M4 17v3h16v-3"/></svg></span> 写真アップロード</a>
       </div>
       <div class="small" style="margin-top:12px" data-wedding-text="event.note"></div>
     </section>
 
     <section class="grid" aria-label="Summary">
-      <div class="card third date-card">
-        <h2><img class="ico" src="/assets/icons/calendar.svg" alt="" aria-hidden="true"><span>日時</span></h2>
-        <div class="meta">
-          <div class="date-line"><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
-          <div class="kv"><span>受付</span><b data-wedding-text="event.open"></b></div>
-          <div class="kv"><span>開宴</span><b data-wedding-text="event.start"></b></div>
-          <div class="kv"><span>終了予定</span><b data-wedding-text="event.end"></b></div>
-        
-        </div>
-      </div>
-
-      <div class="card third">
+      <div class="card half">
         <div class="h2row"><span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span><h2>メニュー</h2></div>
-        <div class="meta">新郎が特別にご用意したお酒です<br><span class="meta-sub">（ウイスキー／シェリー）</span></div>
+        <div class="meta">新郎が特別にご用意したお酒です（ウイスキー／シェリー）</div>
         <div class="actions" style="margin-top:12px">
           <a class="btn" href="/menu/"><span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span> メニューを見る</a>
         </div>
       </div>
 
-      <div class="card third upload-card">
-        <h2><img class="ico" src="/assets/icons/external.svg" alt="" aria-hidden="true"><span>写真アップロード</span></h2>
+      <div class="card half date-card">
+        <h2><img class="ico" src="/assets/icons/calendar.svg" alt="" aria-hidden="true"><span>日時</span></h2>
         <div class="meta">
-          <div>当日の写真・動画の共有はこちらから。</div>
-          <div class="small">WeddingShare（別タブで開きます）</div>
-          <div class="actions" style="margin-top:12px">
-            <a class="btn primary" data-wedding-href="upload.url" href="https://www.weddingshare.me/weddings/ahsutpqgvd3fulnh/1wd8mMzBJr93XFJfj4xj8lsqlYczSoa0?openExternalBrowser=1&type=link" target="_blank" rel="noopener">
-              <img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> 写真アップロード
-            </a>
-          </div>
+          <div><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
+          <div>受付：<b data-wedding-text="event.open"></b></div>
+          <div>開宴：<b data-wedding-text="event.start"></b></div>
+          <div>終了予定：<b data-wedding-text="event.end"></b></div>
         </div>
       </div>
-
 
       <div class="card half">
         <h2><img class="ico" src="/assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
@@ -121,27 +104,6 @@
         <h2><img class="ico" src="/assets/icons/gift.svg" alt="" aria-hidden="true"><span>お祝いについて</span></h2>
         <div class="meta">
           <div data-wedding-text="gifts"></div>
-        </div>
-      </div>
-
-      <div class="card half fun-card">
-        <h2>
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M7 7h10v10H7z"/>
-            <path d="M17 7l3 3"/>
-            <path d="M7 17l-3-3"/>
-          </svg>
-          <span>暇つぶし</span>
-        </h2>
-        <div class="meta">
-          <div>お暇なときにどうぞ（スマホ版対応）</div>
-          <div class="small">※別タブで開きます</div>
-          <div class="small">※音量注意</div>
-          <div class="actions" style="margin-top:12px">
-            <a class="btn" data-wedding-href="links.tetris" href="#" target="_blank" rel="noopener">
-              <img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> テトリスで遊ぶ
-            </a>
-          </div>
         </div>
       </div>
     </section>
