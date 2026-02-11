@@ -140,31 +140,7 @@ function setupNavAutoCollapse(){
       }).join("");
     }
 
-    
-    // Seat map (round table: 6 seats)
-    const seatmapHost = document.querySelector("[data-wedding-seatmap]");
-    if (seatmapHost){
-      const seating = data.seating || {};
-      const seats = Array.isArray(seating.seats) ? seating.seats : [];
-      const label = escapeHtml(seating.tableLabel || "TABLE");
-      const items = Array.from({length: 6}).map((_, i) => {
-        const raw = (seats[i] ?? "").toString();
-        const name = escapeHtml(raw);
-        const isEmpty = !raw.trim();
-        const text = isEmpty ? "（未設定）" : name;
-        return `<div class="seat seat-${i+1}${isEmpty ? " is-empty" : ""}" role="listitem">${text}</div>`;
-      }).join("");
-      seatmapHost.innerHTML = `
-        <div class="seatmap">
-          <div class="round-table" role="list" aria-label="席次表（${label}）">
-            <div class="table-center">${label}</div>
-            ${items}
-          </div>
-        </div>
-      `;
-    }
-
-const titleEl = document.querySelector("title[data-wedding-title]");
+    const titleEl = document.querySelector("title[data-wedding-title]");
     if (titleEl && coupleLabel){
       titleEl.textContent = titleEl.textContent.replace("{couple}", coupleLabel);
     }
@@ -278,59 +254,260 @@ const titleEl = document.querySelector("title[data-wedding-title]");
       }
     }catch(e){}
 
-    let hiding = false;
+    // Tap-through prevention: keep a tiny hold before starting fade-out.
+    const HOLD_MS = 110;
+    const REMOVE_MS = 420;
+    let busy = false;
 
-    const hide = (e) => {
-      if (hiding) return;
-      hiding = true;
-
-      // Prevent "tap-through" (a late click hitting links behind the splash).
-      // Keep the (now transparent) splash on top slightly longer than the fade.
-      try{
-        if (e){
-          e.preventDefault?.();
-          e.stopPropagation?.();
-        }
-      }catch(_e){}
-
-      const HOLD_MS = 110; // ~0.1s pause after tap
-      const FADE_MS = 220; // should match CSS transition
-      const REMOVE_MS = HOLD_MS + FADE_MS + 40;
-
-      // Block any stray clicks globally during the dismissal window.
-      const blockUntil = performance.now() + REMOVE_MS;
-      const blocker = (ev) => {
-        if (performance.now() < blockUntil){
-          try{ ev.preventDefault?.(); }catch(_e){}
-          try{ ev.stopPropagation?.(); }catch(_e){}
-        }
-      };
-      document.addEventListener('click', blocker, true);
-      document.addEventListener('pointerup', blocker, true);
-
-      try{ sessionStorage.setItem(KEY, "1"); }catch(e){}
-
+    const requestHide = (e) => {
+      if (busy) return;
+      busy = true;
+      if (e){
+        try{ e.preventDefault(); }catch(_){}
+        try{ e.stopPropagation(); }catch(_){}
+      }
       window.setTimeout(() => {
-        splash.classList.add("is-hiding");
+        if (splash.classList.contains("is-hidden")) return;
+        splash.classList.add("is-hidden");
+        try{ sessionStorage.setItem(KEY, "1"); }catch(e){}
+        window.setTimeout(() => { try{ splash.remove(); }catch(e){} }, REMOVE_MS);
       }, HOLD_MS);
-
-      window.setTimeout(() => {
-        document.removeEventListener('click', blocker, true);
-        document.removeEventListener('pointerup', blocker, true);
-        try{ splash.remove(); }catch(e){}
-      }, REMOVE_MS);
     };
 
-    // pointerdown catches both mouse and touch reliably.
-    splash.addEventListener("pointerdown", hide, {passive:false});
-    // capture click as a safety net (some browsers still fire a delayed click)
-    splash.addEventListener("click", hide, true);
+    splash.addEventListener("pointerdown", requestHide);
+    splash.addEventListener("click", requestHide);
+    splash.addEventListener("touchstart", requestHide, {passive:false});
     splash.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " " || e.key === "Escape"){
         e.preventDefault();
-        hide(e);
+        requestHide(e);
       }
     });
+  }
+
+  function setupSeatingPage(){
+    const root = document.querySelector('[data-seating-root]');
+    if (!root) return;
+
+    const data = (window.WEDDING_SITE || {}).seating || {};
+    const tables = data.tables || {};
+
+    const normalize = (s) => (String(s || '').normalize('NFKC')).trim();
+    const nonEmpty = (s) => normalize(s).length > 0;
+
+    const tableKeys = Object.keys(tables);
+    const visibleKeys = tableKeys.filter(k => {
+      const t = tables[k] || {};
+      const seats = Array.isArray(t.seats) ? t.seats : [];
+      return seats.some(nonEmpty);
+    });
+
+    // --- layout ---
+    const modeBtns = root.querySelectorAll('[data-mode-btn]');
+    const modePanels = root.querySelectorAll('[data-mode-panel]');
+    const setMode = (mode) => {
+      modeBtns.forEach(b => b.classList.toggle('is-active', b.getAttribute('data-mode-btn') === mode));
+      modePanels.forEach(p => p.classList.toggle('is-active', p.getAttribute('data-mode-panel') === mode));
+    };
+    modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.getAttribute('data-mode-btn'))));
+
+    // --- categories / sections ---
+    const categories = Array.isArray(data.categories) ? data.categories : [];
+    const assigned = new Set();
+    for (const c of categories){
+      for (const k of (c.tables || [])) assigned.add(String(k));
+    }
+    const otherTables = visibleKeys.filter(k => !assigned.has(String(k)));
+    const finalCats = [...categories];
+    if (otherTables.length){
+      finalCats.push({ id: 'other', label: 'その他', tables: otherTables });
+    }
+
+    const chips = root.querySelector('[data-seating-chips]');
+    const sections = root.querySelector('[data-seating-sections]');
+    if (chips && sections){
+      chips.innerHTML = finalCats.map((c, idx) => {
+        const id = escapeHtml(String(c.id || ('cat' + idx)));
+        const label = escapeHtml(String(c.label || 'カテゴリ'));
+        return `<button type="button" class="chip${idx===0?' is-active':''}" data-chip="${id}">${label}</button>`;
+      }).join('');
+
+      sections.innerHTML = finalCats.map((c, idx) => {
+        const id = String(c.id || ('cat' + idx));
+        const label = escapeHtml(String(c.label || 'カテゴリ'));
+        const keys = (c.tables || []).map(String).filter(k => visibleKeys.includes(k));
+        const cards = keys.map(k => renderTableCard(k)).join('');
+        return `<div class="seat-section" id="${escapeHtml(id)}"><h3>${label}</h3>${cards || '<div class="small">（該当する卓がありません）</div>'}</div>`;
+      }).join('');
+
+      chips.querySelectorAll('[data-chip]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-chip');
+          setMode('overview');
+          chips.querySelectorAll('[data-chip]').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+        });
+      });
+    }
+
+    // --- overview map ---
+    const overview = root.querySelector('[data-seating-overview]');
+    if (overview){
+      overview.classList.add('layout-abcxdfe');
+      const headLabel = escapeHtml(String(data.headTableLabel || ''));
+      overview.innerHTML = `
+        <div class="overview-head">${headLabel || ' '}</div>
+        ${['A','B','C','X','D','F','E'].filter(k => visibleKeys.includes(k)).map(k => {
+          const t = tables[k] || {};
+          const label = escapeHtml(String(t.label || ('TABLE ' + k)));
+          const sample = (Array.isArray(t.seats) ? t.seats : []).map(normalize).filter(Boolean).slice(0,2);
+          const sampleTxt = sample.length ? escapeHtml(sample.join(' / ')) : '';
+          return `<button type="button" class="overview-node" data-table="${k}" aria-label="${label}">
+            <div class="node-key">${escapeHtml(k)}</div>
+            <div class="node-label">${label}</div>
+            ${sampleTxt ? `<div class="node-sample">${sampleTxt}</div>` : ''}
+          </button>`;
+        }).join('')}
+      `;
+
+      overview.querySelectorAll('[data-table]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-table');
+          const card = root.querySelector(`[data-table-card="${CSS.escape(key)}"]`);
+          if (card){
+            setMode('overview');
+            card.scrollIntoView({ behavior:'smooth', block:'start' });
+            flashCard(card);
+          }
+        });
+      });
+    }
+
+    // --- find ---
+    const input = root.querySelector('[data-seat-find]');
+    const results = root.querySelector('[data-seat-results]');
+    const allSeats = buildSeatIndex();
+
+    const renderResults = (qRaw) => {
+      if (!results) return;
+      const q = normalize(qRaw).toLowerCase();
+      if (!q){
+        results.innerHTML = `<div class="result-empty">お名前を入力すると検索できます</div>`;
+        return;
+      }
+      const hits = allSeats.filter(it => it.nameNorm.toLowerCase().includes(q)).slice(0, 40);
+      if (!hits.length){
+        results.innerHTML = `<div class="result-empty">見つかりませんでした（表記ゆれがある場合は短く入力してみてください）</div>`;
+        return;
+      }
+      results.innerHTML = `<div class="result-list">${hits.map(h => {
+        const name = escapeHtml(h.name);
+        const meta = escapeHtml(`${h.tableLabel} / 席${h.pos}`);
+        return `<button type="button" class="result-item" data-hit="${escapeHtml(h.id)}">
+          <div class="result-name">${name}</div>
+          <div class="result-meta">${meta}</div>
+          <div class="result-cta">見る</div>
+        </button>`;
+      }).join('')}</div>`;
+
+      results.querySelectorAll('[data-hit]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-hit');
+          const hit = allSeats.find(x => x.id === id);
+          if (!hit) return;
+          setMode('overview');
+          const card = root.querySelector(`[data-table-card="${CSS.escape(hit.tableKey)}"]`);
+          if (card){
+            card.scrollIntoView({ behavior:'smooth', block:'start' });
+            flashCard(card);
+            const seatEl = card.querySelector(`[data-seat-id="${CSS.escape(hit.id)}"]`);
+            if (seatEl){
+              focusSeat(seatEl);
+            }
+          }
+        });
+      });
+    };
+
+    if (input){
+      input.addEventListener('input', () => renderResults(input.value));
+      renderResults('');
+    }
+
+    // --- helpers ---
+    function buildSeatIndex(){
+      const idx = [];
+      for (const k of visibleKeys){
+        const t = tables[k] || {};
+        const label = String(t.label || ('TABLE ' + k));
+        const seats = Array.isArray(t.seats) ? t.seats : [];
+        const clean = seats.map(normalize);
+        clean.forEach((name, i) => {
+          if (!name) return;
+          const pos = i + 1;
+          const id = `${k}:${pos}`;
+          idx.push({ id, tableKey: k, tableLabel: label, pos, name, nameNorm: name });
+        });
+      }
+      return idx;
+    }
+
+    function renderTableCard(key){
+      const t = tables[key] || {};
+      const label = escapeHtml(String(t.label || ('TABLE ' + key)));
+      const seats = Array.isArray(t.seats) ? t.seats : [];
+      const seatEls = renderSeats(key, label, seats);
+      return `
+        <div class="card seat-card" data-table-card="${escapeHtml(key)}">
+          <div class="h2row"><span class="h2icon"><img class="ico" src="/assets/icons/seating.svg" alt="" aria-hidden="true"></span><h2>${label}</h2></div>
+          <div class="round-table" aria-label="${label}">
+            <div class="table-core">${escapeHtml(key)}</div>
+            ${seatEls}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSeats(tableKey, tableLabel, seatsRaw){
+      const seats = seatsRaw.map(normalize).filter((_,i)=> i < 8);
+      const n = Math.max(1, Math.min(8, seats.length));
+      const angles = seatAngles(seats.length);
+      const r = 44;
+      return seats.map((name, i) => {
+        const a = angles[i] ?? (-90 + (360 / seats.length) * i);
+        const rad = (a * Math.PI) / 180;
+        const x = Math.cos(rad) * r;
+        const y = Math.sin(rad) * r;
+        const pos = i + 1;
+        const id = `${tableKey}:${pos}`;
+        const cls = name ? '' : ' is-empty';
+        return `<div class="seat${cls}" style="--x:${x.toFixed(2)};--y:${y.toFixed(2)}" data-seat-id="${escapeHtml(id)}">${escapeHtml(name)}</div>`;
+      }).join('');
+    }
+
+    function seatAngles(count){
+      if (count <= 6){
+        // 6席：左右（0/180）を省いてバランス重視
+        return [-90,-30,30,90,150,-150].slice(0, count);
+      }
+      if (count === 8){
+        return [-90,-45,0,45,90,135,180,-135];
+      }
+      // 7席などは均等配置
+      const step = 360 / Math.max(1, count);
+      return Array.from({length: count}, (_, i) => -90 + step * i);
+    }
+
+    function flashCard(card){
+      card.classList.add('is-flash');
+      window.setTimeout(() => card.classList.remove('is-flash'), 1200);
+    }
+    function focusSeat(seatEl){
+      seatEl.classList.add('is-focus');
+      window.setTimeout(() => seatEl.classList.remove('is-focus'), 1400);
+    }
   }
 
   function setupMenuImageViewer(){
@@ -445,6 +622,7 @@ const titleEl = document.querySelector("title[data-wedding-title]");
     setupNavToggle();
   setupNavAutoCollapse();
     setupSplash();
+    setupSeatingPage();
     setupMenuImageViewer();
     if (useBackdrop) setupShapes();
   });

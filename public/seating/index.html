@@ -8,31 +8,28 @@
   <link rel="icon" href="/favicon-32.png" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="/style.css" />
-  <script src="/config.js" defer></script>
+  <script src="/config.js"></script>
   <script src="/script.js" defer></script>
-  <title data-wedding-title>席次表 | {couple}</title>
+
+  <title data-wedding-title>{couple} | Seating</title>
 </head>
 <body>
   <div class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="/" aria-label="Home">
-        <span class="mark" aria-hidden="true">W</span>
-        <span class="brand-text" data-wedding-couple></span>
+      <a class="brand" href="/">
+        <div class="title" data-wedding-couple></div>
+        <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
       </a>
-
-      <button class="menu-btn" type="button" id="menu-toggle" aria-expanded="false" aria-controls="site-nav">
-        <img src="/assets/icons/menu.svg" alt="" aria-hidden="true">
-        <span class="sr-only">メニュー</span>
+      <button class="nav-toggle" type="button" aria-label="メニュー" aria-controls="site-nav" aria-expanded="false">
+        <span class="nav-toggle-icon" aria-hidden="true"></span>
       </button>
-
       <nav class="nav" id="site-nav" aria-label="Site">
         <a href="/"><img class="nav-ico" src="/assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
         <a href="/schedule/"><img class="nav-ico" src="/assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
+        <a href="/seating/"><img class="nav-ico" src="/assets/icons/seating.svg" alt="" aria-hidden="true"><span>席次表</span></a>
         <a href="/access/"><img class="nav-ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
-        <a href="/seating/"><img class="nav-ico" src="/assets/icons/table.svg" alt="" aria-hidden="true"><span>席次表</span></a>
         <a href="/faq/"><img class="nav-ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>FAQ</span></a>
         <a href="/menu/"><img class="nav-ico img" src="/assets/icons/isle-of-islay-distillery-map.png" alt="" aria-hidden="true"><span>メニュー</span></a>
-        <a href="https://tetris-6r8.pages.dev/" target="_blank" rel="noopener"><img class="nav-ico" src="/assets/icons/external.svg" alt="" aria-hidden="true"><span>テトリス</span></a>
         <a href="/rsvp/"><img class="nav-ico" src="/assets/icons/invite.svg" alt="" aria-hidden="true"><span>招待状</span></a>
       </nav>
     </div>
@@ -42,15 +39,39 @@
     <section class="hero">
       <div class="kicker"><span class="dot"></span> Seating</div>
       <h1 class="h1">席次表</h1>
-      <p class="lede">丸テーブル（6席）</p>
-      <p class="small" data-wedding-text="seating.note"></p>
+      <p class="lede">全体配置と、お名前検索（自分の席）をご用意しました。</p>
+      <div class="small" data-wedding-text="seating.note"></div>
     </section>
 
     <section class="grid">
-      <div class="card">
-        <h2><img class="ico" src="/assets/icons/table.svg" alt="" aria-hidden="true"><span data-wedding-text="seating.tableLabel"></span></h2>
-        <div data-wedding-seatmap></div>
-        <div class="small" style="margin-top:10px; opacity:.85">※氏名の表示は設定ファイル（config.js）の席次表セクションを編集するだけで更新できます。</div>
+      <div class="card" data-seating-root>
+        <div class="seating-nav">
+          <div class="chips" data-seating-chips></div>
+        </div>
+
+        <div class="mode-toggle" aria-label="表示切替">
+          <button class="mode-btn is-active" type="button" data-mode-btn="overview">全体を見る</button>
+          <button class="mode-btn" type="button" data-mode-btn="find">自分の席を見る</button>
+        </div>
+
+        <div class="mode-panels">
+          <div class="mode-panel is-active" data-mode-panel="overview">
+            <div class="small" style="margin-top:10px">卓をタップすると詳細にジャンプします。</div>
+            <div class="overview-grid" data-seating-overview></div>
+            <div data-seating-sections></div>
+          </div>
+
+          <div class="mode-panel" data-mode-panel="find">
+            <div class="find-seat">
+              <div class="find-seat-title">お名前検索</div>
+              <div class="small">フルネームでも一部でもOKです（例：髙橋 / 右京）</div>
+              <div class="find-seat-form">
+                <input class="input" data-seat-find type="text" placeholder="お名前を入力" autocomplete="off" />
+              </div>
+              <div class="find-seat-results" data-seat-results></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
