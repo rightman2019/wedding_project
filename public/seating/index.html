@@ -7,23 +7,24 @@
   <meta name="theme-color" content="#124C3E" />
   <link rel="icon" href="/favicon-32.png" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="/style.css" />
-  <script src="/config.js"></script>
+  <script src="/config.js" defer></script>
   <script src="/script.js" defer></script>
-
-  <title data-wedding-title>{couple} | FAQ</title>
+  <title data-wedding-title>席次表 | {couple}</title>
 </head>
 <body>
   <div class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="/">
-        <div class="title" data-wedding-couple></div>
-        <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
+      <a class="brand" href="/" aria-label="Home">
+        <span class="mark" aria-hidden="true">W</span>
+        <span class="brand-text" data-wedding-couple></span>
       </a>
-      <button class="nav-toggle" type="button" aria-label="メニュー" aria-controls="site-nav" aria-expanded="false">
-        <span class="nav-toggle-icon" aria-hidden="true"></span>
+
+      <button class="menu-btn" type="button" id="menu-toggle" aria-expanded="false" aria-controls="site-nav">
+        <img src="/assets/icons/menu.svg" alt="" aria-hidden="true">
+        <span class="sr-only">メニュー</span>
       </button>
+
       <nav class="nav" id="site-nav" aria-label="Site">
         <a href="/"><img class="nav-ico" src="/assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
         <a href="/schedule/"><img class="nav-ico" src="/assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
@@ -39,15 +40,17 @@
 
   <main class="container">
     <section class="hero">
-      <div class="kicker"><span class="dot"></span> FAQ</div>
-      <h1 class="h1">FAQ</h1>
-      <p class="lede">よくあるご質問をまとめています。</p>
+      <div class="kicker"><span class="dot"></span> Seating</div>
+      <h1 class="h1">席次表</h1>
+      <p class="lede">丸テーブル（6席）</p>
+      <p class="small" data-wedding-text="seating.note"></p>
     </section>
 
     <section class="grid">
       <div class="card">
-        <h2><img class="ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>Q & A</span></h2>
-        <div class="meta" data-wedding-faq></div>
+        <h2><img class="ico" src="/assets/icons/table.svg" alt="" aria-hidden="true"><span data-wedding-text="seating.tableLabel"></span></h2>
+        <div data-wedding-seatmap></div>
+        <div class="small" style="margin-top:10px; opacity:.85">※氏名の表示は設定ファイル（config.js）の席次表セクションを編集するだけで更新できます。</div>
       </div>
     </section>
 

@@ -763,3 +763,72 @@ body.menu-page.nav-collapsed.nav-open .nav a{ color: var(--paper); }
 
 /* (menu intro removed) */
 
+
+
+/* --- Seating (round table) --- */
+.seatmap{
+  display:flex;
+  justify-content:center;
+  padding: 8px 0 2px;
+}
+
+.round-table{
+  position:relative;
+  width:min(440px, 92vw);
+  aspect-ratio: 1 / 1;
+  margin: 6px auto 0;
+}
+
+.round-table .table-center{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  width: 46%;
+  aspect-ratio: 1 / 1;
+  border: var(--line) solid var(--stroke);
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding: 12px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+.round-table .seat{
+  position:absolute;
+  width: 44%;
+  max-width: 220px;
+  padding: 10px 12px;
+  border: var(--line) solid var(--stroke);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 rgba(17,17,17,.10);
+  text-align:center;
+  font-weight: 700;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+.round-table .seat.is-empty{
+  opacity: .35;
+}
+
+.round-table .seat-1{ top: 2%; left: 50%; transform: translate(-50%, -10%); }
+.round-table .seat-2{ top: 22%; right: 0; transform: translate(10%, -50%); }
+.round-table .seat-3{ bottom: 22%; right: 0; transform: translate(10%, 50%); }
+.round-table .seat-4{ bottom: 2%; left: 50%; transform: translate(-50%, 10%); }
+.round-table .seat-5{ bottom: 22%; left: 0; transform: translate(-10%, 50%); }
+.round-table .seat-6{ top: 22%; left: 0; transform: translate(-10%, -50%); }
+
+@media (max-width: 420px){
+  .round-table .seat{
+    width: 46%;
+    padding: 9px 10px;
+    font-size: 14px;
+  }
+}

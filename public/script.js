@@ -140,7 +140,31 @@ function setupNavAutoCollapse(){
       }).join("");
     }
 
-    const titleEl = document.querySelector("title[data-wedding-title]");
+    
+    // Seat map (round table: 6 seats)
+    const seatmapHost = document.querySelector("[data-wedding-seatmap]");
+    if (seatmapHost){
+      const seating = data.seating || {};
+      const seats = Array.isArray(seating.seats) ? seating.seats : [];
+      const label = escapeHtml(seating.tableLabel || "TABLE");
+      const items = Array.from({length: 6}).map((_, i) => {
+        const raw = (seats[i] ?? "").toString();
+        const name = escapeHtml(raw);
+        const isEmpty = !raw.trim();
+        const text = isEmpty ? "（未設定）" : name;
+        return `<div class="seat seat-${i+1}${isEmpty ? " is-empty" : ""}" role="listitem">${text}</div>`;
+      }).join("");
+      seatmapHost.innerHTML = `
+        <div class="seatmap">
+          <div class="round-table" role="list" aria-label="席次表（${label}）">
+            <div class="table-center">${label}</div>
+            ${items}
+          </div>
+        </div>
+      `;
+    }
+
+const titleEl = document.querySelector("title[data-wedding-title]");
     if (titleEl && coupleLabel){
       titleEl.textContent = titleEl.textContent.replace("{couple}", coupleLabel);
     }
