@@ -69,16 +69,37 @@ window.WEDDING_SITE = {
 
     // 上部のカテゴリ（ボタン）→ 押すと該当セクションへスクロール
     categories: [
-      { id: "bride-uni", label: "新婦の大学の友人", tables: ["A","B","C"] },
-      { id: "groom-high", label: "新郎の高校の友人", tables: ["D","E","X"] }
+      { id: "bride-uni", label: "新婦の大学の友人", tables: ["D"] },
+      { id: "groom-lab", label: "新郎の高校の友人", tables: ["A"] },
+      { id: "groom-high", label: "新郎の高校の友人", tables: ["X"] },
+      { id: "groom-high", label: "新郎の高校の友人[理数科]", tables: ["C"] },
+      { id: "groom-high", label: "新郎の高校の友人", tables: ["X"] }
     ],
 
     // 卓データ（最大8名）。6名の卓なら6個だけでもOKです。
     tables: {
-      A: { label: "TABLE A", seats: ["", "", "", "", "", ""] },
+      A: { label: "TABLE A", seats: [
+        "桑原　真一", 
+        "長屋　知里", 
+        "大野　智生", 
+        "櫻井　薫", 
+        "野田　拓", 
+        "大野　結衣",
+        "大梅　倖輝", 
+        "五十川　祐一郎"
+      ] },
       B: { label: "TABLE B", seats: ["", "", "", "", "", ""] },
       C: { label: "TABLE C", seats: ["", "", "", "", "", ""] },
-      X: { label: "TABLE X", seats: ["", "", "", "", "", ""] },
+      X: { label: "TABLE X", seats: [
+        "安藤　春希", 
+        "濱中　康平", 
+        "青柳　建志", 
+        "落合　悠人", 
+        "三輪　圭司",
+        "長澤　真輝",
+        "田端　亮", 
+        "上田　裕己"
+      ] },
       D: { label: "TABLE D", seats: ["", "", "", "", "", ""] },
       E: { label: "TABLE E", seats: ["", "", "", "", "", ""] },
       F: { label: "TABLE F", seats: ["", "", "", "", "", ""] }
