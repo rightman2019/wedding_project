@@ -285,21 +285,32 @@ function setupNavAutoCollapse(){
     });
   }
 
-  function setupSeatingPage(){
+    function setupSeatingPage(){
     const root = document.querySelector('[data-seating-root]');
     if (!root) return;
 
     const data = (window.WEDDING_SITE || {}).seating || {};
-    const tables = data.tables || {};
+    const tablesRaw = data.tables || {};
 
     const normalize = (s) => (String(s || '').normalize('NFKC')).trim();
-    const nonEmpty = (s) => normalize(s).length > 0;
 
-    // 卓は固定（A/B/C/D/E/F/X）で運用する想定のため、入力途中でも表示を維持する
-    const tableKeys = Object.keys(tables);
-    const visibleKeys = tableKeys;
+    // 卓は固定（A/B/C/D/E/F/X）で表示を維持（入力途中でも卓自体は出す）
+    const TABLE_KEYS = ['A','B','C','D','E','F','X'];
+    const visibleKeys = TABLE_KEYS.slice();
 
-    // --- layout ---
+    // tables を正規化（欠けていてもプレースホルダで補完）
+    const tables = {};
+    for (const k of visibleKeys){
+      const t = tablesRaw[k] || {};
+      tables[k] = {
+        label: String(t.label || ('TABLE ' + k)),
+        seats: Array.isArray(t.seats) ? t.seats : []
+      };
+    }
+
+    const cssEscape = (s) => (window.CSS && CSS.escape) ? CSS.escape(String(s)) : String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+
+    // --- mode toggle ---
     const modeBtns = root.querySelectorAll('[data-mode-btn]');
     const modePanels = root.querySelectorAll('[data-mode-panel]');
     const setMode = (mode) => {
@@ -309,6 +320,8 @@ function setupNavAutoCollapse(){
     modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.getAttribute('data-mode-btn'))));
 
     // --- categories / sections ---
+    // 重要：同じ卓が複数カテゴリに属することがあるため、
+    // ここでは「卓カード」をカテゴリごとに複製しない。カテゴリは「卓へのジャンプ」だけを提供する。
     const categories = Array.isArray(data.categories) ? data.categories : [];
     const assigned = new Set();
     for (const c of categories){
@@ -329,14 +342,37 @@ function setupNavAutoCollapse(){
         return `<button type="button" class="chip${idx===0?' is-active':''}" data-chip="${id}">${label}</button>`;
       }).join('');
 
-      sections.innerHTML = finalCats.map((c, idx) => {
+      // 1) カテゴリセクション：卓へのジャンプボタンのみ（卓カードは出さない）
+      const catSectionsHtml = finalCats.map((c, idx) => {
         const id = String(c.id || ('cat' + idx));
         const label = escapeHtml(String(c.label || 'カテゴリ'));
         const keys = (c.tables || []).map(String).filter(k => visibleKeys.includes(k));
-        const cards = keys.map(k => renderTableCard(k)).join('');
-        return `<div class="seat-section" id="${escapeHtml(id)}"><h3>${label}</h3>${cards || '<div class="small">（該当する卓がありません）</div>'}</div>`;
+        const uniq = [...new Set(keys)];
+        const links = uniq.map(k => {
+          const t = tables[k] || {};
+          const tLabel = escapeHtml(String(t.label || ('TABLE ' + k)));
+          return `<button type="button" class="chip" data-jump-table="${escapeHtml(k)}"><b style="margin-right:6px">${escapeHtml(k)}</b>${tLabel}</button>`;
+        }).join('');
+        return `
+          <div class="seat-section" id="${escapeHtml(id)}">
+            <h3>${label}</h3>
+            ${links ? `<div class="chips">${links}</div>` : `<div class="small">（該当する卓がありません）</div>`}
+          </div>
+        `;
       }).join('');
 
+      // 2) 卓カード：全卓を1回だけレンダリング（重複させない）
+      const tableCardsHtml = visibleKeys.map(k => renderTableCard(k)).join('');
+      const allTablesBlock = `
+        <div class="seat-section" id="all-tables">
+          <h3>卓一覧</h3>
+          ${tableCardsHtml}
+        </div>
+      `;
+
+      sections.innerHTML = catSectionsHtml + allTablesBlock;
+
+      // カテゴリチップ → カテゴリセクションへスクロール
       chips.querySelectorAll('[data-chip]').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-chip');
@@ -345,6 +381,19 @@ function setupNavAutoCollapse(){
           btn.classList.add('is-active');
           const el = document.getElementById(id);
           if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+        });
+      });
+
+      // カテゴリ内の「卓」ボタン → 同一の卓カードへジャンプ（ここが今回の修正ポイント）
+      sections.querySelectorAll('[data-jump-table]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-jump-table');
+          const card = root.querySelector(`[data-table-card="${cssEscape(key)}"]`);
+          if (card){
+            setMode('overview');
+            card.scrollIntoView({ behavior:'smooth', block:'start' });
+            flashCard(card);
+          }
         });
       });
     }
@@ -372,7 +421,7 @@ function setupNavAutoCollapse(){
       overview.querySelectorAll('[data-table]').forEach(btn => {
         btn.addEventListener('click', () => {
           const key = btn.getAttribute('data-table');
-          const card = root.querySelector(`[data-table-card="${CSS.escape(key)}"]`);
+          const card = root.querySelector(`[data-table-card="${cssEscape(key)}"]`);
           if (card){
             setMode('overview');
             card.scrollIntoView({ behavior:'smooth', block:'start' });
@@ -415,11 +464,11 @@ function setupNavAutoCollapse(){
           const hit = allSeats.find(x => x.id === id);
           if (!hit) return;
           setMode('overview');
-          const card = root.querySelector(`[data-table-card="${CSS.escape(hit.tableKey)}"]`);
+          const card = root.querySelector(`[data-table-card="${cssEscape(hit.tableKey)}"]`);
           if (card){
             card.scrollIntoView({ behavior:'smooth', block:'start' });
             flashCard(card);
-            const seatEl = card.querySelector(`[data-seat-id="${CSS.escape(hit.id)}"]`);
+            const seatEl = card.querySelector(`[data-seat-id="${cssEscape(hit.id)}"]`);
             if (seatEl){
               focusSeat(seatEl);
             }
@@ -470,7 +519,7 @@ function setupNavAutoCollapse(){
 
     function renderSeats(tableKey, tableLabel, seatsRaw){
       // Stable layout: 2 columns (left/right) + center (table key)
-      const seats = seatsRaw.map(normalize).filter((_,i)=> i < 8);
+      const seats = seatsRaw.map(normalize).slice(0, 8);
       const items = seats.map((name, i) => {
         const pos = i + 1;
         const id = `${tableKey}:${pos}`;
@@ -478,9 +527,7 @@ function setupNavAutoCollapse(){
         return `<div class="seat-item${cls}" data-seat-id="${escapeHtml(id)}">${escapeHtml(name)}</div>`;
       });
 
-      // Split: left = first half (max 4), right = rest
-      const max = Math.min(8, items.length);
-      const n = Math.max(1, max);
+      const n = Math.max(1, items.length);
       const leftCount = Math.min(4, Math.ceil(n / 2));
       const left = items.slice(0, leftCount).join('');
       const right = items.slice(leftCount, 8).join('');
