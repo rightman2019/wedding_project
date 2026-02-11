@@ -71,11 +71,10 @@ window.WEDDING_SITE = {
     categories: [
       { id: "groom-lab", label: "新郎の研究室の友人", tables: ["A"] },
       { id: "bride-uni", label: "新婦の大学の友人", tables: ["B"] },
-
+      { id: "bride-uni", label: "新婦の大学の友人", tables: ["D"] },
       { id: "groom-math", label: "新郎の高校の友人[理数科]", tables: ["C"] },
       { id: "groom-high", label: "新郎の高校の友人[普通科]", tables: ["X"] },
-      { id: "groom-univ", label: "新郎の大学の友人", tables: ["X"] },
-      { id: "bride-uni", label: "新婦の大学の友人", tables: ["D"] }
+      { id: "groom-univ", label: "新郎の大学の友人", tables: ["X"] }
     ],
 
     // 卓データ（最大8名）。6名の卓なら6個だけでもOKです。
@@ -114,9 +113,9 @@ window.WEDDING_SITE = {
       D: { label: "TABLE D", seats: [
         "尾関 香織", 
         "金生 真綾", 
-        "岡田 美都", 
         "丸山明日香", 
-        "濱汐音"
+        "濱汐音",
+        "岡田 美都"
       ] },
 
       E: { label: "TABLE E", seats: [

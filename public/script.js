@@ -285,7 +285,19 @@ function setupNavAutoCollapse(){
     });
   }
 
-    function setupSeatingPage(){
+    
+  /**
+   * Seating page (2026-02)
+   * UI構成：
+   * ① 検索窓（表示しっぱなし / sticky）
+   * ② プルダウン（新郎 / 新婦）→ カテゴリを縦並び表示（カテゴリ内は卓へのジャンプのみ）
+   * ③ 全体を見る（普段は閉じる）… 卓のみ表示
+   *
+   * 重要：
+   * - 同じ卓が複数カテゴリに属しても「卓カード」は複製しない
+   *   → カテゴリ内の卓ボタンは常に同一の卓カードへジャンプする
+   */
+  function setupSeatingPage(){
     const root = document.querySelector('[data-seating-root]');
     if (!root) return;
 
@@ -293,14 +305,11 @@ function setupNavAutoCollapse(){
     const tablesRaw = data.tables || {};
 
     const normalize = (s) => (String(s || '').normalize('NFKC')).trim();
-
-    // 卓は固定（A/B/C/D/E/F/X）で表示を維持（入力途中でも卓自体は出す）
     const TABLE_KEYS = ['A','B','C','D','E','F','X'];
-    const visibleKeys = TABLE_KEYS.slice();
 
-    // tables を正規化（欠けていてもプレースホルダで補完）
+    // tables を正規化（欠けていても卓自体は出す）
     const tables = {};
-    for (const k of visibleKeys){
+    for (const k of TABLE_KEYS){
       const t = tablesRaw[k] || {};
       tables[k] = {
         label: String(t.label || ('TABLE ' + k)),
@@ -308,130 +317,275 @@ function setupNavAutoCollapse(){
       };
     }
 
+    // --- category side inference (新郎/新婦プルダウン用) ---
+    function resolveSide(cat){
+      const s = String(cat?.side || '').toLowerCase();
+      if (s === 'groom' || s === 'shinro') return 'groom';
+      if (s === 'bride' || s === 'shinpu') return 'bride';
+
+      const label = String(cat?.label || '');
+      if (label.includes('新郎')) return 'groom';
+      if (label.includes('新婦')) return 'bride';
+      return 'both'; // 不明は両方
+    }
+
     const cssEscape = (s) => (window.CSS && CSS.escape) ? CSS.escape(String(s)) : String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
 
-    // --- mode toggle ---
-    const modeBtns = root.querySelectorAll('[data-mode-btn]');
-    const modePanels = root.querySelectorAll('[data-mode-panel]');
-    const setMode = (mode) => {
-      modeBtns.forEach(b => b.classList.toggle('is-active', b.getAttribute('data-mode-btn') === mode));
-      modePanels.forEach(p => p.classList.toggle('is-active', p.getAttribute('data-mode-panel') === mode));
-    };
-    modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.getAttribute('data-mode-btn'))));
+    // --- minimal styling injection (ファイル追加を避ける) ---
+    (function injectSeatingStyles(){
+      if (document.getElementById('seating-style')) return;
+      const st = document.createElement('style');
+      st.id = 'seating-style';
+      st.textContent = `
+        [data-seating-root] .seat-sticky{
+          position: sticky; top: 12px; z-index: 5;
+          background: var(--paper);
+          border: 1px solid rgba(0,0,0,.08);
+          border-radius: 16px;
+          padding: 14px;
+          box-shadow: 0 6px 18px rgba(0,0,0,.06);
+          margin-bottom: 14px;
+        }
+        [data-seating-root] .seat-label{ font-size: 12px; opacity:.85; margin: 0 0 6px; }
+        [data-seating-root] .seat-input,
+        [data-seating-root] .seat-select{
+          width:100%;
+          padding: 12px 12px;
+          border: 1px solid rgba(0,0,0,.14);
+          border-radius: 12px;
+          background: #fff;
+          font-size: 16px;
+        }
+        [data-seating-root] .seat-results{
+          margin-top: 10px;
+          border-top: 1px solid rgba(0,0,0,.06);
+          padding-top: 10px;
+        }
+        [data-seating-root] .result-empty{ font-size: 13px; opacity:.75; padding: 8px 2px; }
+        [data-seating-root] .result-list{ display:flex; flex-direction:column; gap:8px; }
+        [data-seating-root] .result-item{
+          display:flex; align-items:center; justify-content:space-between;
+          gap: 10px;
+          padding: 12px 12px;
+          border: 1px solid rgba(0,0,0,.10);
+          border-radius: 14px;
+          background: #fff;
+          cursor: pointer;
+          text-align:left;
+        }
+        [data-seating-root] .result-name{ font-weight: 800; }
+        [data-seating-root] .result-meta{ font-size: 12px; opacity:.75; }
+        [data-seating-root] .result-cta{ font-size: 12px; opacity:.7; }
 
-    // --- categories / sections ---
-    // 重要：同じ卓が複数カテゴリに属することがあるため、
-    // ここでは「卓カード」をカテゴリごとに複製しない。カテゴリは「卓へのジャンプ」だけを提供する。
+        [data-seating-root] .seat-cats{ margin-top: 10px; display:flex; flex-direction:column; gap:10px; }
+        [data-seating-root] .cat-block{
+          border: 1px solid rgba(0,0,0,.10);
+          border-radius: 16px;
+          padding: 12px;
+          background: rgba(255,255,255,.65);
+        }
+        [data-seating-root] .cat-title{ font-weight: 900; margin-bottom: 10px; }
+        [data-seating-root] .cat-links{ display:flex; flex-direction:column; gap:8px; }
+        [data-seating-root] .cat-link{
+          display:flex; align-items:center; gap: 10px;
+          padding: 10px 12px;
+          border-radius: 14px;
+          border: 1px solid rgba(0,0,0,.10);
+          background:#fff;
+          cursor:pointer;
+          text-align:left;
+        }
+        [data-seating-root] .cat-k{
+          width: 34px; height: 34px;
+          display:grid; place-items:center;
+          border-radius: 999px;
+          border: 1px solid rgba(0,0,0,.16);
+          font-weight: 900;
+        }
+
+        [data-seating-root] details.seat-overview{
+          border: 1px solid rgba(0,0,0,.10);
+          border-radius: 16px;
+          padding: 10px 12px;
+          background: rgba(255,255,255,.65);
+          margin: 10px 0 14px;
+        }
+        [data-seating-root] details.seat-overview > summary{
+          cursor: pointer;
+          font-weight: 900;
+          list-style: none;
+        }
+        [data-seating-root] details.seat-overview > summary::-webkit-details-marker{ display:none; }
+        [data-seating-root] .overview-frame{
+          margin-top: 10px;
+          border: 1px solid rgba(0,0,0,.10);
+          border-radius: 16px;
+          padding: 12px;
+          background: #fff;
+        }
+        [data-seating-root] .overview{
+          display:grid;
+          gap: 10px;
+          align-items: center;
+          justify-items: center;
+        }
+        [data-seating-root] .overview.layout-abcxdfe{
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: auto auto auto auto;
+        }
+        [data-seating-root] .overview-head{
+          grid-column: 2 / 3;
+          grid-row: 1 / 2;
+          font-size: 12px;
+          font-weight: 900;
+          opacity: .75;
+        }
+        [data-seating-root] .overview-node{
+          width: 84px; height: 84px;
+          border-radius: 999px;
+          border: 2px solid rgba(0,0,0,.18);
+          background: #fff;
+          display:grid;
+          place-items:center;
+          cursor:pointer;
+        }
+        [data-seating-root] .overview-node .node-key{
+          font-size: 22px;
+          font-weight: 900;
+        }
+
+        [data-seating-root] .seat-card.is-flash{
+          outline: 3px solid rgba(0,0,0,.22);
+          animation: seatFlash 1.2s ease both;
+        }
+        @keyframes seatFlash{
+          0%{ transform: translateY(0); }
+          25%{ transform: translateY(-2px); }
+          100%{ transform: translateY(0); }
+        }
+        [data-seating-root] .seat-item.is-focus{
+          outline: 3px solid rgba(0,0,0,.22);
+          border-radius: 10px;
+        }
+
+        [data-seating-root] .seat-changelog{
+          margin-top: 12px;
+          font-size: 12px;
+          opacity: .75;
+        }
+      `;
+      document.head.appendChild(st);
+    })();
+
+    // --- UI skeleton (①検索 / ②絞り込み / ③全体) ---
+    root.innerHTML = `
+      <div class="seat-sticky">
+        <div class="seat-label">① お名前検索（部分一致）</div>
+        <input class="seat-input" type="text" inputmode="search" placeholder="例：たかはし / 右京 など" data-seat-find />
+        <div class="seat-results" data-seat-results></div>
+
+        <div style="height:10px"></div>
+
+        <div class="seat-label">② 絞り込み（新郎 / 新婦）</div>
+        <select class="seat-select" data-seat-side>
+          <option value="groom">新郎</option>
+          <option value="bride">新婦</option>
+        </select>
+
+        <div class="seat-cats" data-seating-cats></div>
+      </div>
+
+      <details class="seat-overview" data-seat-overview>
+        <summary>③ 全体を見る（卓のみ）</summary>
+        <div class="overview-frame">
+          <div class="overview layout-abcxdfe" data-seating-overview></div>
+        </div>
+      </details>
+
+      <div class="seat-section" id="all-tables">
+        <h3>卓一覧</h3>
+        <div data-seating-tables></div>
+      </div>
+
+      <div class="seat-changelog">
+        ※修正点：カテゴリに同じ卓が含まれる場合でも卓カードは複製せず、各ボタンは同一の卓へ移動します。
+      </div>
+    `;
+
+    // --- overview map (卓のみ) ---
+    const overview = root.querySelector('[data-seating-overview]');
+    if (overview){
+      const headLabel = String(data.headTableLabel || '高砂').trim();
+      overview.innerHTML = `
+        <div class="overview-head">${escapeHtml(headLabel)}</div>
+        ${['A','B','C','X','D','F','E'].map(k => `
+          <button type="button" class="overview-node" data-table="${escapeHtml(k)}" aria-label="TABLE ${escapeHtml(k)}">
+            <div class="node-key">${escapeHtml(k)}</div>
+          </button>
+        `).join('')}
+      `;
+
+      // PDF配置（A/B/C上段、XとD中央、FとE下段）
+      const pos = { A:[1,2], B:[2,2], C:[3,2], X:[1,3], D:[3,3], F:[1,4], E:[3,4] };
+      overview.querySelectorAll('[data-table]').forEach(btn => {
+        const k = btn.getAttribute('data-table');
+        const p = pos[k];
+        if (p){
+          btn.style.gridColumn = String(p[0]);
+          btn.style.gridRow = String(p[1]);
+        }
+        btn.addEventListener('click', () => jumpToTable(k));
+      });
+    }
+
+    // --- tables (1回だけ描画 / カテゴリでは複製しない) ---
+    const tablesWrap = root.querySelector('[data-seating-tables]');
+    if (tablesWrap){
+      tablesWrap.innerHTML = TABLE_KEYS.map(k => renderTableCard(k)).join('');
+    }
+
+    // --- categories (縦並び / 新郎or新婦でフィルタ) ---
+    const catsEl = root.querySelector('[data-seating-cats]');
+    const sideSel = root.querySelector('[data-seat-side]');
     const categories = Array.isArray(data.categories) ? data.categories : [];
-    const assigned = new Set();
-    for (const c of categories){
-      for (const k of (c.tables || [])) assigned.add(String(k));
-    }
-    const otherTables = visibleKeys.filter(k => !assigned.has(String(k)));
-    const finalCats = [...categories];
-    if (otherTables.length){
-      finalCats.push({ id: 'other', label: 'その他', tables: otherTables });
-    }
 
-    const chips = root.querySelector('[data-seating-chips]');
-    const sections = root.querySelector('[data-seating-sections]');
-    if (chips && sections){
-      chips.innerHTML = finalCats.map((c, idx) => {
-        const id = escapeHtml(String(c.id || ('cat' + idx)));
-        const label = escapeHtml(String(c.label || 'カテゴリ'));
-        return `<button type="button" class="chip${idx===0?' is-active':''}" data-chip="${id}">${label}</button>`;
-      }).join('');
+    const renderCats = () => {
+      if (!catsEl) return;
+      const side = (sideSel?.value || 'groom');
+      const filtered = categories
+        .map((c, idx) => ({ c, idx, side: resolveSide(c) }))
+        .filter(x => x.side === side || x.side === 'both');
 
-      // 1) カテゴリセクション：卓へのジャンプボタンのみ（卓カードは出さない）
-      const catSectionsHtml = finalCats.map((c, idx) => {
-        const id = String(c.id || ('cat' + idx));
+      catsEl.innerHTML = filtered.map(({c, idx}) => {
         const label = escapeHtml(String(c.label || 'カテゴリ'));
-        const keys = (c.tables || []).map(String).filter(k => visibleKeys.includes(k));
+        const keys = (c.tables || []).map(String).filter(k => TABLE_KEYS.includes(k));
         const uniq = [...new Set(keys)];
-        const links = uniq.map(k => {
-          const t = tables[k] || {};
-          const tLabel = escapeHtml(String(t.label || ('TABLE ' + k)));
-          return `<button type="button" class="chip" data-jump-table="${escapeHtml(k)}"><b style="margin-right:6px">${escapeHtml(k)}</b>${tLabel}</button>`;
-        }).join('');
+        const links = uniq.map(k => `
+          <button type="button" class="cat-link" data-jump-table="${escapeHtml(k)}">
+            <div class="cat-k">${escapeHtml(k)}</div>
+            <div>${escapeHtml(tables[k]?.label || ('TABLE ' + k))}</div>
+          </button>
+        `).join('');
         return `
-          <div class="seat-section" id="${escapeHtml(id)}">
-            <h3>${label}</h3>
-            ${links ? `<div class="chips">${links}</div>` : `<div class="small">（該当する卓がありません）</div>`}
+          <div class="cat-block" data-cat-idx="${idx}">
+            <div class="cat-title">${label}</div>
+            <div class="cat-links">${links || `<div class="result-empty">（該当する卓がありません）</div>`}</div>
           </div>
         `;
       }).join('');
 
-      // 2) 卓カード：全卓を1回だけレンダリング（重複させない）
-      const tableCardsHtml = visibleKeys.map(k => renderTableCard(k)).join('');
-      const allTablesBlock = `
-        <div class="seat-section" id="all-tables">
-          <h3>卓一覧</h3>
-          ${tableCardsHtml}
-        </div>
-      `;
-
-      sections.innerHTML = catSectionsHtml + allTablesBlock;
-
-      // カテゴリチップ → カテゴリセクションへスクロール
-      chips.querySelectorAll('[data-chip]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-chip');
-          setMode('overview');
-          chips.querySelectorAll('[data-chip]').forEach(b => b.classList.remove('is-active'));
-          btn.classList.add('is-active');
-          const el = document.getElementById(id);
-          if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
-        });
+      // 重要：同じ卓が複数カテゴリに出ても、飛び先は同一の卓カード
+      catsEl.querySelectorAll('[data-jump-table]').forEach(btn => {
+        btn.addEventListener('click', () => jumpToTable(btn.getAttribute('data-jump-table')));
       });
+    };
 
-      // カテゴリ内の「卓」ボタン → 同一の卓カードへジャンプ（ここが今回の修正ポイント）
-      sections.querySelectorAll('[data-jump-table]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const key = btn.getAttribute('data-jump-table');
-          const card = root.querySelector(`[data-table-card="${cssEscape(key)}"]`);
-          if (card){
-            setMode('overview');
-            card.scrollIntoView({ behavior:'smooth', block:'start' });
-            flashCard(card);
-          }
-        });
-      });
+    if (sideSel){
+      sideSel.addEventListener('change', renderCats);
     }
+    renderCats();
 
-    // --- overview map ---
-    const overview = root.querySelector('[data-seating-overview]');
-    if (overview){
-      overview.classList.add('layout-abcxdfe');
-      const headLabel = escapeHtml(String(data.headTableLabel || ''));
-      overview.innerHTML = `
-        <div class="overview-head">${headLabel || ' '}</div>
-        ${['A','B','C','X','D','F','E'].filter(k => visibleKeys.includes(k)).map(k => {
-          const t = tables[k] || {};
-          const label = escapeHtml(String(t.label || ('TABLE ' + k)));
-          const sample = (Array.isArray(t.seats) ? t.seats : []).map(normalize).filter(Boolean).slice(0,2);
-          const sampleTxt = sample.length ? escapeHtml(sample.join(' / ')) : '';
-          return `<button type="button" class="overview-node" data-table="${k}" aria-label="${label}">
-            <div class="node-key">${escapeHtml(k)}</div>
-            <div class="node-label">${label}</div>
-            ${sampleTxt ? `<div class="node-sample">${sampleTxt}</div>` : ''}
-          </button>`;
-        }).join('')}
-      `;
-
-      overview.querySelectorAll('[data-table]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const key = btn.getAttribute('data-table');
-          const card = root.querySelector(`[data-table-card="${cssEscape(key)}"]`);
-          if (card){
-            setMode('overview');
-            card.scrollIntoView({ behavior:'smooth', block:'start' });
-            flashCard(card);
-          }
-        });
-      });
-    }
-
-    // --- find ---
+    // --- search (表示しっぱなし) ---
     const input = root.querySelector('[data-seat-find]');
     const results = root.querySelector('[data-seat-results]');
     const allSeats = buildSeatIndex();
@@ -443,36 +597,30 @@ function setupNavAutoCollapse(){
         results.innerHTML = `<div class="result-empty">お名前を入力すると検索できます</div>`;
         return;
       }
-      const hits = allSeats.filter(it => it.nameNorm.toLowerCase().includes(q)).slice(0, 40);
+      const hits = allSeats.filter(it => it.nameNorm.toLowerCase().includes(q)).slice(0, 50);
       if (!hits.length){
-        results.innerHTML = `<div class="result-empty">見つかりませんでした（表記ゆれがある場合は短く入力してみてください）</div>`;
+        results.innerHTML = `<div class="result-empty">見つかりませんでした（短く入力すると見つかる場合があります）</div>`;
         return;
       }
-      results.innerHTML = `<div class="result-list">${hits.map(h => {
-        const name = escapeHtml(h.name);
-        const meta = escapeHtml(`${h.tableLabel} / 席${h.pos}`);
-        return `<button type="button" class="result-item" data-hit="${escapeHtml(h.id)}">
-          <div class="result-name">${name}</div>
-          <div class="result-meta">${meta}</div>
-          <div class="result-cta">見る</div>
-        </button>`;
-      }).join('')}</div>`;
-
+      results.innerHTML = `
+        <div class="result-list">
+          ${hits.map(h => `
+            <button type="button" class="result-item" data-hit="${escapeHtml(h.id)}">
+              <div>
+                <div class="result-name">${escapeHtml(h.name)}</div>
+                <div class="result-meta">${escapeHtml(`${h.tableKey} / 席${h.pos}`)}</div>
+              </div>
+              <div class="result-cta">見る</div>
+            </button>
+          `).join('')}
+        </div>
+      `;
       results.querySelectorAll('[data-hit]').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-hit');
           const hit = allSeats.find(x => x.id === id);
           if (!hit) return;
-          setMode('overview');
-          const card = root.querySelector(`[data-table-card="${cssEscape(hit.tableKey)}"]`);
-          if (card){
-            card.scrollIntoView({ behavior:'smooth', block:'start' });
-            flashCard(card);
-            const seatEl = card.querySelector(`[data-seat-id="${cssEscape(hit.id)}"]`);
-            if (seatEl){
-              focusSeat(seatEl);
-            }
-          }
+          jumpToTable(hit.tableKey, hit.id);
         });
       });
     };
@@ -482,32 +630,44 @@ function setupNavAutoCollapse(){
       renderResults('');
     }
 
-    // --- helpers ---
+    // ===== helpers =====
     function buildSeatIndex(){
       const idx = [];
-      for (const k of visibleKeys){
+      for (const k of TABLE_KEYS){
         const t = tables[k] || {};
-        const label = String(t.label || ('TABLE ' + k));
         const seats = Array.isArray(t.seats) ? t.seats : [];
-        const clean = seats.map(normalize);
-        clean.forEach((name, i) => {
+        seats.map(normalize).forEach((name, i) => {
           if (!name) return;
           const pos = i + 1;
           const id = `${k}:${pos}`;
-          idx.push({ id, tableKey: k, tableLabel: label, pos, name, nameNorm: name });
+          idx.push({ id, tableKey: k, pos, name, nameNorm: name });
         });
       }
       return idx;
+    }
+
+    function jumpToTable(key, seatId){
+      const card = root.querySelector(`[data-table-card="${cssEscape(key)}"]`);
+      if (!card) return;
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      flashCard(card);
+      if (seatId){
+        const seatEl = card.querySelector(`[data-seat-id="${cssEscape(seatId)}"]`);
+        if (seatEl) focusSeat(seatEl);
+      }
     }
 
     function renderTableCard(key){
       const t = tables[key] || {};
       const label = escapeHtml(String(t.label || ('TABLE ' + key)));
       const seats = Array.isArray(t.seats) ? t.seats : [];
-      const seatEls = renderSeats(key, label, seats);
+      const seatEls = renderSeats(key, seats);
       return `
         <div class="card seat-card" data-table-card="${escapeHtml(key)}">
-          <div class="h2row"><span class="h2icon"><img class="ico" src="/assets/icons/table.svg" alt="" aria-hidden="true"></span><h2>${label}</h2></div>
+          <div class="h2row">
+            <span class="h2icon"><img class="ico" src="/assets/icons/table.svg" alt="" aria-hidden="true"></span>
+            <h2>${label}</h2>
+          </div>
           <div class="table-layout" aria-label="${label}">
             <div class="seat-col" data-side="left">${seatEls.left}</div>
             <div class="table-core">${escapeHtml(key)}</div>
@@ -517,7 +677,7 @@ function setupNavAutoCollapse(){
       `;
     }
 
-    function renderSeats(tableKey, tableLabel, seatsRaw){
+    function renderSeats(tableKey, seatsRaw){
       // Stable layout: 2 columns (left/right) + center (table key)
       const seats = seatsRaw.map(normalize).slice(0, 8);
       const items = seats.map((name, i) => {
@@ -543,6 +703,7 @@ function setupNavAutoCollapse(){
       window.setTimeout(() => seatEl.classList.remove('is-focus'), 1400);
     }
   }
+
 
   function setupMenuImageViewer(){
     const img = document.querySelector("[data-menu-image]");

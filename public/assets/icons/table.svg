@@ -1,9 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-  <circle cx="12" cy="12" r="5"></circle>
-  <circle cx="12" cy="3.5" r="1.4"></circle>
-  <circle cx="19.0" cy="7.0" r="1.4"></circle>
-  <circle cx="19.0" cy="17.0" r="1.4"></circle>
-  <circle cx="12" cy="20.5" r="1.4"></circle>
-  <circle cx="5.0" cy="17.0" r="1.4"></circle>
-  <circle cx="5.0" cy="7.0" r="1.4"></circle>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Table icon">
+  <g fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="256" cy="140" rx="176" ry="58"/>
+    <ellipse cx="256" cy="140" rx="148" ry="46" opacity="0.55"/>
+    <path d="M256 198v180"/>
+    <ellipse cx="256" cy="416" rx="120" ry="34"/>
+  </g>
 </svg>
