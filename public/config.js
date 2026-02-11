@@ -70,10 +70,10 @@ window.WEDDING_SITE = {
     // 上部のカテゴリ（ボタン）→ 押すと該当セクションへスクロール
     categories: [
       { id: "bride-uni", label: "新婦の大学の友人", tables: ["D"] },
-      { id: "groom-lab", label: "新郎の高校の友人", tables: ["A"] },
-      { id: "groom-high", label: "新郎の高校の友人", tables: ["X"] },
-      { id: "groom-high", label: "新郎の高校の友人[理数科]", tables: ["C"] },
-      { id: "groom-high", label: "新郎の高校の友人", tables: ["X"] }
+      { id: "groom-lab", label: "新郎の研究室の友人", tables: ["A"] },
+      { id: "groom-high", label: "新郎の高校の友人[普通科]", tables: ["X"] },
+      { id: "groom-math", label: "新郎の高校の友人[理数科]", tables: ["C"] },
+      { id: "groom-univ", label: "新郎の大学の友人", tables: ["X"] }
     ],
 
     // 卓データ（最大8名）。6名の卓なら6個だけでもOKです。
@@ -106,3 +106,12 @@ window.WEDDING_SITE = {
     }
   }
 };
+
+// 互換性のため：links.tetris が無い場合だけデフォルトを補完（ユーザー入力は上書きしない）
+(function(){
+  try{
+    const s = window.WEDDING_SITE = window.WEDDING_SITE || {};
+    s.links = s.links || {};
+    if (!s.links.tetris) s.links.tetris = "https://tetris-6r8.pages.dev/";
+  }catch(e){}
+})();

@@ -295,12 +295,9 @@ function setupNavAutoCollapse(){
     const normalize = (s) => (String(s || '').normalize('NFKC')).trim();
     const nonEmpty = (s) => normalize(s).length > 0;
 
+    // 卓は固定（A/B/C/D/E/F/X）で運用する想定のため、入力途中でも表示を維持する
     const tableKeys = Object.keys(tables);
-    const visibleKeys = tableKeys.filter(k => {
-      const t = tables[k] || {};
-      const seats = Array.isArray(t.seats) ? t.seats : [];
-      return seats.some(nonEmpty);
-    });
+    const visibleKeys = tableKeys;
 
     // --- layout ---
     const modeBtns = root.querySelectorAll('[data-mode-btn]');
@@ -461,43 +458,33 @@ function setupNavAutoCollapse(){
       const seatEls = renderSeats(key, label, seats);
       return `
         <div class="card seat-card" data-table-card="${escapeHtml(key)}">
-          <div class="h2row"><span class="h2icon"><img class="ico" src="/assets/icons/seating.svg" alt="" aria-hidden="true"></span><h2>${label}</h2></div>
-          <div class="round-table" aria-label="${label}">
+          <div class="h2row"><span class="h2icon"><img class="ico" src="/assets/icons/table.svg" alt="" aria-hidden="true"></span><h2>${label}</h2></div>
+          <div class="table-layout" aria-label="${label}">
+            <div class="seat-col" data-side="left">${seatEls.left}</div>
             <div class="table-core">${escapeHtml(key)}</div>
-            ${seatEls}
+            <div class="seat-col" data-side="right">${seatEls.right}</div>
           </div>
         </div>
       `;
     }
 
     function renderSeats(tableKey, tableLabel, seatsRaw){
+      // Stable layout: 2 columns (left/right) + center (table key)
       const seats = seatsRaw.map(normalize).filter((_,i)=> i < 8);
-      const n = Math.max(1, Math.min(8, seats.length));
-      const angles = seatAngles(seats.length);
-      const r = 44;
-      return seats.map((name, i) => {
-        const a = angles[i] ?? (-90 + (360 / seats.length) * i);
-        const rad = (a * Math.PI) / 180;
-        const x = Math.cos(rad) * r;
-        const y = Math.sin(rad) * r;
+      const items = seats.map((name, i) => {
         const pos = i + 1;
         const id = `${tableKey}:${pos}`;
         const cls = name ? '' : ' is-empty';
-        return `<div class="seat${cls}" style="--x:${x.toFixed(2)};--y:${y.toFixed(2)}" data-seat-id="${escapeHtml(id)}">${escapeHtml(name)}</div>`;
-      }).join('');
-    }
+        return `<div class="seat-item${cls}" data-seat-id="${escapeHtml(id)}">${escapeHtml(name)}</div>`;
+      });
 
-    function seatAngles(count){
-      if (count <= 6){
-        // 6席：左右（0/180）を省いてバランス重視
-        return [-90,-30,30,90,150,-150].slice(0, count);
-      }
-      if (count === 8){
-        return [-90,-45,0,45,90,135,180,-135];
-      }
-      // 7席などは均等配置
-      const step = 360 / Math.max(1, count);
-      return Array.from({length: count}, (_, i) => -90 + step * i);
+      // Split: left = first half (max 4), right = rest
+      const max = Math.min(8, items.length);
+      const n = Math.max(1, max);
+      const leftCount = Math.min(4, Math.ceil(n / 2));
+      const left = items.slice(0, leftCount).join('');
+      const right = items.slice(leftCount, 8).join('');
+      return { left, right };
     }
 
     function flashCard(card){

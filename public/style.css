@@ -246,6 +246,55 @@ body{
 .seat-card{ position: relative; }
 .seat-card.is-flash{ outline: 3px solid var(--orange); outline-offset: 4px; }
 
+/* Stable seating layout: 2 columns + center (avoids circular overlap on mobile) */
+.table-layout{
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items:start;
+  margin: 10px auto 6px;
+  max-width: 720px;
+}
+.table-core{
+  align-self:center;
+  justify-self:center;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  border: var(--line) solid var(--stroke);
+  background: rgba(18,76,62,.06);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 950;
+  letter-spacing: .06em;
+}
+.seat-col{ display:flex; flex-direction:column; gap: 10px; }
+.seat-item{
+  padding: 10px 12px;
+  background:#fff;
+  border: var(--line) solid var(--stroke);
+  border-radius: 14px;
+  box-shadow: 6px 6px 0 rgba(17,17,17,.08);
+  font-weight: 900;
+  font-size: 13px;
+  text-align:center;
+  line-height: 1.25;
+}
+.seat-item.is-empty{ display:none; }
+.seat-item.is-focus{ outline: 3px solid var(--orange); outline-offset: 3px; animation: seatPulse2 1.2s ease-out; }
+@keyframes seatPulse2{
+  0%{ transform: scale(1); }
+  40%{ transform: scale(1.03); }
+  100%{ transform: scale(1); }
+}
+
+@media (max-width: 520px){
+  .table-layout{ grid-template-columns: 1fr auto 1fr; gap: 8px; }
+  .table-core{ width: 56px; height: 56px; }
+  .seat-item{ font-size: 12px; padding: 9px 10px; }
+}
+
 .round-table{
   position: relative;
   width: min(420px, 92vw);
@@ -862,7 +911,7 @@ body.menu-page .topbar,
 body.menu-page .topbar a{ color: var(--paper); }
 body.menu-page .nav-toggle{
   border-color: rgba(250,244,230,.75);
-  background: rgba(0,0,0,.14);
+  background: var(--green);
   color: var(--paper);
   box-shadow: 6px 6px 0 rgba(0,0,0,.20);
 }
@@ -873,7 +922,7 @@ body.menu-page .nav-ico{ filter: brightness(0) invert(1); }
 body.menu-page .container{ max-width:none; padding: 0; }
 
 body.menu-page.nav-collapsed.nav-open .nav{
-  background: rgba(0,0,0,.22);
+  background: var(--green);
   border-color: rgba(250,244,230,.55);
   box-shadow: 10px 10px 0 rgba(0,0,0,.22);
 }
@@ -881,7 +930,7 @@ body.menu-page.nav-collapsed.nav-open .nav a{ color: var(--paper); }
 
 @media (max-width: 760px){
   body.menu-page.nav-open .nav{
-    background: rgba(0,0,0,.22);
+    background: var(--green);
     border-color: rgba(250,244,230,.55);
     box-shadow: 10px 10px 0 rgba(0,0,0,.22);
   }
