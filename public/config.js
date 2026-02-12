@@ -67,18 +67,64 @@ window.WEDDING_SITE = {
     note: "※お席は係の者がご案内します。",
     headTableLabel: "高砂",
 
+
+    // ひらがな検索用（任意）
+    // 例: readings: { "髙橋 右京": "たかはし うきょう" }
+      // "漢字の氏名": "ひらがな"
+    readings: {"長屋 知里": "ながや　ちさと"},
+    readings: {"大野 智生": "おおの　ともき"},
+    readings: {"大梅 倖輝": "おおばい　こうき"},
+    readings: {"大野 結衣": "おおの　ゆい"},
+    readings: {"桑原 真一": "くわはら　しんいち"}, 
+    readings: {"櫻井 薫": "さくらい　かおる"},
+    readings: {"野田 拓": "のだ　たく"},
+    readings: {"五十川 祐一郎": "いかがわ　ゆういちろう"},
+    readings: {"西谷 志織": "にしたに　しおり"}, 
+    readings: {"和久 茉厘那": "わく　まりな"}, 
+    readings: {"大岡 左枝": "おおおか　さえ"}, 
+    readings: {"大森 波奈": "おおもり　はな"}, 
+    readings: {"植松 佳保里": "うえまつ　かほり"}, 
+    readings: {"澁谷 美紀": "しぶたに　みき"},
+    readings: {"舘 美里": "たち　みさと"}, 
+    readings: {"渡邉 芙優果": "わたなべ　ふゆか"}, 
+    readings: {"永田	愛友実": "ながた　あゆみ"}, 
+    readings: {"中村	月泉": "なかむら　つきみ"}, 
+    readings: {"兒玉	真生子": "こだま　まおこ"}, 
+    readings: {"福田 美友": "ふくだ　みゆう"},
+    readings: {"田島 佑菜": "たじま　ゆうな"},
+    readings: {"矢ヶ崎 亜美": "やがさき　あみ"},
+    readings: {"寒川 由夏": "さむかわ　ゆうか"}, 
+    readings: {"田島らい華": "たじま　らいか"}, 
+    readings: {"木下 佳奈": "きのした　かな"}, 
+    readings: {"高原 虎太郎": "たかはら　こたろう"}, 
+    readings: {"山下 斐央": "やました　ひいろ"}, 
+    readings: {"坂上 夏海": "さかがみ　なつみ"},
+    readings: {"渡部 修平": "わたなべ　しゅうへい"}, 
+    readings: {"森田 健介": "もりた　けんすけ"}, 
+    readings: {"山田 真平": "やまだ　しんぺい"}, 
+    readings: {"山田 泰地": "やまだ　たいち"}, 
+    readings: {"清水 良広": "しみず　よしひろ"}, 
+    readings: {"酒井 拓実": "さかい　たくみ"}, 
+    readings: {"下野 凌也": "しもの　りょうや"}, 
+    readings: {"古川 博也": "ふるかわ　ひろや"},
+    readings: {"田端 亮": "たばた　りょう"}, 
+    readings: {"上田 裕己": "うえだ　ゆうき"}, 
+    readings: {"三輪 圭司": "みわ　けいし"},
+    readings: {"長澤 真輝": "ながさわ　まさき"},
+    readings: {"安藤 春希": "あんどう　はるき"},
+    readings: {"落合 悠人": "おちあい　ゆうと"},
+    readings: {"濱中 康平": "はまなか　こうへい"}, 
+    readings: {"青柳 建志": "あおやぎ　たつし"},
+    readings: {"安藤 春希": "はるを"},
+    
     // 上部のカテゴリ（ボタン）→ 押すと該当セクションへスクロール
     categories: [
-      { id: "groom-lab", label: "おうび", side: "groom", tables: ["A"] },
-      { id: "bride-uni", label: "おうせいメンバー", side: "bride", tables: ["B"] },
-      { id: "bride-bigb", label: "えーでる", side: "bride", tables: ["C"] },
-      { id: "bride-high", label: "刈谷高校", side: "bride", tables: ["D"] },
-      { id: "bride-brain", label: "Brain Pad", side: "bride", tables: ["E"] },
-      { id: "bride-geek", label: "Geek", side: "bride", tables: ["E"] },
-      { id: "groom-math", label: "理数科（迫真）", side: "groom", tables: ["F"] },
-      { id: "groom-high", label: "生徒会長・副会長", side: "groom", tables: ["X"] },
-      { id: "groom-univ", label: "岐阜県養老郡養老町", side: "groom", tables: ["X"] },
-      { id: "team-211X", label: "TEAM211", side: "groom", tables: ["X"] }
+      { id: "groom-lab", label: "新郎の研究室の友人", side: "groom", tables: ["A"] },
+      { id: "bride-uni", label: "新婦の大学の友人", side: "bride", tables: ["B"] },
+      { id: "bride-uni", label: "新婦の大学の友人", side: "bride", tables: ["D"] },
+      { id: "groom-math", label: "新郎の高校の友人[理数科]", side: "groom", tables: ["C"] },
+      { id: "groom-high", label: "新郎の高校の友人[普通科]", side: "groom", tables: ["X"] },
+      { id: "groom-univ", label: "新郎の大学の友人", side: "groom", tables: ["X"] }
     ],
 
     // 卓データ（最大8名）。6名の卓なら6個だけでもOKです。
@@ -117,8 +163,8 @@ window.WEDDING_SITE = {
       D: { label: "TABLE D", seats: [
         "尾関 香織", 
         "金生 真綾", 
-        "丸山 明日香", 
-        "濱 汐音",
+        "丸山明日香", 
+        "濱汐音",
         "岡田 美都"
       ] },
 

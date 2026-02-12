@@ -325,9 +325,8 @@ function setupNavAutoCollapse(){
         cursor:pointer;
         list-style:none;
         user-select:none;
-        font-weight: 900;
+        font-weight: 900; /* タイトル太字 */
         font-size: 22px;
-        line-height: 1.2;
       }
       [data-seating-root] details.seat-panel > summary::-webkit-details-marker{ display:none; }
       [data-seating-root] details.seat-panel > summary .badge{
@@ -343,6 +342,7 @@ function setupNavAutoCollapse(){
       }
       [data-seating-root] details.seat-panel > summary .title{
         flex: 1 1 auto;
+        line-height: 1.25;
       }
 
       /* ▽（開閉が分かるUI） */
@@ -362,62 +362,41 @@ function setupNavAutoCollapse(){
         padding: 0 18px 18px;
       }
 
-      /* ===== Inputs ===== */
+      /* ===== Inputs / Selects (周りに合わせて整える) ===== */
       [data-seating-root] .seat-label{
         font-size: 12px;
         opacity:.85;
         margin: 0 0 6px;
       }
-      [data-seating-root] .seat-input{
-        width:100%;
-        padding: 12px 12px;
-        border: 1px solid rgba(0,0,0,.14);
-        border-radius: 12px;
-        background: #fff;
-        font-size: 16px;
-      }
-
-      /* ===== Select (ダサいデフォルトを統一) ===== */
-      [data-seating-root] .select-wrap{
-        position: relative;
-        display: block;
-        width: 100%;
-      }
-      [data-seating-root] .select-wrap::after{
-        content:"";
-        position:absolute;
-        right: 12px;
-        top: 50%;
-        width: 12px;
-        height: 12px;
-        transform: translateY(-50%);
-        opacity: .75;
-        pointer-events:none;
-        background-repeat:no-repeat;
-        background-position:center;
-        background-size: 12px 12px;
-        /* ▼アイコン (inline SVG) */
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='black' fill-opacity='0.85' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      }
+      [data-seating-root] .seat-input,
       [data-seating-root] .seat-select{
         width:100%;
-        padding: 12px 38px 12px 12px; /* 右に矢印分 */
+        padding: 12px 14px;
         border: 1px solid rgba(0,0,0,.14);
-        border-radius: 12px;
+        border-radius: 14px;
         background: #fff;
         font-size: 16px;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        line-height: 1.2;
+        box-shadow: 0 6px 14px rgba(0,0,0,.05);
+        outline: none;
       }
-      [data-seating-root] .seat-select:focus,
-      [data-seating-root] .seat-input:focus{
-        outline: 3px solid rgba(0,0,0,.18);
-        outline-offset: 0;
+      [data-seating-root] .seat-input:focus,
+      [data-seating-root] .seat-select:focus{
+        border-color: rgba(0,0,0,.25);
+        box-shadow: 0 8px 18px rgba(0,0,0,.08);
       }
 
-      /* ===== Search results ===== */
+      /* select の見た目を統一（ネイティブ感を減らす） */
+      [data-seating-root] .seat-select{
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 42px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23666' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        background-size: 16px 16px;
+      }
+
       [data-seating-root] .seat-results{
         margin-top: 10px;
         border-top: 1px solid rgba(0,0,0,.06);
@@ -436,9 +415,10 @@ function setupNavAutoCollapse(){
         background: #fff;
         cursor: pointer;
         text-align:left;
+        box-shadow: 0 8px 18px rgba(0,0,0,.06);
       }
-      [data-seating-root] .result-name{ font-weight: 800; }
-      [data-seating-root] .result-meta{ font-size: 12px; opacity:.75; }
+      [data-seating-root] .result-name{ font-weight: 900; }
+      [data-seating-root] .result-meta{ font-size: 12px; opacity:.75; margin-top: 2px; }
       [data-seating-root] .result-cta{ font-size: 12px; opacity:.7; }
 
       /* ===== Filter UI ===== */
@@ -463,6 +443,7 @@ function setupNavAutoCollapse(){
         background:#fff;
         cursor:pointer;
         text-align:left;
+        box-shadow: 0 8px 18px rgba(0,0,0,.06);
       }
       [data-seating-root] .cat-k{
         width: 34px;
@@ -475,36 +456,32 @@ function setupNavAutoCollapse(){
         flex: 0 0 auto;
       }
 
-      /* ===== Overview (枠の中に円形配置) ===== */
-      [data-seating-root] .overview-wrap{
-        padding: 12px 0 0;
-      }
+      /* ===== Overview ring (枠の中で円形イメージ) ===== */
       [data-seating-root] .overview-frame{
         position: relative;
-        height: clamp(310px, 50vw, 460px);
+        height: clamp(300px, 46vw, 460px);
         border-radius: 22px;
-        background: rgba(255,255,255,.80);
-        border: 1px solid rgba(0,0,0,.10);
-        box-shadow: 0 12px 26px rgba(0,0,0,.06);
+        background: #fff;
+        border: 1px solid rgba(0,0,0,.08);
         overflow: hidden;
       }
       [data-seating-root] .overview-frame::before{
         content:"";
         position:absolute;
-        inset: 18px;
+        inset: 14px;
         border-radius: 999px;
         border: 2px dashed rgba(0,0,0,.10);
         pointer-events:none;
       }
       [data-seating-root] .overview-ring{
-        position: relative;
-        width: 100%;
-        height: 100%;
+        position:absolute;
+        inset: 0;
+        /* ノードサイズはJS側で上書き（枠内の相対サイズを活かす） */
+        --node-size: clamp(86px, 14vw, 124px);
       }
       [data-seating-root] .overview-node{
-        --size: clamp(84px, 15vw, 124px);
-        width: var(--size);
-        height: var(--size);
+        width: var(--node-size);
+        height: var(--node-size);
         border-radius: 999px;
         border: 2px solid rgba(0,0,0,.16);
         background: #fff;
@@ -514,21 +491,24 @@ function setupNavAutoCollapse(){
         cursor:pointer;
         position:absolute;
         transform: translate(-50%,-50%);
+        touch-action: manipulation;
       }
+      [data-seating-root] .overview-node:active{ transform: translate(-50%,-50%) scale(.98); }
       [data-seating-root] .overview-node .node-key{
         font-size: clamp(20px, 4.2vw, 34px);
         font-weight: 900;
+        letter-spacing: .02em;
       }
       [data-seating-root] .overview-head{
         position:absolute;
         left: 50%;
         top: 12%;
         transform: translate(-50%,-50%);
-        width: clamp(180px, 52vw, 360px);
+        width: clamp(180px, 58vw, 440px); /* 高砂：横に広げる */
         height: 46px;
         border-radius: 16px;
         border: 2px solid rgba(0,0,0,.20);
-        background: rgba(255,255,255,.86);
+        background: rgba(255,255,255,.78);
         display:flex;
         align-items:center;
         justify-content:center;
@@ -539,15 +519,6 @@ function setupNavAutoCollapse(){
       /* 卓カード同士の上下マージン（見た目整える） */
       [data-seating-root] .seat-card{ margin: 18px 0; }
       [data-seating-root] .seat-card:first-child{ margin-top: 12px; }
-
-      /* 卓の座席表示枠（“配置が終わったので枠の中に”） */
-      [data-seating-root] .seat-card .table-layout{
-        margin-top: 8px;
-        padding: 12px;
-        border-radius: 18px;
-        border: 1px solid rgba(0,0,0,.10);
-        background: rgba(255,255,255,.85);
-      }
 
       [data-seating-root] .seat-card.is-flash{
         outline: 3px solid rgba(0,0,0,.22);
@@ -563,6 +534,47 @@ function setupNavAutoCollapse(){
         border-radius: 10px;
       }
 
+      /* ページ下部：上へ戻るボタン */
+      [data-seating-root] .seat-bottom-actions{
+        margin: 18px 0 8px;
+        display:flex;
+        justify-content:center;
+      }
+      [data-seating-root] .seat-backtop{
+        border: 1px solid rgba(0,0,0,.12);
+        background: rgba(255,255,255,.9);
+        border-radius: 999px;
+        padding: 12px 16px;
+        font-weight: 900;
+        cursor:pointer;
+        box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      }
+
+      /* フローティング：ページ上部へ戻る */
+      .seat-fab{
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 40;
+        width: 52px;
+        height: 52px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,.16);
+        background: rgba(255,255,255,.92);
+        box-shadow: 0 14px 30px rgba(0,0,0,.12);
+        font-weight: 900;
+        cursor:pointer;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(6px);
+        transition: opacity .18s ease, transform .18s ease;
+      }
+      .seat-fab.is-show{
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
       [data-seating-root] .seat-changelog{
         margin-top: 12px;
         font-size: 12px;
@@ -574,8 +586,13 @@ function setupNavAutoCollapse(){
 
   const data = (window.WEDDING_SITE || {}).seating || {};
   const tablesRaw = data.tables || {};
+  const readingsMap = (data.readings && typeof data.readings === 'object') ? data.readings : {};
 
   const normalize = (s) => (String(s || '').normalize('NFKC')).trim();
+  const stripSpaces = (s) => normalize(s).replace(/\s+/g, '');
+  const toHiragana = (s) => stripSpaces(s).replace(/[\u30A1-\u30F6]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0x60));
+  const normSearch = (s) => toHiragana(s).toLowerCase();
+
   const TABLE_KEYS = ['A','B','C','D','E','F','X'];
 
   // tables を正規化（欠けても卓は出す）
@@ -593,10 +610,11 @@ function setupNavAutoCollapse(){
     const s = String(cat?.side || '').toLowerCase();
     if (s === 'groom' || s === 'shinro') return 'groom';
     if (s === 'bride' || s === 'shinpu') return 'bride';
-    // fallback（古いconfig互換）：labelから推定
+    // fallback（古いconfig互換）：label/idから推定
     const label = String(cat?.label || '');
-    if (label.includes('新郎')) return 'groom';
-    if (label.includes('新婦')) return 'bride';
+    const id = String(cat?.id || '').toLowerCase();
+    if (label.includes('新郎') || id.startsWith('groom')) return 'groom';
+    if (label.includes('新婦') || id.startsWith('bride')) return 'bride';
     return 'both';
   }
 
@@ -620,18 +638,14 @@ function setupNavAutoCollapse(){
           <div class="filter-row">
             <div>
               <div class="seat-label">新郎 / 新婦</div>
-              <div class="select-wrap">
-                <select class="seat-select" data-seat-side>
-                  <option value="groom">新郎</option>
-                  <option value="bride">新婦</option>
-                </select>
-              </div>
+              <select class="seat-select" data-seat-side>
+                <option value="groom">新郎</option>
+                <option value="bride">新婦</option>
+              </select>
             </div>
             <div>
               <div class="seat-label">カテゴリ</div>
-              <div class="select-wrap">
-                <select class="seat-select" data-seat-category></select>
-              </div>
+              <select class="seat-select" data-seat-category></select>
             </div>
           </div>
           <div class="filter-actions" data-cat-actions></div>
@@ -640,7 +654,7 @@ function setupNavAutoCollapse(){
 
       <details class="seat-panel" data-seat-panel="overview">
         <summary><span class="badge">③</span><span class="title">全体を見る（卓のみ）</span></summary>
-        <div class="panel-body overview-wrap">
+        <div class="panel-body">
           <div class="overview-frame">
             <div class="overview-ring" data-seating-overview></div>
           </div>
@@ -651,15 +665,50 @@ function setupNavAutoCollapse(){
     <div class="seat-section" id="all-tables">
       <h3>卓一覧</h3>
       <div data-seating-tables></div>
+      <div class="seat-bottom-actions">
+        <button type="button" class="seat-backtop" data-seat-backtop>↑ 上へ戻る</button>
+      </div>
     </div>
 
     <div class="seat-changelog">
-      ※修正点：カテゴリに同じ卓が含まれる場合でも卓カードは複製せず、各ボタンは同一の卓へ移動します。
+      ※カテゴリに同じ卓が含まれる場合でも卓カードは複製せず、各ボタンは同一の卓へ移動します。
     </div>
   `;
 
+  // フローティング（上へ戻る）
+  const fab = document.createElement('button');
+  fab.type = 'button';
+  fab.className = 'seat-fab';
+  fab.setAttribute('aria-label', 'ページ上部へ戻る');
+  fab.textContent = '↑';
+  document.body.appendChild(fab);
+
+  function scrollToTop(){
+    const controls = root.querySelector('.seat-controls');
+    if (controls){
+      // ③を開いて戻す（卓→全体へ戻る導線）
+      const ov = root.querySelector('details[data-seat-panel="overview"]');
+      if (ov) ov.open = true;
+      controls.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }else{
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+  fab.addEventListener('click', scrollToTop);
+
+  const backTopBtn = root.querySelector('[data-seat-backtop]');
+  if (backTopBtn) backTopBtn.addEventListener('click', scrollToTop);
+
+  function onScroll(){
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    fab.classList.toggle('is-show', y > 220);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
   // ===== Overview ring =====
   const overview = root.querySelector('[data-seating-overview]');
+  const frame = root.querySelector('.overview-frame');
   if (overview){
     const headLabel = String(data.headTableLabel || '高砂').trim();
     overview.innerHTML = `
@@ -671,24 +720,8 @@ function setupNavAutoCollapse(){
       `).join('')}
     `;
 
-    // 両サイド寄せ + 輪っか感（このposだけ触れば配置調整できる）
-    const pos = {
-      A: {x: 20, y: 42},
-      X: {x: 12, y: 60},
-      F: {x: 20, y: 78},
-      B: {x: 50, y: 38},
-      C: {x: 80, y: 42},
-      D: {x: 88, y: 60},
-      E: {x: 80, y: 78}
-    };
-
     overview.querySelectorAll('[data-table]').forEach(btn => {
       const k = btn.getAttribute('data-table');
-      const p = pos[k];
-      if (p){
-        btn.style.left = p.x + '%';
-        btn.style.top  = p.y + '%';
-      }
       btn.addEventListener('click', () => jumpToTable(k));
     });
   }
@@ -699,45 +732,31 @@ function setupNavAutoCollapse(){
     tablesWrap.innerHTML = TABLE_KEYS.map(k => renderTableCard(k)).join('');
   }
 
-  // ===== Categories (dropdown + keep selection per side) =====
+  // ===== Categories (dropdown) =====
   const sideSel = root.querySelector('[data-seat-side]');
   const catSel  = root.querySelector('[data-seat-category]');
   const actions = root.querySelector('[data-cat-actions]');
   const categories = Array.isArray(data.categories) ? data.categories : [];
 
-  // 内部IDは index を含めて重複回避（config上のidが重複していても安定させる）
+  // 保持：新郎/新婦ごとのカテゴリ選択
+  const LS_KEY = 'wedding:seating:lastCategoryBySide';
+  function loadLastBySide(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || '{}') || {}; }catch(e){ return {}; }
+  }
+  function saveLastBySide(obj){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(obj || {})); }catch(e){}
+  }
+  let lastBySide = loadLastBySide();
+
+  // 内部IDは index を含めて重複回避（config上のidはそのままでもOK）
   const catList = categories.map((c, idx) => ({
     idx,
     id: `${String(c.id || 'cat')}-${idx}`,
+    rawId: String(c.id || ''),
     label: String(c.label || 'カテゴリ'),
     tables: Array.isArray(c.tables) ? c.tables.map(String) : [],
     side: resolveSide(c)
   }));
-
-  const LS_KEY = 'wedding:seating:lastCatBySide';
-  function readSaved(){
-    try{
-      return JSON.parse(localStorage.getItem(LS_KEY) || '{}') || {};
-    }catch(e){
-      return {};
-    }
-  }
-  function writeSaved(obj){
-    try{
-      localStorage.setItem(LS_KEY, JSON.stringify(obj || {}));
-    }catch(e){}
-  }
-  function saveForSide(side, catId){
-    const o = readSaved();
-    o[side] = catId;
-    writeSaved(o);
-  }
-  function getSavedForSide(side){
-    const o = readSaved();
-    return o[side] || '';
-  }
-
-  let currentSide = (sideSel?.value || 'groom');
 
   function buildCatOptions(){
     if (!catSel) return;
@@ -753,20 +772,21 @@ function setupNavAutoCollapse(){
       return;
     }
 
-    // sideごとの保存値があれば復元
-    const saved = getSavedForSide(side);
-    if (saved && filtered.some(x => x.id === saved)){
-      catSel.value = saved;
+    // sideごとの前回選択を復元（同一side内でのみ）
+    const lastId = lastBySide?.[side];
+    if (lastId && filtered.some(x => x.id === lastId)){
+      catSel.value = lastId;
     }else{
-      // 現在選択がそのまま使えるなら維持、ダメなら先頭
-      const cur = catSel.value;
-      if (!cur || !filtered.some(x => x.id === cur)){
-        catSel.value = filtered[0].id;
-      }
+      catSel.value = filtered[0].id;
     }
+  }
 
-    // 初期表示を保存しておく（初回ロード時）
-    saveForSide(side, catSel.value);
+  function persistCurrentCategory(){
+    if (!catSel || !sideSel) return;
+    const side = sideSel.value || 'groom';
+    const val = catSel.value || '';
+    lastBySide = { ...(lastBySide || {}), [side]: val };
+    saveLastBySide(lastBySide);
   }
 
   function renderCatActions(){
@@ -781,6 +801,8 @@ function setupNavAutoCollapse(){
       return;
     }
 
+    persistCurrentCategory();
+
     const keys = cat.tables.filter(k => TABLE_KEYS.includes(k));
     const uniq = [...new Set(keys)];
 
@@ -791,6 +813,7 @@ function setupNavAutoCollapse(){
       </button>
     `).join('') || `<div class="result-empty">（該当する卓がありません）</div>`;
 
+    // 重要：同じ卓が複数カテゴリに出ても、飛び先は同一卓カード（複製しない）
     actions.querySelectorAll('[data-jump-table]').forEach(btn => {
       btn.addEventListener('click', () => jumpToTable(btn.getAttribute('data-jump-table')));
     });
@@ -798,19 +821,13 @@ function setupNavAutoCollapse(){
 
   if (sideSel){
     sideSel.addEventListener('change', () => {
-      // 変更前のsideに対して、現在のカテゴリ選択を保存
-      const prevSide = currentSide;
-      if (catSel?.value) saveForSide(prevSide, catSel.value);
-
-      currentSide = sideSel.value || 'groom';
       buildCatOptions();
       renderCatActions();
     });
   }
   if (catSel){
     catSel.addEventListener('change', () => {
-      const side = (sideSel?.value || 'groom');
-      if (catSel.value) saveForSide(side, catSel.value);
+      persistCurrentCategory();
       renderCatActions();
     });
   }
@@ -825,13 +842,13 @@ function setupNavAutoCollapse(){
 
   const renderResults = (qRaw) => {
     if (!results) return;
-    const q = normalize(qRaw).toLowerCase();
+    const q = normSearch(qRaw);
     if (!q){
       results.innerHTML = `<div class="result-empty">お名前を入力すると検索できます</div>`;
       return;
     }
     const hits = allSeats
-      .filter(it => it.nameNorm.toLowerCase().includes(q))
+      .filter(it => it.searchKey.includes(q))
       .slice(0, 50);
 
     if (!hits.length){
@@ -841,15 +858,18 @@ function setupNavAutoCollapse(){
 
     results.innerHTML = `
       <div class="result-list">
-        ${hits.map(h => `
-          <button type="button" class="result-item" data-hit="${escapeHtml(h.id)}">
-            <div>
-              <div class="result-name">${escapeHtml(h.name)}</div>
-              <div class="result-meta">${escapeHtml(`${h.tableKey} / 席${h.pos}`)}</div>
-            </div>
-            <div class="result-cta">見る</div>
-          </button>
-        `).join('')}
+        ${hits.map(h => {
+          const meta = h.kana ? `${h.tableKey} / 席${h.pos} ・ ${h.kana}` : `${h.tableKey} / 席${h.pos}`;
+          return `
+            <button type="button" class="result-item" data-hit="${escapeHtml(h.id)}">
+              <div>
+                <div class="result-name">${escapeHtml(h.name)}</div>
+                <div class="result-meta">${escapeHtml(meta)}</div>
+              </div>
+              <div class="result-cta">見る</div>
+            </button>
+          `;
+        }).join('')}
       </div>
     `;
 
@@ -868,17 +888,161 @@ function setupNavAutoCollapse(){
     renderResults('');
   }
 
+  // ===== overview layout (枠内で相対的に詰める：重ならない範囲で最大限寄せる) =====
+  function debounce(fn, wait){
+    let t = null;
+    return function(){
+      const args = arguments;
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(null, args), wait);
+    };
+  }
+
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+  function layoutOverviewRing(){
+    if (!overview || !frame) return;
+
+    const nodes = {};
+    overview.querySelectorAll('.overview-node[data-table]').forEach(btn => {
+      nodes[btn.getAttribute('data-table')] = btn;
+    });
+    const head = overview.querySelector('.overview-head');
+
+    const w = frame.clientWidth || 1;
+    const h = frame.clientHeight || 1;
+
+    // 枠内相対サイズ：横幅からノードサイズを決める（上限/下限あり）
+    const dynSize = clamp(Math.round(w / 7.2), 84, 126);
+    overview.style.setProperty('--node-size', dynSize + 'px');
+
+    // サイズ反映後に計測
+    const anyNode = nodes['A'] || nodes['B'] || Object.values(nodes)[0];
+    const nodeSize = anyNode ? anyNode.getBoundingClientRect().width : dynSize;
+    const nodeR = nodeSize / 2;
+
+    // なるべく寄せるが重ならない（中心距離）
+    const minDist = nodeSize * 1.04;
+
+    // 中心（高砂があるので少し下へ）
+    const cx = w * 0.50;
+    const cy = h * 0.60;
+
+    // 角度（固定：配置のイメージは維持）
+    const anglesDeg = { A:150, X:180, F:210, C:-30, D:0, E:30 };
+
+    // head の下端 + gap をBの最低位置に
+    let bMinY = h * 0.34;
+    try{
+      if (head){
+        const fr = frame.getBoundingClientRect();
+        const hr = head.getBoundingClientRect();
+        const headBottom = (hr.bottom - fr.top);
+        bMinY = headBottom + nodeR + 12;
+      }
+    }catch(e){}
+
+    // 半径ベース（枠の中で相対的に）
+    const pad = 14;
+    const rxBase = Math.min((w/2) - nodeR - pad, w * 0.42);
+    const ryBase = Math.min((h * 0.42) - nodeR - pad, h * 0.30);
+
+    // できるだけ詰める（scale小→重なったら少し広げる）
+    let scale = 0.60;
+    let placed = null;
+
+    for (let iter = 0; iter < 10; iter++){
+      const rx = rxBase * scale;
+      const ry = ryBase * scale;
+
+      const p = {};
+      for (const k of Object.keys(anglesDeg)){
+        const rad = anglesDeg[k] * Math.PI / 180;
+        p[k] = { x: cx + rx * Math.cos(rad), y: cy + ry * Math.sin(rad) };
+      }
+
+      // B は上寄り（輪の内側）
+      p.B = { x: cx, y: Math.max(bMinY, h * 0.40) };
+
+      // 画面外に出ないようにクランプ
+      const minX = nodeR + pad, maxX = w - nodeR - pad;
+      const minY = nodeR + pad, maxY = h - nodeR - pad;
+      for (const k of Object.keys(p)){
+        p[k].x = clamp(p[k].x, minX, maxX);
+        p[k].y = clamp(p[k].y, minY, maxY);
+      }
+
+      // 重なりチェック
+      const keys = Object.keys(p);
+      let ok = true;
+      for (let i = 0; i < keys.length && ok; i++){
+        for (let j = i + 1; j < keys.length; j++){
+          const a = p[keys[i]], b = p[keys[j]];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d = Math.sqrt(dx*dx + dy*dy);
+          if (d < minDist){
+            ok = false;
+            break;
+          }
+        }
+      }
+
+      if (ok){
+        placed = p;
+        break;
+      }
+      scale += 0.05; // 少し広げる（重なり回避）
+    }
+
+    if (!placed){
+      // 最後の手段：一旦広めで確定
+      const rx = rxBase * 0.85, ry = ryBase * 0.85;
+      placed = {};
+      for (const k of Object.keys(anglesDeg)){
+        const rad = anglesDeg[k] * Math.PI / 180;
+        placed[k] = { x: cx + rx * Math.cos(rad), y: cy + ry * Math.sin(rad) };
+      }
+      placed.B = { x: cx, y: Math.max(bMinY, h * 0.40) };
+    }
+
+    // 反映（%で持つ：リサイズ耐性）
+    for (const k of Object.keys(placed)){
+      const btn = nodes[k];
+      if (!btn) continue;
+      btn.style.left = (placed[k].x / w * 100) + '%';
+      btn.style.top  = (placed[k].y / h * 100) + '%';
+    }
+  }
+
+  const relayout = debounce(layoutOverviewRing, 80);
+  window.addEventListener('resize', relayout);
+  // 初期実行（描画後）
+  setTimeout(layoutOverviewRing, 0);
+
   // ===== helpers =====
+  function seatEntryToNameKana(entry){
+    if (entry && typeof entry === 'object'){
+      const name = normalize(entry.name || '');
+      const kana = normalize(entry.kana || '');
+      return { name, kana };
+    }
+    const name = normalize(entry);
+    const kana = normalize(readingsMap?.[name] || '');
+    return { name, kana };
+  }
+
   function buildSeatIndex(){
     const idx = [];
     for (const k of TABLE_KEYS){
       const t = tables[k] || {};
       const seats = Array.isArray(t.seats) ? t.seats : [];
-      seats.map(normalize).forEach((name, i) => {
+      seats.forEach((raw, i) => {
+        const { name, kana } = seatEntryToNameKana(raw);
         if (!name) return;
         const pos = i + 1;
         const id = `${k}:${pos}`;
-        idx.push({ id, tableKey: k, pos, name, nameNorm: name });
+        const searchKey = (normSearch(name) + ' ' + normSearch(kana)).trim();
+        idx.push({ id, tableKey: k, pos, name, kana, searchKey });
       });
     }
     return idx;
@@ -921,8 +1085,9 @@ function setupNavAutoCollapse(){
   }
 
   function renderSeats(tableKey, seatsRaw){
-    const seats = seatsRaw.map(normalize).slice(0, 8);
-    const items = seats.map((name, i) => {
+    const seats = (seatsRaw || []).slice(0, 8);
+    const items = seats.map((raw, i) => {
+      const { name } = seatEntryToNameKana(raw);
       const pos = i + 1;
       const id = `${tableKey}:${pos}`;
       const cls = name ? '' : ' is-empty';
