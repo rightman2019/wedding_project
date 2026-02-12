@@ -348,8 +348,10 @@ function setupNavAutoCollapse(){
       }
 
       [data-seating-root] .mode-panel{
+        display:block;
         padding: 0 16px 16px;
       }
+      [data-seating-root] .mode-panel[hidden]{ display:none !important; }
       [data-seating-root] .panel-title{
         font-weight: 900;
         font-size: 13px;
@@ -780,8 +782,18 @@ setMode('name');
 
 // クリックをrootで拾う（ボタンが差し替わっても動く）
 root.addEventListener('click', (e) => {
-  const btn = e.target.closest?.('[data-mode]');
+  const t = e.target;
+  const btn = (t && t.nodeType === 1) ? t.closest('[data-mode]') : null;
   if (!btn) return;
+  e.preventDefault();
+  setMode(btn.getAttribute('data-mode'));
+});
+// clickが取りこぼされる端末対策（より早く反応）
+root.addEventListener('pointerup', (e) => {
+  const t = e.target;
+  const btn = (t && t.nodeType === 1) ? t.closest('[data-mode]') : null;
+  if (!btn) return;
+  e.preventDefault();
   setMode(btn.getAttribute('data-mode'));
 });
 
