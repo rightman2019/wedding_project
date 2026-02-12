@@ -285,541 +285,591 @@ function setupNavAutoCollapse(){
     });
   }
 
-    
-  /**
-   * Seating page (2026-02)
-   * UI構成：
-   * ① 検索窓（表示しっぱなし / sticky）
-   * ② プルダウン（新郎 / 新婦）→ カテゴリを縦並び表示（カテゴリ内は卓へのジャンプのみ）
-   * ③ 全体を見る（普段は閉じる）… 卓のみ表示
-   *
-   * 重要：
-   * - 同じ卓が複数カテゴリに属しても「卓カード」は複製しない
-   *   → カテゴリ内の卓ボタンは常に同一の卓カードへジャンプする
-   */
-  function setupSeatingPage(){
-  const root = document.querySelector('[data-seating-root]');
-  if (!root) return;
+    function setupSeatingPage(){
+      const root = document.querySelector('[data-seating-root]');
+      if (!root) return;
 
-  // Ensure page marker (some CSS targets body.seating-page)
-  try{ document.body.classList.add('seating-page'); }catch(e){}
+      // --- seating-only CSS (fileを増やさないためJS注入) ---
+      (function injectSeatingStyles(){
+        if (document.getElementById('seating-style')) return;
+        const st = document.createElement('style');
+        st.id = 'seating-style';
+        st.textContent = `
+          /* ===== Panels (①〜③) ===== */
+          body.seating-page [data-seating-root] .seat-controls{
+            position: sticky;
+            top: 12px;
+            z-index: 6;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+          }
+          body.seating-page [data-seating-root] details.seat-panel{
+            border: 1px solid rgba(0,0,0,.10);
+            border-radius: 22px;
+            background: rgba(255,255,255,.68);
+            box-shadow: 0 10px 26px rgba(0,0,0,.06);
+            overflow: hidden;
+          }
+          body.seating-page [data-seating-root] details.seat-panel > summary{
+            display:flex;
+            align-items:center;
+            gap: 12px;
+            padding: 18px 18px;
+            cursor:pointer;
+            list-style:none;
+            user-select:none;
+            font-weight: 900; /* タイトル太字 */
+            font-size: 22px;
+          }
+          body.seating-page [data-seating-root] details.seat-panel > summary::-webkit-details-marker{ display:none; }
+          body.seating-page [data-seating-root] details.seat-panel > summary .badge{
+            width: 34px;
+            height: 34px;
+            display:grid;
+            place-items:center;
+            border-radius: 999px;
+            border: 2px solid rgba(0,0,0,.22);
+            background: rgba(255,255,255,.6);
+            font-weight: 900;
+            flex: 0 0 auto;
+          }
+          body.seating-page [data-seating-root] details.seat-panel > summary .title{
+            flex: 1 1 auto;
+            line-height: 1.25;
+          }
 
-  // --- seating-only CSS (fileを増やさないためJS注入) ---
-  (function injectSeatingStyles(){
-    if (document.getElementById('seating-style')) return;
-    const st = document.createElement('style');
-    st.id = 'seating-style';
-    st.textContent = `
-      body.seating-page [data-seating-root] .seat-sticky{
-        position: sticky;
-        top: 12px;
-        z-index: 5;
-        margin-bottom: 14px;
-      }
-      body.seating-page [data-seating-root] details.seat-panel{
-        background: var(--paper);
-        border: 1px solid rgba(0,0,0,.10);
-        border-radius: 18px;
-        box-shadow: 0 6px 18px rgba(0,0,0,.06);
-        overflow: hidden;
-      }
-      body.seating-page [data-seating-root] details.seat-panel + details.seat-panel{
-        margin-top: 10px;
-      }
-      body.seating-page [data-seating-root] details.seat-panel > summary{
-        cursor: pointer;
-        list-style: none;
-        padding: 12px 14px;
-        font-weight: 900;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap: 10px;
-        user-select:none;
-      }
-      body.seating-page [data-seating-root] details.seat-panel > summary::-webkit-details-marker{ display:none; }
-      body.seating-page [data-seating-root] details.seat-panel > summary .sum-left{
-        display:flex; align-items:baseline; gap: 10px;
-      }
-      body.seating-page [data-seating-root] details.seat-panel > summary .sum-num{
-        font-weight: 900;
-        opacity: .8;
-      }
-      body.seating-page [data-seating-root] details.seat-panel > summary .sum-title{
-        font-weight: 900;
-      }
-      body.seating-page [data-seating-root] details.seat-panel > summary::after{
-        content: "▾";
-        font-size: 18px;
-        opacity: .8;
-        transform: rotate(-90deg);
-        transition: transform .18s ease;
-      }
-      body.seating-page [data-seating-root] details.seat-panel[open] > summary::after{
-        transform: rotate(0deg);
-      }
-      body.seating-page [data-seating-root] .seat-panel-body{
-        padding: 0 14px 14px;
+          /* ▽（開閉が分かるUI） */
+          body.seating-page [data-seating-root] details.seat-panel > summary::after{
+            content: "▸";
+            font-size: 22px;
+            opacity: .8;
+            transform: translateY(1px);
+            transition: transform .18s ease;
+            flex: 0 0 auto;
+          }
+          body.seating-page [data-seating-root] details.seat-panel[open] > summary::after{
+            transform: rotate(90deg) translateX(1px);
+          }
+
+          body.seating-page [data-seating-root] .panel-body{
+            padding: 0 18px 18px;
+          }
+
+          /* ===== Inputs ===== */
+          body.seating-page [data-seating-root] .seat-label{
+            font-size: 12px;
+            opacity:.85;
+            margin: 0 0 6px;
+          }
+          body.seating-page [data-seating-root] .seat-input,
+          body.seating-page [data-seating-root] .seat-select{
+            width:100%;
+            padding: 12px 12px;
+            border: 1px solid rgba(0,0,0,.14);
+            border-radius: 12px;
+            background: #fff;
+            font-size: 16px;
+          }
+          body.seating-page [data-seating-root] .seat-results{
+            margin-top: 10px;
+            border-top: 1px solid rgba(0,0,0,.06);
+            padding-top: 10px;
+          }
+          body.seating-page [data-seating-root] .result-empty{ font-size: 13px; opacity:.75; padding: 8px 2px; }
+          body.seating-page [data-seating-root] .result-list{ display:flex; flex-direction:column; gap:8px; }
+          body.seating-page [data-seating-root] .result-item{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap: 10px;
+            padding: 12px 12px;
+            border: 1px solid rgba(0,0,0,.10);
+            border-radius: 14px;
+            background: #fff;
+            cursor: pointer;
+            text-align:left;
+          }
+          body.seating-page [data-seating-root] .result-name{ font-weight: 800; }
+          body.seating-page [data-seating-root] .result-meta{ font-size: 12px; opacity:.75; }
+          body.seating-page [data-seating-root] .result-cta{ font-size: 12px; opacity:.7; }
+
+          /* ===== Filter UI ===== */
+          body.seating-page [data-seating-root] .filter-row{
+            display:flex;
+            flex-direction:column;
+            gap: 10px;
+          }
+          body.seating-page [data-seating-root] .filter-actions{
+            margin-top: 10px;
+            display:flex;
+            flex-direction:column;
+            gap: 8px;
+          }
+          body.seating-page [data-seating-root] .cat-link{
+            display:flex;
+            align-items:center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,.10);
+            background:#fff;
+            cursor:pointer;
+            text-align:left;
+          }
+          body.seating-page [data-seating-root] .cat-k{
+            width: 34px;
+            height: 34px;
+            display:grid;
+            place-items:center;
+            border-radius: 999px;
+            border: 2px solid rgba(0,0,0,.16);
+            font-weight: 900;
+            flex: 0 0 auto;
+          }
+
+          /* ===== Overview ring ===== */
+          body.seating-page [data-seating-root] .overview-frame{
+            position: relative;
+            height: clamp(280px, 44vw, 430px);
+            border-radius: 22px;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,.08);
+            overflow: hidden;
+          }
+          body.seating-page [data-seating-root] .overview-frame::before{
+            content:"";
+            position:absolute;
+            inset: 14px;
+            border-radius: 999px;
+            border: 2px dashed rgba(0,0,0,.10);
+            pointer-events:none;
+          }
+          body.seating-page [data-seating-root] .overview-ring{
+            position:absolute;
+            inset: 0;
+          }
+          body.seating-page [data-seating-root] .overview-node{
+            --size: clamp(84px, 15vw, 122px);
+            width: var(--size);
+            height: var(--size);
+            border-radius: 999px;
+            border: 2px solid rgba(0,0,0,.16);
+            background: #fff;
+            box-shadow: 0 14px 26px rgba(0,0,0,.06);
+            display:grid;
+            place-items:center;
+            cursor:pointer;
+            position:absolute;
+            transform: translate(-50%,-50%);
+          }
+          body.seating-page [data-seating-root] .overview-node .node-key{
+            font-size: clamp(20px, 4.2vw, 34px);
+            font-weight: 900;
+          }
+          body.seating-page [data-seating-root] .overview-head{
+            position:absolute;
+            left: 50%;
+            top: 12%;
+            transform: translate(-50%,-50%);
+            width: clamp(160px, 46vw, 320px); /* 高砂：横に広げる */
+            height: 44px;
+            border-radius: 16px;
+            border: 2px solid rgba(0,0,0,.20);
+            background: rgba(255,255,255,.78);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight: 900;
+            box-shadow: 0 12px 24px rgba(0,0,0,.08);
+          }
+
+          /* 卓カード同士の上下マージン（見た目整える） */
+          body.seating-page [data-seating-root] .seat-card{ margin: 18px 0; }
+          body.seating-page [data-seating-root] .seat-card:first-child{ margin-top: 12px; }
+
+          body.seating-page [data-seating-root] .seat-card.is-flash{
+            outline: 3px solid rgba(0,0,0,.22);
+            animation: seatFlash 1.2s ease both;
+          }
+          @keyframes seatFlash{
+            0%{ transform: translateY(0); }
+            25%{ transform: translateY(-2px); }
+            100%{ transform: translateY(0); }
+          }
+          body.seating-page [data-seating-root] .seat-item.is-focus{
+            outline: 3px solid rgba(0,0,0,.22);
+            border-radius: 10px;
+          }
+
+          body.seating-page [data-seating-root] .seat-changelog{
+            margin-top: 12px;
+            font-size: 12px;
+            opacity: .75;
+          }
+        `;
+        document.head.appendChild(st);
+      })();
+
+      const data = (window.WEDDING_SITE || {}).seating || {};
+      const tablesRaw = data.tables || {};
+
+      const normalize = (s) => (String(s || '').normalize('NFKC')).trim();
+      const TABLE_KEYS = ['A','B','C','D','E','F','X'];
+
+      // tables を正規化（欠けても卓は出す）
+      const tables = {};
+      for (const k of TABLE_KEYS){
+        const t = tablesRaw[k] || {};
+        tables[k] = {
+          label: String(t.label || ('TABLE ' + k)),
+          seats: Array.isArray(t.seats) ? t.seats : []
+        };
       }
 
-      body.seating-page [data-seating-root] .seat-label{ font-size: 12px; opacity:.85; margin: 0 0 6px; font-weight: 800; }
-      body.seating-page [data-seating-root] .seat-row{ display:flex; gap:10px; align-items:center; }
-      body.seating-page [data-seating-root] .seat-row > *{ flex:1; }
-      body.seating-page [data-seating-root] .seat-input, 
-      body.seating-page [data-seating-root] .seat-select{
-        width:100%;
-        padding: 12px 12px;
-        border: 1px solid rgba(0,0,0,.14);
-        border-radius: 12px;
-        background: #fff;
-        font-size: 16px;
-      }
-      body.seating-page [data-seating-root] .seat-results{
-        margin-top: 10px;
-        border-top: 1px solid rgba(0,0,0,.06);
-        padding-top: 10px;
-      }
-      body.seating-page [data-seating-root] .result-empty{ font-size: 13px; opacity:.75; padding: 8px 2px; }
-      body.seating-page [data-seating-root] .result-list{ display:flex; flex-direction:column; gap:8px; }
-      body.seating-page [data-seating-root] .result-item{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap: 10px;
-        padding: 12px 12px;
-        border: 1px solid rgba(0,0,0,.10);
-        border-radius: 14px;
-        background: #fff;
-        cursor: pointer;
-        text-align:left;
-      }
-      body.seating-page [data-seating-root] .result-name{ font-weight: 800; }
-      body.seating-page [data-seating-root] .result-meta{ font-size: 12px; opacity:.75; }
-      body.seating-page [data-seating-root] .result-cta{ font-size: 12px; opacity:.7; }
-
-      body.seating-page [data-seating-root] .seat-cats{ margin-top: 10px; display:flex; flex-direction:column; gap:10px; }
-      body.seating-page [data-seating-root] .cat-block{
-        border: 1px solid rgba(0,0,0,.10);
-        border-radius: 16px;
-        padding: 12px;
-        background: rgba(255,255,255,.65);
-      }
-      body.seating-page [data-seating-root] .cat-title{ font-weight: 900; margin-bottom: 10px; }
-      body.seating-page [data-seating-root] .cat-links{ display:flex; flex-direction:column; gap:8px; }
-      body.seating-page [data-seating-root] .cat-link{
-        display:flex;
-        align-items:center;
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(0,0,0,.10);
-        background:#fff;
-        cursor:pointer;
-        text-align:left;
-      }
-      body.seating-page [data-seating-root] .cat-k{
-        width: 34px;
-        height: 34px;
-        display:grid;
-        place-items:center;
-        border-radius: 999px;
-        border: 1px solid rgba(0,0,0,.16);
-        font-weight: 900;
+      // 新仕様：カテゴリ側の新郎/新婦判定は config の side を優先
+      function resolveSide(cat){
+        const s = String(cat?.side || '').toLowerCase();
+        if (s === 'groom' || s === 'shinro') return 'groom';
+        if (s === 'bride' || s === 'shinpu') return 'bride';
+        // fallback（古いconfig互換）：labelから推定
+        const label = String(cat?.label || '');
+        if (label.includes('新郎')) return 'groom';
+        if (label.includes('新婦')) return 'bride';
+        return 'both';
       }
 
-      body.seating-page [data-seating-root] details.seat-overview{
-        border: 1px solid rgba(0,0,0,.10);
-        border-radius: 18px;
-        padding: 10px 12px;
-        background: rgba(255,255,255,.65);
-        margin: 12px 0 14px;
-      }
-      body.seating-page [data-seating-root] details.seat-overview > summary{
-        cursor: pointer;
-        list-style: none;
-        font-weight: 900;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding: 8px 2px;
-      }
-      body.seating-page [data-seating-root] details.seat-overview > summary::-webkit-details-marker{ display:none; }
-      body.seating-page [data-seating-root] details.seat-overview > summary::after{
-        content: "▾";
-        font-size: 18px;
-        opacity: .8;
-        transform: rotate(-90deg);
-        transition: transform .18s ease;
-      }
-      body.seating-page [data-seating-root] details.seat-overview[open] > summary::after{
-        transform: rotate(0deg);
-      }
-      body.seating-page [data-seating-root] .overview-frame{
-        margin-top: 10px;
-        border: 1px solid rgba(0,0,0,.10);
-        border-radius: 18px;
-        padding: 12px;
-        background: #fff;
-      }
-      body.seating-page [data-seating-root] .overview{
-        position: relative;
-        width: 100%;
-        max-width: 820px;
-        height: clamp(280px, 52vw, 420px);
-        margin: 0 auto;
-      }
-      body.seating-page [data-seating-root] .overview::before{
-        content: "";
-        position:absolute;
-        left:50%;
-        top:60%;
-        width: min(720px, 96%);
-        height: min(720px, 96%);
-        transform: translate(-50%, -50%);
-        border-radius: 999px;
-        border: 2px dashed rgba(0,0,0,.14);
-        opacity: .28;
-        pointer-events:none;
-      }
-      body.seating-page [data-seating-root] .overview-head{
-        position:absolute;
-        left:50%;
-        top: 10%;
-        transform: translate(-50%, -50%);
-        padding: 12px 22px;
-        min-width: 150px;
-        text-align:center;
-        font-size: 14px;
-        font-weight: 900;
-        border-radius: 18px;
-        border: 2px solid rgba(0,0,0,.22);
-        background: var(--paper);
-        box-shadow: 0 8px 18px rgba(0,0,0,.08);
-      }
-      body.seating-page [data-seating-root] .overview-node{
-        position:absolute;
-        transform: translate(-50%, -50%);
-        width: 92px;
-        height: 92px;
-        border-radius: 999px;
-        border: 2px solid rgba(0,0,0,.18);
-        background: #fff;
-        display:grid;
-        place-items:center;
-        cursor:pointer;
-        box-shadow: 0 8px 18px rgba(0,0,0,.08);
-      }
-      body.seating-page [data-seating-root] .overview-node .node-key{
-        font-size: 24px;
-        font-weight: 900;
-      }
+      const cssEscape = (s) => (window.CSS && CSS.escape) ? CSS.escape(String(s)) : String(s).replace(/[^a-zA-Z0-9_-]/g, '\$&');
 
-      body.seating-page [data-seating-root] .seat-card.is-flash{
-        outline: 3px solid rgba(0,0,0,.22);
-        animation: seatFlash 1.2s ease both;
-      }
-      @keyframes seatFlash{
-        0%{ transform: translateY(0); }
-        25%{ transform: translateY(-2px); }
-        100%{ transform: translateY(0); }
-      }
-      body.seating-page [data-seating-root] .seat-item.is-focus{
-        outline: 3px solid rgba(0,0,0,.22);
-        border-radius: 10px;
-      }
-      body.seating-page [data-seating-root] .seat-changelog{
-        margin-top: 12px;
-        font-size: 12px;
-        opacity: .75;
-      }
-    `;
-    document.head.appendChild(st);
-  })();
+      // 初期状態：検索だけ open。他は閉じた状態で同じバー感。
+      root.innerHTML = `
+        <div class="seat-controls">
+          <details class="seat-panel" open data-seat-panel="search">
+            <summary><span class="badge">①</span><span class="title">お名前検索（部分一致）</span></summary>
+            <div class="panel-body">
+              <div class="seat-label">お名前を入力すると検索できます</div>
+              <input class="seat-input" type="text" inputmode="search" placeholder="例：たかはし / 右京 など" data-seat-find />
+              <div class="seat-results" data-seat-results></div>
+            </div>
+          </details>
 
-  const data = (window.WEDDING_SITE || {}).seating || {};
-  const tablesRaw = data.tables || {};
+          <details class="seat-panel" data-seat-panel="filter">
+            <summary><span class="badge">②</span><span class="title">絞り込み（新郎 / 新婦）</span></summary>
+            <div class="panel-body">
+              <div class="filter-row">
+                <div>
+                  <div class="seat-label">新郎 / 新婦</div>
+                  <select class="seat-select" data-seat-side>
+                    <option value="groom">新郎</option>
+                    <option value="bride">新婦</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="seat-label">カテゴリ</div>
+                  <select class="seat-select" data-seat-category></select>
+                </div>
+              </div>
+              <div class="filter-actions" data-cat-actions></div>
+            </div>
+          </details>
 
-  const normalize = (s) => (String(s || '').normalize('NFKC')).trim();
-  const TABLE_KEYS = ['A','B','C','D','E','F','X'];
-
-  // tables を正規化（欠けても卓は出す）
-  const tables = {};
-  for (const k of TABLE_KEYS){
-    const t = tablesRaw[k] || {};
-    tables[k] = {
-      label: String(t.label || ('TABLE ' + k)),
-      seats: Array.isArray(t.seats) ? t.seats : []
-    };
-  }
-
-  // カテゴリ側（新郎/新婦）判定
-  function resolveSide(cat){
-    const s = String(cat?.side || '').toLowerCase();
-    if (s === 'groom' || s === 'shinro') return 'groom';
-    if (s === 'bride' || s === 'shinpu') return 'bride';
-
-    const label = String(cat?.label || '');
-    if (label.includes('新郎')) return 'groom';
-    if (label.includes('新婦')) return 'bride';
-    return 'both'; // 不明は両方扱い（dropdownでも消さない）
-  }
-
-  const cssEscape = (s) => (window.CSS && CSS.escape) ? CSS.escape(String(s)) : String(s).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
-
-  // --- UI skeleton ---
-  root.innerHTML = `
-    <div class="seat-sticky">
-      <details class="seat-panel" open data-seat-sec="1">
-        <summary><span class="sum-left"><span class="sum-num">①</span><span class="sum-title">お名前検索（部分一致）</span></span></summary>
-        <div class="seat-panel-body">
-          <input class="seat-input" type="text" inputmode="search" placeholder="例：たかはし / 右京 など" data-seat-find />
-          <div class="seat-results" data-seat-results></div>
+          <details class="seat-panel" data-seat-panel="overview">
+            <summary><span class="badge">③</span><span class="title">全体を見る（卓のみ）</span></summary>
+            <div class="panel-body">
+              <div class="overview-frame">
+                <div class="overview-ring" data-seating-overview></div>
+              </div>
+            </div>
+          </details>
         </div>
-      </details>
 
-      <details class="seat-panel" open data-seat-sec="2">
-        <summary><span class="sum-left"><span class="sum-num">②</span><span class="sum-title">絞り込み（新郎 / 新婦）</span></span></summary>
-        <div class="seat-panel-body">
-          <div class="seat-row">
-            <select class="seat-select" data-seat-side>
-              <option value="groom">新郎</option>
-              <option value="bride">新婦</option>
-            </select>
-          </div>
-          <div class="seat-cats" data-seating-cats></div>
+        <div class="seat-section" id="all-tables">
+          <h3>卓一覧</h3>
+          <div data-seating-tables></div>
         </div>
-      </details>
-    </div>
 
-    <details class="seat-overview" data-seat-overview>
-      <summary><span style="font-weight:900">③ 全体を見る（卓のみ）</span></summary>
-      <div class="overview-frame">
-        <div class="overview" data-seating-overview></div>
-      </div>
-    </details>
-
-    <div class="seat-section" id="all-tables">
-      <h3>卓一覧</h3>
-      <div data-seating-tables></div>
-    </div>
-
-    <div class="seat-changelog">
-      ※修正点：カテゴリに同じ卓が含まれる場合でも卓カードは複製せず、各ボタンは同一の卓へ移動します。
-    </div>
-  `;
-
-  // --- build overview (tables only) ---
-  const overview = root.querySelector('[data-seating-overview]');
-  if (overview){
-    const headLabel = String(data.headTableLabel || '高砂').trim();
-    overview.innerHTML = `
-      <div class="overview-head">${escapeHtml(headLabel)}</div>
-      ${['A','B','C','X','D','F','E'].map(k => `
-        <button type="button" class="overview-node" data-table="${escapeHtml(k)}" aria-label="TABLE ${escapeHtml(k)}">
-          <div class="node-key">${escapeHtml(k)}</div>
-        </button>
-      `).join('')}
-    `;
-
-    // Circular-ish placement (percent)
-    const pos = {
-      A: {x: 15, y: 35},
-      B: {x: 50, y: 28},
-      C: {x: 85, y: 35},
-      X: {x: 10, y: 55},
-      D: {x: 90, y: 55},
-      F: {x: 15, y: 75},
-      E: {x: 85, y: 75},
-    };
-
-    overview.querySelectorAll('[data-table]').forEach(btn => {
-      const k = btn.getAttribute('data-table');
-      const p = pos[k] || {x:50,y:50};
-      btn.style.left = p.x + '%';
-      btn.style.top = p.y + '%';
-      btn.addEventListener('click', () => jumpToTable(k));
-    });
-  }
-
-  // --- tables render (only once; never duplicated) ---
-  const tablesWrap = root.querySelector('[data-seating-tables]');
-  if (tablesWrap){
-    tablesWrap.innerHTML = TABLE_KEYS.map(k => renderTableCard(k)).join('');
-  }
-
-  // --- categories vertical list (filtered by side dropdown) ---
-  const catsEl = root.querySelector('[data-seating-cats]');
-  const sideSel = root.querySelector('[data-seat-side]');
-  const categories = Array.isArray(data.categories) ? data.categories : [];
-
-  const renderCats = () => {
-    if (!catsEl) return;
-    const side = (sideSel?.value || 'groom');
-
-    // selected side + both を出す（両方カテゴリを消さない）
-    const filtered = categories
-      .map((c, idx) => ({ c, idx, side: resolveSide(c) }))
-      .filter(x => x.side === side || x.side === 'both');
-
-    catsEl.innerHTML = filtered.map(({c, idx}) => {
-      const label = escapeHtml(String(c.label || 'カテゴリ'));
-      const keys = (c.tables || []).map(String).filter(k => TABLE_KEYS.includes(k));
-      const uniq = [...new Set(keys)];
-      const links = uniq.map(k => `
-        <button type="button" class="cat-link" data-jump-table="${escapeHtml(k)}">
-          <div class="cat-k">${escapeHtml(k)}</div>
-          <div>${escapeHtml(tables[k]?.label || ('TABLE ' + k))}</div>
-        </button>
-      `).join('');
-
-      return `
-        <div class="cat-block" data-cat-idx="${idx}">
-          <div class="cat-title">${label}</div>
-          <div class="cat-links">${links || `<div class="result-empty">（該当する卓がありません）</div>`}</div>
+        <div class="seat-changelog">
+          ※修正点：カテゴリに同じ卓が含まれる場合でも卓カードは複製せず、各ボタンは同一の卓へ移動します。<br>
+          ※追加：②のカテゴリ選択は「新郎/新婦」それぞれで保持します（切り替えても前回の選択に戻ります）。
         </div>
       `;
-    }).join('');
 
-    // IMPORTANT: 同じ卓が複数カテゴリに出ても、飛び先は同一卓カード
-    catsEl.querySelectorAll('[data-jump-table]').forEach(btn => {
-      btn.addEventListener('click', () => jumpToTable(btn.getAttribute('data-jump-table')));
-    });
-  };
+      // ===== Overview ring =====
+      const overview = root.querySelector('[data-seating-overview]');
+      if (overview){
+        const headLabel = String(data.headTableLabel || '高砂').trim();
+        overview.innerHTML = `
+          <div class="overview-head">${escapeHtml(headLabel || '高砂')}</div>
+          ${TABLE_KEYS.map(k => `
+            <button type="button" class="overview-node" data-table="${escapeHtml(k)}" aria-label="TABLE ${escapeHtml(k)}">
+              <div class="node-key">${escapeHtml(k)}</div>
+            </button>
+          `).join('')}
+        `;
 
-  if (sideSel){
-    sideSel.addEventListener('change', renderCats);
-  }
-  renderCats();
+        // 両サイド寄せ + 輪っか感強め（必要ならここだけ微調整）
+        const pos = {
+          A: {x: 18, y: 40},
+          X: {x: 10, y: 57},
+          F: {x: 18, y: 74},
+          B: {x: 50, y: 34},
+          C: {x: 82, y: 40},
+          D: {x: 90, y: 57},
+          E: {x: 82, y: 74}
+        };
 
-  // --- search (always visible; in section ①) ---
-  const input = root.querySelector('[data-seat-find]');
-  const results = root.querySelector('[data-seat-results]');
-  const allSeats = buildSeatIndex();
+        overview.querySelectorAll('[data-table]').forEach(btn => {
+          const k = btn.getAttribute('data-table');
+          const p = pos[k];
+          if (p){
+            btn.style.left = p.x + '%';
+            btn.style.top  = p.y + '%';
+          }
+          btn.addEventListener('click', () => jumpToTable(k));
+        });
+      }
 
-  const renderResults = (qRaw) => {
-    if (!results) return;
-    const q = normalize(qRaw).toLowerCase();
-    if (!q){
-      results.innerHTML = `<div class="result-empty">お名前を入力すると検索できます</div>`;
-      return;
-    }
-    const hits = allSeats
-      .filter(it => it.nameNorm.toLowerCase().includes(q))
-      .slice(0, 50);
+      // ===== Tables render (only once; never duplicated) =====
+      const tablesWrap = root.querySelector('[data-seating-tables]');
+      if (tablesWrap){
+        tablesWrap.innerHTML = TABLE_KEYS.map(k => renderTableCard(k)).join('');
+      }
 
-    if (!hits.length){
-      results.innerHTML = `<div class="result-empty">見つかりませんでした（短く入力すると見つかる場合があります）</div>`;
-      return;
-    }
+      // ===== Categories (dropdown) =====
+      const sideSel = root.querySelector('[data-seat-side]');
+      const catSel  = root.querySelector('[data-seat-category]');
+      const actions = root.querySelector('[data-cat-actions]');
+      const categories = Array.isArray(data.categories) ? data.categories : [];
 
-    results.innerHTML = `
-      <div class="result-list">
-        ${hits.map(h => `
-          <button type="button" class="result-item" data-hit="${escapeHtml(h.id)}">
-            <div>
-              <div class="result-name">${escapeHtml(h.name)}</div>
-              <div class="result-meta">${escapeHtml(`${h.tableKey} / 席${h.pos}`)}</div>
-            </div>
-            <div class="result-cta">見る</div>
+      // 内部IDは index を含めて重複回避（config上のidはそのままでもOK）
+      const catList = categories.map((c, idx) => ({
+        idx,
+        id: `${String(c.id || 'cat')}-${idx}`,
+        label: String(c.label || 'カテゴリ'),
+        tables: Array.isArray(c.tables) ? c.tables.map(String) : [],
+        side: resolveSide(c)
+      }));
+
+      // ★ ②の追加：新郎/新婦ごとにカテゴリ選択を保持（localStorage）
+      const CAT_MEM_KEY = 'wedding:seating:lastCategoryBySide';
+      let lastCatBySide = {};
+      try {
+        lastCatBySide = JSON.parse(localStorage.getItem(CAT_MEM_KEY) || '{}') || {};
+      } catch (e) {
+        lastCatBySide = {};
+      }
+      const rememberCategory = (side, catId) => {
+        if (!side || !catId) return;
+        lastCatBySide[side] = catId;
+        try { localStorage.setItem(CAT_MEM_KEY, JSON.stringify(lastCatBySide)); } catch (e) {}
+      };
+
+      function buildCatOptions(){
+        if (!catSel) return;
+        const side = (sideSel?.value || 'groom');
+        const filtered = catList.filter(x => x.side === side || x.side === 'both');
+
+        catSel.innerHTML = filtered.map(x =>
+          `<option value="${escapeHtml(x.id)}">${escapeHtml(x.label)}</option>`
+        ).join('');
+
+        if (!filtered.length){
+          catSel.innerHTML = `<option value="">（カテゴリがありません）</option>`;
+          return;
+        }
+
+        // ★保持：そのsideの前回選択を復元（無ければ先頭）
+        const remembered = lastCatBySide[side];
+        const exists = remembered && filtered.some(x => x.id === remembered);
+        catSel.value = exists ? remembered : filtered[0].id;
+      }
+
+      function renderCatActions(){
+        if (!actions) return;
+        const side = (sideSel?.value || 'groom');
+        const filtered = catList.filter(x => x.side === side || x.side === 'both');
+        const id = catSel?.value || (filtered[0]?.id || '');
+        const cat = filtered.find(x => x.id === id) || filtered[0];
+
+        if (!cat){
+          actions.innerHTML = `<div class="result-empty">（カテゴリがありません）</div>`;
+          return;
+        }
+
+        const keys = cat.tables.filter(k => TABLE_KEYS.includes(k));
+        const uniq = [...new Set(keys)];
+
+        actions.innerHTML = uniq.map(k => `
+          <button type="button" class="cat-link" data-jump-table="${escapeHtml(k)}">
+            <div class="cat-k">${escapeHtml(k)}</div>
+            <div>${escapeHtml(tables[k]?.label || ('TABLE ' + k))}</div>
           </button>
-        `).join('')}
-      </div>
-    `;
+        `).join('') || `<div class="result-empty">（該当する卓がありません）</div>`;
 
-    results.querySelectorAll('[data-hit]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-hit');
-        const hit = allSeats.find(x => x.id === id);
-        if (!hit) return;
-        jumpToTable(hit.tableKey, hit.id);
-      });
-    });
-  };
+        // 重要：同じ卓が複数カテゴリに出ても、飛び先は同一卓カード（複製しない）
+        actions.querySelectorAll('[data-jump-table]').forEach(btn => {
+          btn.addEventListener('click', () => jumpToTable(btn.getAttribute('data-jump-table')));
+        });
+      }
 
-  if (input){
-    input.addEventListener('input', () => renderResults(input.value));
-    renderResults('');
-  }
+      // side切り替え時：切り替え前のカテゴリを保存し、切り替え後はそのsideの前回カテゴリを復元
+      let prevSide = (sideSel?.value || 'groom');
+      if (sideSel){
+        sideSel.addEventListener('change', () => {
+          // 切り替え前の選択を保存
+          if (catSel && prevSide) rememberCategory(prevSide, catSel.value);
+          prevSide = (sideSel.value || 'groom');
 
-  // ===== helpers =====
+          buildCatOptions();
+          renderCatActions();
 
-  function buildSeatIndex(){
-    const idx = [];
-    for (const k of TABLE_KEYS){
-      const t = tables[k] || {};
-      const seats = Array.isArray(t.seats) ? t.seats : [];
-      seats.map(normalize).forEach((name, i) => {
-        if (!name) return;
-        const pos = i + 1;
-        const id = `${k}:${pos}`;
-        idx.push({ id, tableKey: k, pos, name, nameNorm: name });
-      });
+          // 切り替え後に復元された選択を保存（念のため）
+          if (catSel) rememberCategory(prevSide, catSel.value);
+        });
+      }
+
+      // cat切り替え時：そのsideの選択として保存
+      if (catSel){
+        catSel.addEventListener('change', () => {
+          const side = (sideSel?.value || 'groom');
+          rememberCategory(side, catSel.value);
+          renderCatActions();
+        });
+      }
+
+      buildCatOptions();
+      renderCatActions();
+      // 初期選択も保存
+      if (catSel) rememberCategory(prevSide, catSel.value);
+
+      // ===== Search =====
+      const input = root.querySelector('[data-seat-find]');
+      const results = root.querySelector('[data-seat-results]');
+      const allSeats = buildSeatIndex();
+
+      const renderResults = (qRaw) => {
+        if (!results) return;
+        const q = normalize(qRaw).toLowerCase();
+        if (!q){
+          results.innerHTML = `<div class="result-empty">お名前を入力すると検索できます</div>`;
+          return;
+        }
+        const hits = allSeats
+          .filter(it => it.nameNorm.toLowerCase().includes(q))
+          .slice(0, 50);
+
+        if (!hits.length){
+          results.innerHTML = `<div class="result-empty">見つかりませんでした（短く入力すると見つかる場合があります）</div>`;
+          return;
+        }
+
+        results.innerHTML = `
+          <div class="result-list">
+            ${hits.map(h => `
+              <button type="button" class="result-item" data-hit="${escapeHtml(h.id)}">
+                <div>
+                  <div class="result-name">${escapeHtml(h.name)}</div>
+                  <div class="result-meta">${escapeHtml(`${h.tableKey} / 席${h.pos}`)}</div>
+                </div>
+                <div class="result-cta">見る</div>
+              </button>
+            `).join('')}
+          </div>
+        `;
+
+        results.querySelectorAll('[data-hit]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-hit');
+            const hit = allSeats.find(x => x.id === id);
+            if (!hit) return;
+            jumpToTable(hit.tableKey, hit.id);
+          });
+        });
+      };
+
+      if (input){
+        input.addEventListener('input', () => renderResults(input.value));
+        renderResults('');
+      }
+
+      // ===== helpers =====
+      function buildSeatIndex(){
+        const idx = [];
+        for (const k of TABLE_KEYS){
+          const t = tables[k] || {};
+          const seats = Array.isArray(t.seats) ? t.seats : [];
+          seats.map(normalize).forEach((name, i) => {
+            if (!name) return;
+            const pos = i + 1;
+            const id = `${k}:${pos}`;
+            idx.push({ id, tableKey: k, pos, name, nameNorm: name });
+          });
+        }
+        return idx;
+      }
+
+      function renderTableCard(key){
+        const t = tables[key] || {};
+        const label = escapeHtml(String(t.label || ('TABLE ' + key)));
+        const seats = Array.isArray(t.seats) ? t.seats : [];
+        const seatEls = renderSeats(key, seats);
+
+        return `
+          <div class="card seat-card" data-table-card="${escapeHtml(key)}">
+            <div class="h2row">
+              <span class="h2icon">
+                <img class="ico" src="/assets/icons/table.svg" alt="" aria-hidden="true">
+              </span>
+              <h2>${label}</h2>
+            </div>
+            <div class="table-layout" aria-label="${label}">
+              <div class="seat-col" data-side="left">${seatEls.left}</div>
+              <div class="table-core">${escapeHtml(key)}</div>
+              <div class="seat-col" data-side="right">${seatEls.right}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderSeats(tableKey, seatsRaw){
+        const seats = seatsRaw.map(normalize).slice(0, 8);
+        const items = seats.map((name, i) => {
+          const pos = i + 1;
+          const id = `${tableKey}:${pos}`;
+          const cls = name ? '' : ' is-empty';
+          return `<div class="seat-item${cls}" data-seat-id="${escapeHtml(id)}">${escapeHtml(name)}</div>`;
+        });
+
+        const n = Math.max(1, items.length);
+        const leftCount = Math.min(4, Math.ceil(n / 2));
+        const left = items.slice(0, leftCount).join('');
+        const right = items.slice(leftCount, 8).join('');
+        return { left, right };
+      }
+
+      function jumpToTable(key, seatId){
+        const card = root.querySelector(`[data-table-card="${cssEscape(key)}"]`);
+        if (!card) return;
+
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        flashCard(card);
+
+        if (seatId){
+          const seatEl = card.querySelector(`[data-seat-id="${cssEscape(seatId)}"]`);
+          if (seatEl) focusSeat(seatEl);
+        }
+      }
+
+      function flashCard(card){
+        card.classList.add('is-flash');
+        window.setTimeout(() => card.classList.remove('is-flash'), 1200);
+      }
+      function focusSeat(seatEl){
+        seatEl.classList.add('is-focus');
+        window.setTimeout(() => seatEl.classList.remove('is-focus'), 1400);
+      }
     }
-    return idx;
-  }
-
-  function jumpToTable(key, seatId){
-    const card = root.querySelector(`[data-table-card="${cssEscape(key)}"]`);
-    if (!card) return;
-
-    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    flashCard(card);
-
-    if (seatId){
-      const seatEl = card.querySelector(`[data-seat-id="${cssEscape(seatId)}"]`);
-      if (seatEl) focusSeat(seatEl);
-    }
-  }
-
-  function renderTableCard(key){
-    const t = tables[key] || {};
-    const label = escapeHtml(String(t.label || ('TABLE ' + key)));
-    const seats = Array.isArray(t.seats) ? t.seats : [];
-    const seatEls = renderSeats(key, seats);
-
-    return `
-      <div class="card seat-card" data-table-card="${escapeHtml(key)}">
-        <div class="h2row">
-          <span class="h2icon">
-            <img class="ico" src="/assets/icons/table.svg" alt="" aria-hidden="true">
-          </span>
-          <h2>${label}</h2>
-        </div>
-        <div class="table-layout" aria-label="${label}">
-          <div class="seat-col" data-side="left">${seatEls.left}</div>
-          <div class="table-core">${escapeHtml(key)}</div>
-          <div class="seat-col" data-side="right">${seatEls.right}</div>
-        </div>
-      </div>
-    `;
-  }
-
-  function renderSeats(tableKey, seatsRaw){
-    const seats = seatsRaw.map(normalize).slice(0, 8);
-    const items = seats.map((name, i) => {
-      const pos = i + 1;
-      const id = `${tableKey}:${pos}`;
-      const cls = name ? '' : ' is-empty';
-      return `<div class="seat-item${cls}" data-seat-id="${escapeHtml(id)}">${escapeHtml(name)}</div>`;
-    });
-
-    const n = Math.max(1, items.length);
-    const leftCount = Math.min(4, Math.ceil(n / 2));
-    const left = items.slice(0, leftCount).join('');
-    const right = items.slice(leftCount, 8).join('');
-    return { left, right };
-  }
-
-  function flashCard(card){
-    card.classList.add('is-flash');
-    window.setTimeout(() => card.classList.remove('is-flash'), 1200);
-  }
-  function focusSeat(seatEl){
-    seatEl.classList.add('is-focus');
-    window.setTimeout(() => seatEl.classList.remove('is-focus'), 1400);
-  }
-}
-
 
   function setupMenuImageViewer(){
     const img = document.querySelector("[data-menu-image]");

@@ -69,12 +69,12 @@ window.WEDDING_SITE = {
 
     // 上部のカテゴリ（ボタン）→ 押すと該当セクションへスクロール
     categories: [
-      { id: "groom-lab", label: "新郎の研究室の友人", tables: ["A"] },
-      { id: "bride-uni", label: "新婦の大学の友人", tables: ["B"] },
-      { id: "bride-uni", label: "新婦の大学の友人", tables: ["D"] },
-      { id: "groom-math", label: "新郎の高校の友人[理数科]", tables: ["C"] },
-      { id: "groom-high", label: "新郎の高校の友人[普通科]", tables: ["X"] },
-      { id: "groom-univ", label: "新郎の大学の友人", tables: ["X"] }
+      { id: "groom-lab", label: "新郎の研究室の友人", side: "groom", tables: ["A"] },
+      { id: "bride-uni", label: "新婦の大学の友人", side: "bride", tables: ["B"] },
+      { id: "bride-uni", label: "新婦の大学の友人", side: "bride", tables: ["D"] },
+      { id: "groom-math", label: "新郎の高校の友人[理数科]", side: "groom", tables: ["C"] },
+      { id: "groom-high", label: "新郎の高校の友人[普通科]", side: "groom", tables: ["X"] },
+      { id: "groom-univ", label: "新郎の大学の友人", side: "groom", tables: ["X"] }
     ],
 
     // 卓データ（最大8名）。6名の卓なら6個だけでもOKです。
