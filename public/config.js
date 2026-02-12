@@ -115,17 +115,21 @@ window.WEDDING_SITE = {
       "落合 悠人": "おちあい ゆうと",
       "濱中 康平": "はまなか こうへい",
       "青柳 建志": "あおやぎ たつし",
-      "安藤 春希": "はるを"
+      "安藤 春希": "あんどう はるを"
     },
 
     // 上部のカテゴリ（ボタン）→ 押すと該当セクションへスクロール
     categories: [
-      { id: "groom-lab", label: "新郎の研究室の友人", side: "groom", tables: ["A"] },
-      { id: "bride-uni", label: "新婦の大学の友人", side: "bride", tables: ["B"] },
-      { id: "bride-uni", label: "新婦の大学の友人", side: "bride", tables: ["D"] },
-      { id: "groom-math", label: "新郎の高校の友人[理数科]", side: "groom", tables: ["C"] },
-      { id: "groom-high", label: "新郎の高校の友人[普通科]", side: "groom", tables: ["X"] },
-      { id: "groom-univ", label: "新郎の大学の友人", side: "groom", tables: ["X"] }
+      { id: "groom-lab", label: "おうび", side: "groom", tables: ["A"] },
+      { id: "bride-uni", label: "おうせいメンバー", side: "bride", tables: ["B"] },
+      { id: "bride-bigb", label: "えーでる", side: "bride", tables: ["C"] },
+      { id: "bride-high", label: "刈谷高校", side: "bride", tables: ["D"] },
+      { id: "bride-brain", label: "Brain Pad", side: "bride", tables: ["E"] },
+      { id: "bride-geek", label: "Geek", side: "bride", tables: ["E"] },
+      { id: "groom-math", label: "理数科（迫真）", side: "groom", tables: ["F"] },
+      { id: "groom-high", label: "生徒会長・副会長", side: "groom", tables: ["X"] },
+      { id: "groom-univ", label: "岐阜県養老郡養老町", side: "groom", tables: ["X"] },
+      { id: "211-club", label: "2-11 club", side: "groom", tables: ["X"] }
     ],
 
     // 卓データ（最大8名）。6名の卓なら6個だけでもOKです。
