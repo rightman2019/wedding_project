@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#124C3E" />
-  <link rel="icon" href="/favicon-32.png" type="image/png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="stylesheet" href="/style.css" />
-  <script src="/config.js"></script>
-  <script src="/script.js" defer></script>
+  <link rel="icon" href="./favicon-32.png" type="image/png" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="stylesheet" href="./style.css" />
+  <script src="./config.js"></script>
+  <script src="./script.js" defer></script>
 
   <title data-wedding-title>{couple} | Wedding</title>
   <meta name="description" content="結婚式のご案内ページです（日時・会場・アクセス・招待状）。" />
@@ -17,7 +17,7 @@
 <body>
   <!-- Splash (tap/click to skip) -->
   <div class="splash" data-splash role="button" tabindex="0" aria-label="タップして開始">
-    <img class="splash-bg" src="/assets/splash.svg" alt="" aria-hidden="true" />
+    <img class="splash-bg" src="./assets/splash.svg" alt="" aria-hidden="true" />
     <div class="splash-inner">
       <div class="splash-title">Ukyo &amp; Seina</div>
       <div class="splash-sub">Official Site</div>
@@ -27,7 +27,7 @@
 
   <div class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="/">
+      <a class="brand" href="./">
         <div class="title" data-wedding-couple></div>
         <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
       </a>
@@ -35,13 +35,13 @@
         <span class="nav-toggle-icon" aria-hidden="true"></span>
       </button>
       <nav class="nav" id="site-nav" aria-label="Site">
-        <a href="/"><img class="nav-ico" src="/assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
-        <a href="/schedule/"><img class="nav-ico" src="/assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
-        <a href="/seating/"><img class="nav-ico" src="/assets/icons/table.svg" alt="" aria-hidden="true"><span>席次表</span></a>
-        <a href="/access/"><img class="nav-ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
-        <a href="/faq/"><img class="nav-ico" src="/assets/icons/faq.svg" alt="" aria-hidden="true"><span>FAQ</span></a>
-        <a href="/menu/"><img class="nav-ico img" src="/assets/icons/isle-of-islay-distillery-map.png" alt="" aria-hidden="true"><span>メニュー</span></a>
-        <a href="/rsvp/"><img class="nav-ico" src="/assets/icons/invite.svg" alt="" aria-hidden="true"><span>招待状</span></a>
+        <a href="./"><img class="nav-ico" src="./assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
+        <a href="./schedule/"><img class="nav-ico" src="./assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
+        <a href="./seating/"><img class="nav-ico" src="./assets/icons/table.svg" alt="" aria-hidden="true"><span>席次表</span></a>
+        <a href="./access/"><img class="nav-ico" src="./assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
+        <a href="./faq/"><img class="nav-ico" src="./assets/icons/faq.svg" alt="" aria-hidden="true"><span>FAQ</span></a>
+        <a href="./menu/"><img class="nav-ico img" src="./assets/icons/isle-of-islay-distillery-map.png" alt="" aria-hidden="true"><span>メニュー</span></a>
+        <a href="./rsvp/"><img class="nav-ico" src="./assets/icons/invite.svg" alt="" aria-hidden="true"><span>招待状</span></a>
       </nav>
     </div>
   </div>
@@ -57,37 +57,30 @@
       <div class="actions">
         <a class="btn primary" data-wedding-href="rsvp.url" href="#"><span class="h2icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></span> 招待状</a>
         <a class="btn" data-wedding-href="venue.mapUrl" href="#"><span class="h2icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-4.7 7-11a7 7 0 0 0-14 0c0 6.3 7 11 7 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span> 地図を見る</a>
+        <a class="btn" href="./seating/"><span class="h2icon"><img alt="" src="./assets/icons/table.svg" /></span> 席次表を見る</a>
       </div>
       <div class="small" style="margin-top:12px" data-wedding-text="event.note"></div>
     </section>
 
     <section class="grid" aria-label="Summary">
       <div class="card half">
-        <div class="h2row"><span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span><h2>メニュー</h2></div>
+        <div class="h2row"><span class="h2icon"><img alt="" src="./assets/icons/isle-of-islay-distillery-map.png" /></span><h2>メニュー</h2></div>
         <div class="meta">新郎が特別にご用意したお酒です（ウイスキー／シェリー）</div>
         <div class="actions" style="margin-top:12px">
-          <a class="btn" href="/menu/"><span class="h2icon"><img alt="" src="/assets/icons/isle-of-islay-distillery-map.png" /></span> メニューを見る</a>
+          <a class="btn" href="./menu/"><span class="h2icon"><img alt="" src="./assets/icons/isle-of-islay-distillery-map.png" /></span> メニューを見る</a>
         </div>
       </div>
 
       <div class="card half">
-        <div class="h2row"><span class="h2icon"><img alt="" src="/assets/icons/table.svg" /></span><h2>席次表</h2></div>
+        <div class="h2row"><span class="h2icon"><img alt="" src="./assets/icons/table.svg" /></span><h2>席次表</h2></div>
         <div class="meta">全体配置と、お名前検索（自分の席）をご用意しました。</div>
         <div class="actions" style="margin-top:12px">
-          <a class="btn" href="/seating/"><span class="h2icon"><img alt="" src="/assets/icons/table.svg" /></span> 席次表を見る</a>
-        </div>
-      </div>
-
-      <div class="card half" data-hide-if-empty="links.tetris">
-        <div class="h2row"><span class="h2icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="10" y="3" width="7" height="7"/><rect x="3" y="10" width="7" height="7"/><rect x="14" y="10" width="7" height="7"/></svg></span><h2>テトリス</h2></div>
-        <div class="meta">ちょっとした暇つぶしにどうぞ（ブラウザで遊べます）。</div>
-        <div class="actions" style="margin-top:12px">
-          <a class="btn" data-wedding-href="links.tetris" href="#" target="_blank" rel="noopener"><img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> 遊ぶ</a>
+          <a class="btn" href="./seating/"><span class="h2icon"><img alt="" src="./assets/icons/table.svg" /></span> 席次表を見る</a>
         </div>
       </div>
 
       <div class="card half date-card">
-        <h2><img class="ico" src="/assets/icons/calendar.svg" alt="" aria-hidden="true"><span>日時</span></h2>
+        <h2><img class="ico" src="./assets/icons/calendar.svg" alt="" aria-hidden="true"><span>日時</span></h2>
         <div class="meta">
           <div><b data-wedding-text="dateLabel"></b> <span data-wedding-text="dayLabel"></span></div>
           <div>受付：<b data-wedding-text="event.open"></b></div>
@@ -97,32 +90,34 @@
       </div>
 
       <div class="card half">
-        <h2><img class="ico" src="/assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
-        <div class="meta">
-          <div><b data-wedding-text="dressCode"></b></div>
-          <div class="small">迷ったら「落ち着いた装い」で問題ありません。</div>
-        </div>
-      </div> 
-
-      <div class="card half">
-        <h2><img class="ico" src="/assets/icons/pin.svg" alt="" aria-hidden="true"><span>会場</span></h2>
+        <h2><img class="ico" src="./assets/icons/pin.svg" alt="" aria-hidden="true"><span>会場</span></h2>
         <div class="meta">
           <div><b data-wedding-text="venue.name"></b></div>
           <div data-wedding-text="venue.address"></div>
           <div class="small" data-wedding-text="venue.access"></div>
           <div class="actions" style="margin-top:10px">
-            <a class="btn" data-wedding-href="venue.websiteUrl" href="#"><img class="icon" src="/assets/icons/external.svg" alt="" aria-hidden="true"> 公式サイト</a>
-            <a class="btn" data-wedding-href="venue.mapUrl" href="#"><img class="icon" src="/assets/icons/pin.svg" alt="" aria-hidden="true"> 地図</a>
+            <a class="btn" data-wedding-href="venue.websiteUrl" href="#"><img class="icon" src="./assets/icons/external.svg" alt="" aria-hidden="true"> 公式サイト</a>
+            <a class="btn" data-wedding-href="venue.mapUrl" href="#"><img class="icon" src="./assets/icons/pin.svg" alt="" aria-hidden="true"> 地図</a>
           </div>
         </div>
       </div>
-
-      <div class="card half" data-hide-if-empty="gifts">
-        <h2><img class="ico" src="/assets/icons/gift.svg" alt="" aria-hidden="true"><span>お祝いについて</span></h2>
+      
+      <div class="card half">
+        <h2><img class="ico" src="./assets/icons/hanger.svg" alt="" aria-hidden="true"><span>服装</span></h2>
         <div class="meta">
-          <div data-wedding-text="gifts"></div>
+          <div><b data-wedding-text="dressCode"></b></div>
+          <div class="small">迷ったら「落ち着いた装い」で問題ありません。</div>
+        </div>
+      </div> 
+      
+      <div class="card half" data-hide-if-empty="links.tetris">
+        <div class="h2row"><span class="h2icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="10" y="3" width="7" height="7"/><rect x="3" y="10" width="7" height="7"/><rect x="14" y="10" width="7" height="7"/></svg></span><h2>テトリス</h2></div>
+        <div class="meta">ちょっとした暇つぶしにどうぞ（ブラウザで遊べます）。</div>
+        <div class="actions" style="margin-top:12px">
+          <a class="btn" data-wedding-href="links.tetris" href="#" target="_blank" rel="noopener"><img class="icon" src="./assets/icons/external.svg" alt="" aria-hidden="true"> 遊ぶ</a>
         </div>
       </div>
+
     </section>
 
     <footer class="footer">

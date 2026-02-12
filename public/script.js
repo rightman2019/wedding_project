@@ -884,13 +884,13 @@ root.addEventListener('pointerup', (e) => {
 
     // “寄せる”前提の配置（ノードサイズは枠基準で縮むので重なりづらい）
     const pos = {
-      A: {x: 24, y: 42},
-      X: {x: 14, y: 60},
-      F: {x: 24, y: 78},
-      B: {x: 50, y: 44},
-      C: {x: 76, y: 42},
-      D: {x: 86, y: 60},
-      E: {x: 76, y: 78}
+      A: {x: 34, y: 32+5},
+      X: {x: 24, y: 55+5},
+      F: {x: 40, y: 68+5},
+      B: {x: 50, y: 32+3},
+      C: {x: 66, y: 32+5},
+      D: {x: 76, y: 55+5},
+      E: {x: 60, y: 68+5}
     };
 
     overview.querySelectorAll('[data-table]').forEach(btn => {
@@ -1139,7 +1139,7 @@ root.addEventListener('pointerup', (e) => {
       <div class="card seat-card" data-table-card="${escapeHtml(key)}">
         <div class="h2row">
           <span class="h2icon">
-            <img class="ico" src="/assets/icons/table.svg" alt="" aria-hidden="true">
+            <img class="ico" src="../assets/icons/table.svg" alt="" aria-hidden="true">
           </span>
           <h2>${label}</h2>
           <div class="table-tools">

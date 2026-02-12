@@ -31,7 +31,7 @@ window.WEDDING_SITE = {
   rsvp: {
     url: "https://ukyo-seina.weddingday.jp",
     deadlineLabel: "招待状サイトをご確認ください",
-    note: "※詳細・出欠回答は招待状サイトをご確認ください。"
+    note: "※詳細は招待状サイトをご確認ください。"
   },
 
   // 表示される場合があります（不要なら空文字でOK）
@@ -64,7 +64,7 @@ window.WEDDING_SITE = {
   // 席次表（/seating）
   // ※各卓の "seats" に名前を入れるだけで反映されます（最大8名）
   seating: {
-    note: "※お席は係の者がご案内します。",
+    note: "",
     headTableLabel: "高砂",
 
 
@@ -114,8 +114,7 @@ window.WEDDING_SITE = {
       "安藤 春希": "あんどう はるき",
       "落合 悠人": "おちあい ゆうと",
       "濱中 康平": "はまなか こうへい",
-      "青柳 建志": "あおやぎ たつし",
-      "安藤 春希": "あんどう はるを"
+      "青柳 建志": "あおやぎ たつし"
     },
 
     // 上部のカテゴリ（ボタン）→ 押すと該当セクションへスクロール
@@ -124,7 +123,7 @@ window.WEDDING_SITE = {
       { id: "bride-uni", label: "おうせいメンバー", side: "bride", tables: ["B"] },
       { id: "bride-bigb", label: "えーでる", side: "bride", tables: ["C"] },
       { id: "bride-high", label: "刈谷高校", side: "bride", tables: ["D"] },
-      { id: "bride-brain", label: "Brain Pad", side: "bride", tables: ["E"] },
+      { id: "bride-brain", label: "BrainPad", side: "bride", tables: ["E"] },
       { id: "bride-geek", label: "Geek", side: "bride", tables: ["E"] },
       { id: "groom-math", label: "理数科（迫真）", side: "groom", tables: ["F"] },
       { id: "groom-high", label: "生徒会長・副会長", side: "groom", tables: ["X"] },
