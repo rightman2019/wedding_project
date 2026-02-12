@@ -759,20 +759,31 @@ function setupNavAutoCollapse(){
     <button type="button" class="fab-top" data-fab-top aria-label="上へ戻る">↑</button>
   `;
 
-  // モード切替
-  const modeBtns = [...root.querySelectorAll('[data-mode]')];
-  const panelName = root.querySelector('[data-panel="name"]');
-  const panelCat  = root.querySelector('[data-panel="category"]');
-  function setMode(mode){
-    for (const b of modeBtns){
-      const active = b.getAttribute('data-mode') === mode;
-      b.classList.toggle('is-active', active);
-      b.setAttribute('aria-selected', active ? 'true' : 'false');
-    }
-    if (panelName) panelName.hidden = mode !== 'name';
-    if (panelCat)  panelCat.hidden  = mode !== 'category';
-  }
-  modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.getAttribute('data-mode'))));
+  // モード切替（イベント委譲で確実に動く）
+const panelName = root.querySelector('[data-panel="name"]');
+const panelCat  = root.querySelector('[data-panel="category"]');
+
+function setMode(mode){
+  // 毎回DOMから拾う（再描画されても壊れない）
+  root.querySelectorAll('[data-mode]').forEach(b => {
+    const active = b.getAttribute('data-mode') === mode;
+    b.classList.toggle('is-active', active);
+    b.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+
+  if (panelName) panelName.hidden = mode !== 'name';
+  if (panelCat)  panelCat.hidden  = mode !== 'category';
+}
+
+// 初期状態（必要なら）
+setMode('name');
+
+// クリックをrootで拾う（ボタンが差し替わっても動く）
+root.addEventListener('click', (e) => {
+  const btn = e.target.closest?.('[data-mode]');
+  if (!btn) return;
+  setMode(btn.getAttribute('data-mode'));
+});
 
   // ===== 全体（卓の位置） =====
   const overview = root.querySelector('[data-seating-overview]');
