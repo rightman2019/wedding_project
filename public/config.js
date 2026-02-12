@@ -69,12 +69,16 @@ window.WEDDING_SITE = {
 
     // 上部のカテゴリ（ボタン）→ 押すと該当セクションへスクロール
     categories: [
-      { id: "groom-lab", label: "新郎の研究室の友人", side: "groom", tables: ["A"] },
-      { id: "bride-uni", label: "新婦の大学の友人", side: "bride", tables: ["B"] },
-      { id: "bride-uni", label: "新婦の大学の友人", side: "bride", tables: ["D"] },
-      { id: "groom-math", label: "新郎の高校の友人[理数科]", side: "groom", tables: ["C"] },
-      { id: "groom-high", label: "新郎の高校の友人[普通科]", side: "groom", tables: ["X"] },
-      { id: "groom-univ", label: "新郎の大学の友人", side: "groom", tables: ["X"] }
+      { id: "groom-lab", label: "おうび", side: "groom", tables: ["A"] },
+      { id: "bride-uni", label: "おうせいメンバー", side: "bride", tables: ["B"] },
+      { id: "bride-bigb", label: "えーでる", side: "bride", tables: ["C"] },
+      { id: "bride-high", label: "刈谷高校", side: "bride", tables: ["D"] },
+      { id: "bride-brain", label: "Brain Pad", side: "bride", tables: ["E"] },
+      { id: "bride-geek", label: "Geek", side: "bride", tables: ["E"] },
+      { id: "groom-math", label: "理数科（迫真）", side: "groom", tables: ["F"] },
+      { id: "groom-high", label: "生徒会長・副会長", side: "groom", tables: ["X"] },
+      { id: "groom-univ", label: "岐阜県養老郡養老町", side: "groom", tables: ["X"] },
+      { id: "team-211X", label: "TEAM211", side: "groom", tables: ["X"] }
     ],
 
     // 卓データ（最大8名）。6名の卓なら6個だけでもOKです。
@@ -113,8 +117,8 @@ window.WEDDING_SITE = {
       D: { label: "TABLE D", seats: [
         "尾関 香織", 
         "金生 真綾", 
-        "丸山明日香", 
-        "濱汐音",
+        "丸山 明日香", 
+        "濱 汐音",
         "岡田 美都"
       ] },
 
