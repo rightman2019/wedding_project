@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Table icon">
+  <g fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="256" cy="140" rx="176" ry="58"/>
+    <ellipse cx="256" cy="140" rx="148" ry="46" opacity="0.55"/>
+    <path d="M256 198v180"/>
+    <ellipse cx="256" cy="416" rx="120" ry="34"/>
+  </g>
+</svg>

@@ -7,17 +7,16 @@
   <meta name="theme-color" content="#124C3E" />
   <link rel="icon" href="../favicon-32.png" type="image/png" />
   <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" href="../apple-touch-icon.png" />
   <link rel="stylesheet" href="../style.css" />
   <script src="../config.js"></script>
   <script src="../script.js" defer></script>
 
-  <title data-wedding-title>{couple} | Invitation</title>
+  <title data-wedding-title>{couple} | Seating</title>
 </head>
 <body>
   <div class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="../">
+      <a class="brand" href="">
         <div class="title" data-wedding-couple></div>
         <div class="sub"><span data-wedding-text="dateLabel"></span> <span data-wedding-text="dayLabel"></span></div>
       </a>
@@ -25,7 +24,7 @@
         <span class="nav-toggle-icon" aria-hidden="true"></span>
       </button>
       <nav class="nav" id="site-nav" aria-label="Site">
-        <a href="../"><img class="nav-ico" src="../assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
+        <a href=""><img class="nav-ico" src="../assets/icons/home.svg" alt="" aria-hidden="true"><span>トップ</span></a>
         <a href="../schedule/"><img class="nav-ico" src="../assets/icons/clock.svg" alt="" aria-hidden="true"><span>当日スケジュール</span></a>
         <a href="../seating/"><img class="nav-ico" src="../assets/icons/table.svg" alt="" aria-hidden="true"><span>席次表</span></a>
         <a href="../access/"><img class="nav-ico" src="../assets/icons/pin.svg" alt="" aria-hidden="true"><span>アクセス</span></a>
@@ -38,35 +37,47 @@
 
   <main class="container">
     <section class="hero">
-      <div class="kicker"><span class="dot"></span> Invitation</div>
-      <h1 class="h1">招待状</h1>
-      <p class="lede">当日の詳細は、招待状サイトをご確認ください。</p>
-      <div class="actions">
-        <a class="btn primary" data-wedding-href="rsvp.url" href="#"><img class="icon" src="../assets/icons/invite.svg" alt="" aria-hidden="true"> 招待状サイトへ</a>
-      </div>
+      <div class="kicker"><span class="dot"></span> Seating</div>
+      <h1 class="h1">席次表</h1>
+      <p class="lede">全体配置と、お名前検索（自分の席）をご用意しました。</p>
+      <div class="small" data-wedding-text="seating.note"></div>
     </section>
 
     <section class="grid">
-      <div class="card">
-        <h2>招待状サイト</h2>
-        <div class="meta">
-          <div><b data-wedding-text="rsvp.url"></b></div>
-          <div class="small" data-wedding-text="rsvp.note"></div>
+      <div class="card" data-seating-root>
+        <div class="seating-nav">
+          <div class="chips" data-seating-chips></div>
         </div>
-      </div>
 
-      <div class="card">
-        <h2>連絡先</h2>
-        <div class="meta">
-          <div data-wedding-text="contact.name"></div>
-          <div class="small"><span data-wedding-text="contact.email"></span></div>
+        <div class="mode-toggle" aria-label="表示切替">
+          <button class="mode-btn is-active" type="button" data-mode-btn="overview">全体を見る</button>
+          <button class="mode-btn" type="button" data-mode-btn="find">自分の席を見る</button>
+        </div>
+
+        <div class="mode-panels">
+          <div class="mode-panel is-active" data-mode-panel="overview">
+            <div class="small" style="margin-top:10px">卓をタップすると詳細にジャンプします。</div>
+            <div class="overview-grid" data-seating-overview></div>
+            <div data-seating-sections></div>
+          </div>
+
+          <div class="mode-panel" data-mode-panel="find">
+            <div class="find-seat">
+              <div class="find-seat-title">お名前検索</div>
+              <div class="small">フルネームでも一部でもOKです（例：髙橋 / 右京）</div>
+              <div class="find-seat-form">
+                <input class="input" data-seat-find type="text" placeholder="お名前を入力" autocomplete="off" />
+              </div>
+              <div class="find-seat-results" data-seat-results></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <footer class="footer">
       <div><span class="copy-mark">©</span> <span data-wedding-text="copyright"></span></div>
-      <div><a class="btn" href="../">トップへ</a></div>
+      <div><a class="btn" href="">トップへ</a></div>
     </footer>
   </main>
 </body>
