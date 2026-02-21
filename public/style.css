@@ -750,7 +750,7 @@ body.nav-collapsed.nav-open .nav a{ width: 100%; justify-content:flex-start; }
 .meta{ font-size: 14px; }
 .small{ font-size: 12px; opacity: .86; }
 
-/* 日時カードは情報量が少なめなので、少し大きめに */
+/* 日時カードは情報量が少なめなので 少し大きめに */
 .date-card .meta{ font-size: 16px; }
 .date-card .meta b{ font-size: 18px; letter-spacing: .02em; }
 .date-card .meta div{ margin-top: 2px; }
