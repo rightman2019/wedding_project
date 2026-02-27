@@ -4,6 +4,7 @@
   --orange:#FE7010;
   /* SPECIAL_MENU.pdf の背景色に合わせる */
   --menu-bg:#F0AE2E;
+  --menu-bg2:#F9F0DC;
   --ink:#111111;
   --stroke: rgba(17,17,17,.85);
   --paper:#FAF4E6;
@@ -906,6 +907,8 @@ body.page-menu .pdf-frame{
 /* Menu page: blend background with PDF */
 body.menu-page{ background: var(--menu-bg); }
 body.menu-page .topbar{ background: var(--menu-bg); backdrop-filter: none; }
+body.menu-page2{ background: var(--menu-bg2); }
+body.menu-page2 .topbar{ background: var(--menu-bg2); backdrop-filter: none; }
 body.menu-page .topbar-inner{ max-width: 1060px; }
 body.menu-page .topbar,
 body.menu-page .topbar a{ color: var(--paper); }
